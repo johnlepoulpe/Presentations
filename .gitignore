@@ -1,0 +1,10 @@
+*/*.run.xml
+*/*.toc
+*/*~
+*/*.log
+*/*.bcf
+*/*.aux
+*/*.nav
+*/*.nav
+*/*.snm
+*/*.out

@@ -1,0 +1,419 @@
+\documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
+
+\usepackage{BeamerColor}
+\usepackage{etoolbox}
+
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage[main= english,francais]{babel}%
+\usepackage{mathtools}
+
+\usepackage{graphicx}%
+\usepackage{courier}%
+\usepackage{algorithm2e}
+
+\usepackage{url}%
+\urlstyle{sf}%
+
+\usepackage{subcaption}%
+\usepackage{caption}
+\captionsetup[figure]{labelformat=empty}% redefines the caption setup of the figures environment in the beamer class.
+\usepackage{tikz}
+
+\usepackage{listings}%
+
+\usepackage{faktor}%
+
+\usepackage{stmaryrd}%
+
+\usepackage[style=verbose,backend=biber]{biblatex}
+\addbibresource{biblio.bib}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+%%%%%%%%% Begin of Beamer Layout %%%%%%%%%%%%%
+\ProcessOptionsBeamer
+\usecolortheme{whale}
+\usecolortheme[named=DarkGreen]{structure}
+\useinnertheme{rounded}
+\useoutertheme{infolines}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{headline}[default]
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+\defbeamertemplate*{headline}{info theme}{}
+\defbeamertemplate*{footline}{info theme}{\leavevmode%
+\hbox{%
+\begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+\usebeamerfont{author in head/foot}\insertshortauthor
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.71\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+\usebeamerfont{title in head/foot}\insertsectionhead
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.09\paperwidth,ht=2.25ex,dp=1ex,right]{section in head/foot}%
+\usebeamerfont{section in head/foot}\insertframenumber{}~/~\inserttotalframenumber\hspace*{2ex}
+\end{beamercolorbox}
+}\vskip0pt}
+\setbeamercolor*{block title example}{fg=LightSeaGreen}
+\AtBeginEnvironment{exampleblock}{\setbeamercolor{itemize item}{fg=LightSeaGreen}}
+\setbeamercolor*{block title alerted}{fg=DarkOrange2}
+\AtBeginEnvironment{alertblock}{\setbeamercolor{itemize item}{fg=DarkOrange2}}
+\setbeamertemplate{footline}[info theme]
+\defbeamertemplate{description item}{align left}{\insertdescriptionitem\hfill}
+%%%%%%%%% End of Beamer Layout %%%%%%%%%%%%%
+\newcommand{\myorange}{DarkOrange2}
+\newcommand{\mygreen}{DarkGreen}
+\newcommand{\mycyan}{LightSeaGreen}
+
+
+\lstset{%
+	basicstyle=\sffamily,%
+	columns=fullflexible,%
+	language=C++,% % À ajuster dans chaque projet!
+	frame=lb,%
+	frameround=fftf,%
+}%
+
+\sloppy
+
+%\setbeamertemplate{headline}{}%
+
+\setbeamertemplate{navigation symbols}{%
+	\insertslidenavigationsymbol%
+	% \insertframenavigationsymbol%
+	% \insertsubsectionnavigationsymbol%
+	% \insertsectionnavigationsymbol%
+	% \insertdocnavigationsymbol%
+	% \insertbackfindforwardnavigationsymbol%
+}
+
+\newcommand{\backupbegin}{
+   \newcounter{finalframe}
+   \setcounter{finalframe}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \setcounter{framenumber}{\value{finalframe}}
+}
+
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\tw}{tw}
+
+\begin{document}
+
+\title{Kempe recoloring version of Hadwiger's conjecture}
+\author[Clément Legrand]{Clément Legrand-Duchesne}
+\institute{LaBRI, Bordeaux}
+%\date{\today}
+\date{\today}
+
+\begin{frame}
+  \titlepage
+
+  Joint work with Marthe Bonamy, Marc Heinrich and Jonathan Narboni
+\end{frame}
+
+\section*{Some context}
+\begin{frame}{Recoloring with Kempe changes}
+  \uncover<1->{
+  \begin{columns}
+    \begin{column}{.66\textwidth}
+      \begin{exampleblock}{Kempe chain (1879)}
+        Maximal bichromatic connected component in $G$
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{.33\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+        \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,fill=blue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+        \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+      \end{tikzpicture}
+      
+      %\includegraphics[width=.8\textwidth]{../figures/pdf/knot_example.pdf}
+    \end{column}
+  \end{columns}
+  }
+
+  \vspace{1.5cm}
+  
+  \begin{columns}
+    \uncover<2->{
+      \begin{column}{.33\textwidth}
+        \centering
+        \begin{tikzpicture}
+          \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+          \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+          \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (c) at (234:.8cm) {};
+          \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt] (d) at (306:.8cm) {};
+          \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+          \draw (e) -- (a) -- (b) -- (c);
+          \draw[very thick] (c) -- (d) -- (e);
+        \end{tikzpicture}      
+    \end{column}
+    }
+    \uncover<3->{
+    \begin{column}{.33\textwidth}
+       \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+        \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,very thick,fill=\mycyan,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,fill=blue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+        \draw[very thick] (b) -- (c);
+        \draw (a) -- (b);
+        \draw (c) -- (d) -- (e) -- (a);
+      \end{tikzpicture}
+    \end{column}
+    }
+    \uncover<4->{
+    \begin{column}{.33\textwidth}
+       \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+        \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,very thick,fill=\mycyan,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+        \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+      \end{tikzpicture}
+    \end{column}
+    }
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Natural questions in reconfiguration}
+  \begin{exampleblock}{Reconfiguration graph}
+    \begin{itemize}
+    \item $V(R^k(G)) =$ $k$-colorings of $G$.
+    \item $\alpha$ and $\beta$ adjacent  if $\alpha
+      \xleftrightarrow[\text{Kempe}]{} \beta$
+    \end{itemize}
+  \end{exampleblock}
+
+  \setbeamertemplate{description item}[align left] 
+  \begin{description}
+  \item[Reachability] Are $\alpha$ and $\beta$ Kempe-equivalent ? 
+  \item[Connectivity] Is $R^k(G)$ connected ?
+  \item[Diameter] Estimate $\diam(R^k(G))$ ?
+  \end{description}
+
+  \begin{block}{Application}
+    \begin{itemize}
+    \item Powerful tool (ex: Vizing theorem)
+    \item Sampling coloring with a Markov chain
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Graph minor}
+  \begin{exampleblock}{Graph minor}
+    $H$ is a minor of $G$ if $H$ can be obtained be deleting vertices, edges and
+    contracting edges of $G$
+  \end{exampleblock}
+
+  \begin{columns}
+    \begin{column}{.48\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=\myorange,fill=\myorange,circle,inner sep=1.5pt]   (a1) at (75:.8cm) {};
+        \node[draw=\myorange,fill=\myorange,circle,inner sep=1.5pt]   (a2) at (105:.8cm) {};
+        \node[draw=\myorange,fill=\myorange,circle,inner sep=1.5pt]   (a) at (90:.45cm) {};
+        \node[draw=\mycyan,fill=\mycyan,circle,inner sep=1.5pt]  (b) at (147:.8cm) {};
+        \node[draw=\mycyan,fill=\mycyan,circle,inner sep=1.5] (b2) at   (177:.8cm) {};
+        \node[draw=magenta,fill=magenta,circle,inner sep=1.5pt] (c) at (234:.8cm) {};
+        \node[draw=blue,fill=blue,circle,inner sep=1.5pt] (d) at (291:.8cm) {};
+        \node[draw=blue,fill=blue,circle,inner sep=1.5pt] (d2) at (321:.8cm) {};
+        \node[draw=blue,fill=blue,circle,inner sep=1.5pt] (d3) at (306:.45cm) {};
+        \node[draw=yellow,fill=yellow,circle,inner sep=1.5pt] (e) at (18:.8cm) {};
+
+        \draw (a2) -- (b) -- (d3) (e) -- (b2) -- (c) -- (a2) (a1) -- (e) -- (d2)
+        (d3) -- (a) (e) -- (c) -- (d); \draw[very thick,\mycyan] (b) -- (b2);
+        \draw[very thick,blue] (d) -- (d2) -- (d3); \draw[very thick,\myorange]
+        (a) -- (a1) -- (a2);
+      \end{tikzpicture}
+    \end{column}
+    \hfill
+    \begin{column}{.48\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=\myorange,fill=\myorange,circle,inner sep=1.5pt]   (a) at (90:.8cm) {};
+        \node[draw=\mycyan,fill=\mycyan,circle,inner sep=1.5pt]  (b) at (162:.8cm) {};
+        \node[draw=magenta,fill=magenta,circle,inner sep=1.5pt] (c) at (234:.8cm) {};
+        \node[draw=blue,fill=blue,circle,inner sep=1.5pt] (d) at (306:.8cm) {};
+        \node[draw=yellow,fill=yellow,circle,inner sep=1.5pt] (e) at (18:.8cm) {};
+
+        \draw (c) -- (e) -- (b) -- (d) --(a) -- (b) -- (c) -- (a) -- (e) -- (d) --  (c) -- (d) ;
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+  
+  $K_k$ is a minor of $G$ if and only if $V_1 \sqcup \dots \sqcup V_k \subseteq
+  V(G)$, with $V_i$ connected and $G[V_1, \dots V_k] = K_k$ 
+
+  \uncover<2>{
+  \begin{block}{Wagner, Kuratowski 1930}
+    A graph is planar iff $K_5$-minor and $K_{3,3}$-minor free
+  \end{block}
+
+    \begin{columns}
+    \begin{column}{.48\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=black,circle,inner sep=1.5pt]   (a) at (90:.8cm) {};
+        \node[draw=black,fill=black,circle,inner sep=1.5pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=black,circle,inner sep=1.5pt] (c) at (234:.8cm) {};
+        \node[draw=black,fill=black,circle,inner sep=1.5pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=black,circle,inner sep=1.5pt] (e) at (18:.8cm) {};
+
+        \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a) -- (c) -- (e) -- (b) -- (d)
+        -- (a);
+      \end{tikzpicture}
+    \end{column}
+    \hfill
+    \begin{column}{.48\textwidth}
+      \centering
+      \begin{tikzpicture}[auto,node distance=1cm]
+      \node[draw=black,fill=black,circle,inner sep=1.5pt] (a) {};
+      \node[draw=black,fill=black,circle,inner sep=1.5pt] (b) [right of=a] {};
+      \node[draw=black,fill=black,circle,inner sep=1.5pt] (c) [right of=b] {};
+      \node[draw=black,fill=black,circle,inner sep=1.5pt] (A) [below of=a] {};
+      \node[draw=black,fill=black,circle,inner sep=1.5pt] (B) [below of=b] {};
+      \node[draw=black,fill=black,circle,inner sep=1.5pt] (C) [below of=c] {};
+
+      \draw (a) -- (A) (a) --(B) (a) -- (C);
+      \draw (b) -- (A) (b) --(B) (b) -- (C);
+      \draw (c) -- (A) (c) --(B) (c) -- (C);
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}}
+\end{frame}
+
+\begin{frame}{Hadwiger's conjecture}
+
+  \begin{block}{Appel, Haken 1976}
+    If $G$ is planar, then $\chi(G) \le 4$
+  \end{block}
+
+  \begin{block}{Robertson, Sanders, Seymour, Thomas 1997}
+    Much simpler proof, but still computer assisted 
+  \end{block}
+  
+  \begin{alertblock}{Hadwiger's conjecture 1943}
+    If $G$ is $K_t$-minor free then $\chi(G) \le t-1$\\
+    Proved for $1 \le t \le 6$, widely open for $t > 6$
+  \end{alertblock}
+\end{frame}
+
+\section{Recoloring version of Hadwiger's conjecture}
+\begin{frame}{Reconfiguration counterpoint}
+
+  \begin{block}{Meyniel 1978}
+    All 5-colorings of a planar graph are Kempe-equivalent (tight)
+  \end{block}
+
+  \begin{block}{Las Vergnas and Meyniel 1981}
+    All 5-colorings of a $K_5$-minor free graph are Kempe-equivalent
+  \end{block}
+
+  \uncover<2>{
+  \begin{alertblock}{Conjecture 1 [Las Vergnas and Meyniel 1981]}
+    All the $t$-colorings of a $K_t$-minor free graph are Kempe-equivalent
+  \end{alertblock}
+
+  \begin{alertblock}{Conjecture 2 [Las Vergnas and Meyniel 1981]}
+    All the $t$-colorings of a $K_t$-minor free graph are Kempe-equivalent to a $(t-1)$-coloring
+  \end{alertblock}}
+\end{frame}
+
+\begin{frame}{Frozen colorings}
+  \begin{exampleblock}{Frozen coloring}
+    $\alpha$ is frozen if $\forall i,j \le k,$ the graph induced by colors $i$
+    and $j$ is connected
+  \end{exampleblock}
+
+  \begin{columns}
+    \begin{column}{.48\textwidth}
+      \centering      
+      \begin{tikzpicture}
+        \node[draw=black,fill=\myorange,circle,inner sep=1.5pt]   (a) at (90:.3cm) {};
+        \node[draw=black,fill=\mycyan,circle,inner sep=1.5pt]  (b) at (210:.3cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=1.5pt] (c) at (330:.3cm) {};
+
+        \node[draw=black,fill=magenta,circle,inner sep=1.5pt]   (A) at (90:1cm) {};
+        \node[draw=black,fill=\myorange,circle,inner sep=1.5pt]  (B) at (210:1cm) {};
+        \node[draw=black,fill=\mycyan,circle,inner sep=1.5pt] (C) at (330:1cm) {};
+
+        \draw (a) -- (A);
+        \draw (b) -- (B);
+        \draw (c) -- (C);
+        \draw (a) -- (b) -- (c) -- (a);
+        \draw (A) -- (B) -- (C) -- (A);
+      \end{tikzpicture}
+    \end{column}
+    \hfill
+    \begin{column}{.48\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=\myorange,circle,inner sep=1.5pt]   (a) at (90:.3cm) {};
+        \node[draw=black,fill=\mycyan,circle,inner sep=1.5pt]  (b) at (210:.3cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=1.5pt] (c) at (330:.3cm) {};
+
+        \node[draw=black,fill=\mycyan,circle,inner sep=1.5pt]   (A) at (90:1cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=1.5pt]  (B) at (210:1cm) {};
+        \node[draw=black,fill=\myorange,circle,inner sep=1.5pt] (C) at (330:1cm) {};
+
+        \draw (a) -- (A);
+        \draw (b) -- (B);
+        \draw (c) -- (C);
+        \draw (a) -- (b) -- (c) -- (a);
+        \draw (A) -- (B) -- (C) -- (A);
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+  \begin{exampleblock}{Quasi-minor}
+    $K_k$ is quasi-minor of $G$ if there exists $V_1 \sqcup \dots \sqcup V_k$ such
+    that $\forall i \neq j, G[V_i \cup V_j]$ is connected and $G[V_1, \dots V_k]
+    = K_k$
+  \end{exampleblock}
+    Frozen $k$-coloring $\Rightarrow$ quasi $K_k$-minor
+\end{frame}
+
+\begin{frame}{Last conjecture}
+  \begin{alertblock}{Conjecture 3 [Las Vergnas and Meyniel 1981]}
+    No $K_t$-minor $\Rightarrow$ No frozen $t$-coloring
+  \end{alertblock}
+  \begin{block}{Motivation}
+    If $G$ has no $K_t$ minor and all its $t$-colorings are Kempe equivalent
+    then
+    \begin{itemize}
+    \item no frozen $t$-coloring
+    \item only one $t$-coloring up to color permutation
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Bonamy, Heinrich, L., Narboni '21+}
+    \begin{itemize}
+    \item Strongly disproved for large $t$: for every $\varepsilon >0$ and large
+      enough $t$, there exists a graph $G$ with a quasi-$K_t$-minor but no
+      $K_{\left(\frac{2}{3} + \varepsilon\right)t}$-minor
+      \pause
+    \item All $\frac{t}{2}$-colorings of a $K_t$-minor free graph are
+      Kempe-equivalent
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\end{document}
