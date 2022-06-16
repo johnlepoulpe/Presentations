@@ -1,0 +1,863 @@
+\documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
+
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage[main= english,francais]{babel}%
+\usepackage{mathtools}
+
+\usepackage{graphicx}%
+\usepackage{courier}%
+\usepackage{algorithm2e}
+
+\usepackage{url}%
+\urlstyle{sf}%
+
+\usepackage{subcaption}%
+\usepackage{caption}
+\captionsetup[figure]{labelformat=empty}% redefines the caption setup of the figures environment in the beamer class.
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+
+\usepackage{listings}%
+
+\usepackage{faktor}%
+
+\usepackage{stmaryrd}%
+
+\usepackage[style=verbose,backend=biber]{biblatex}
+\addbibresource{biblio.bib}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+%%%%%%%%% Begin of Beamer Layout %%%%%%%%%%%%%
+\ProcessOptionsBeamer
+\usecolortheme{whale}
+\usecolortheme[named=ForestGreen]{structure}
+\useinnertheme{rounded}
+\useoutertheme{infolines}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{headline}[default]
+\setbeamertemplate{navigation symbols}{}
+\defbeamertemplate*{headline}{info theme}{}
+\defbeamertemplate*{footline}{info theme}{\leavevmode%
+\hbox{%
+\begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+\usebeamerfont{author in head/foot}\insertshortauthor
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.71\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+\usebeamerfont{title in head/foot}\insertsectionhead
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.09\paperwidth,ht=2.25ex,dp=1ex,right]{section in head/foot}%
+\usebeamerfont{section in head/foot}\insertframenumber{}~/~\inserttotalframenumber\hspace*{2ex}
+\end{beamercolorbox}
+}\vskip0pt}
+\setbeamertemplate{footline}[info theme]
+%%%%%%%%% End of Beamer Layout %%%%%%%%%%%%%
+
+
+\lstset{%
+	basicstyle=\sffamily,%
+	columns=fullflexible,%
+	language=C++,% % À ajuster dans chaque projet!
+	frame=lb,%
+	frameround=fftf,%
+}%
+
+\sloppy
+
+%\setbeamertemplate{headline}{}%
+
+\setbeamertemplate{navigation symbols}{%
+	\insertslidenavigationsymbol%
+	% \insertframenavigationsymbol%
+	% \insertsubsectionnavigationsymbol%
+	% \insertsectionnavigationsymbol%
+	% \insertdocnavigationsymbol%
+	% \insertbackfindforwardnavigationsymbol%
+}
+
+\newcommand{\backupbegin}{
+   \newcounter{finalframe}
+   \setcounter{finalframe}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \setcounter{framenumber}{\value{finalframe}}
+}
+
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\tw}{tw}
+
+\begin{document}
+
+\title{Kempe changes}
+\author[Clément Legrand]{Clément Legrand-Duchesne}
+\institute{ENS Rennes}
+%\date{\today}
+\date{\today}
+
+\begin{frame}
+  \titlepage
+
+  Internship carried out from February 15 to July 28, under the
+  supervision of Marthe Bonamy and Vincent Delecroix at LaBRI in Bordeaux
+\end{frame}
+
+\section*{Some context}
+
+\begin{frame}{Recoloring with Kempe changes}
+  \uncover<1->{
+  \begin{columns}
+    \begin{column}{.66\textwidth}
+      \begin{block}{Kempe chain (1879)}
+        Maximal bichromatic component in $G$
+      \end{block}
+    \end{column}
+    \begin{column}{.33\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=orange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+        \node[draw=black,fill=blue,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,fill=blue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+        \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+      \end{tikzpicture}
+      
+      %\includegraphics[width=.8\textwidth]{../figures/pdf/knot_example.pdf}
+    \end{column}
+  \end{columns}
+  }
+
+  \vspace{1.5cm}
+  
+  \begin{columns}
+    \uncover<2->{
+      \begin{column}{.33\textwidth}
+        \centering
+        \begin{tikzpicture}
+          \node[draw=black,fill=orange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+          \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+          \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (c) at (234:.8cm) {};
+          \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt] (d) at (306:.8cm) {};
+          \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+          \draw (e) -- (a) -- (b);
+          \draw[very thick] (b) -- (c) -- (d) -- (e);
+        \end{tikzpicture}      
+    \end{column}
+    }
+    \uncover<3->{
+    \begin{column}{.33\textwidth}
+       \centering
+      \begin{tikzpicture}
+        \node[draw=black,very thick,fill=blue,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+        \node[draw=black,very thick,fill=orange,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,fill=blue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+        \draw[very thick] (a) -- (b);
+        \draw (b) -- (c) -- (d) -- (e) -- (a);
+      \end{tikzpicture}
+    \end{column}
+    }
+    \uncover<4->{
+    \begin{column}{.33\textwidth}
+       \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=orange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+        \node[draw=black,fill=blue,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,very thick,fill=orange,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+        \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+      \end{tikzpicture}
+    \end{column}
+    }
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Natural questions}
+  \begin{block}{Reconfiguration graph}
+    \begin{itemize}
+    \item $V(R^k(G)) =$ $k$-colorings of $G$.
+    \item $\alpha$ and $\beta$ adjacent  if $\alpha
+      \xleftrightarrow[\text{Kempe}]{} \beta$
+    \end{itemize}
+  \end{block}
+  \begin{description}
+  \item[Reachability] Are $\alpha$ and $\beta$ Kempe-equivalent ? 
+  \item[Connectivity] Is $R^k(G)$ connected ?
+  \item[Diameter] Estimate $\diam(R^k(G))$ ?
+  \end{description}
+
+  \begin{block}{Application}
+    \begin{itemize}
+    \item Powerful tool (ex: Vizing theorem)
+    \item Sampling coloring with a Markov chain \\ $\longrightarrow$ What is the
+      mixing time of the associated Markov chain ?
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Warm up}
+  \begin{block}{$k$-degenerate graph}
+    $G$ is $k$-degenerate if there exists an elimination ordering of the vertices $v_1 \prec
+      v_2 \dots \prec v_n$: $$\forall i, |N^+[v_i]| \le k$$
+  \end{block}
+
+  \begin{itemize}
+  \item $G$ has degree less than $k$ implies $G$ $(k+1)$-degenerate
+  \item $G$ not regular of degree less than $k$ implies $G$ $k$-degenerate
+  \end{itemize}
+
+  \vspace{1cm}
+  \centering
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (7.5,-1.5);
+       
+      \node[draw=black,circle,inner sep=2pt] (1) {};
+      \node[draw=black,circle,inner sep=2pt] (2) [right of=1] {};
+      \node[draw=black,circle,inner sep=2pt] (3) [right of=2] {};
+      \node[draw=black,circle,inner sep=2pt] (4) [right of=3] {};
+      \node[draw=black,circle,inner sep=2pt] (5) [right of=4] {};
+      \node[draw=black,circle,inner sep=2pt] (6) [right of=5] {};
+      \node[draw=black,circle,inner sep=2pt] (7) [right of=6] {};
+
+
+      \draw (1) -- (2);
+      \draw (3) -- (4) -- (5) -- (6) -- (7);
+      \path[every node/.style={font=\sffamily\small}]
+      (4) edge[bend right] node {} (6)
+      (7) edge[bend right] node {} (5)
+      (4) edge[bend left] node {} (2)
+      (2) edge[bend left] node {} (5)
+      (1) edge[bend left] node {} (4)
+      (3) edge[bend right] node {} (7);
+
+  \end{tikzpicture}
+  
+%%   \begin{block}{With $\Delta+ 1$ colors}
+%%     \begin{itemize}
+%%     \item $\forall G, \chi(G) \le \Delta +1$
+%%     \item $\forall G, \forall k \ge \Delta+1, R^k(G)$ is connected
+%%     \end{itemize}
+%%   \end{block}
+\end{frame}
+
+\begin{frame}{Warm up}
+  \begin{block}{Las Vergnas, Meyniel 1981}
+  All $\ell$-colorings of a $k$-degenerate graph are Kempe-equivalent for
+    $\ell > k$. 
+  \end{block}
+  
+  \begin{columns}
+    \begin{column}{.6\textwidth}
+      Induction: Let $\alpha$ and $\beta$ be two colorings of $G$\\
+      Consider $G' = G\setminus\{v_1\}$
+      $$\alpha_{|G'} \mathop{\leadsto}_{K}
+      \beta_{|G'}$$
+      Lift sequence to $G$ then recolor $v_1$
+    \end{column}
+    \hfill
+    \begin{column}{.3\textwidth}
+      \centering
+      \only<1>{
+        \begin{tikzpicture}
+          \clip (-.5,.7) rectangle (3,-2);
+          \node[draw,fill=magenta, circle,inner sep=2pt] (a) at (0,0) {};
+          \node[above] (A) at (0,0) {$v_1$};
+          \node[draw,fill=blue, circle, inner sep=2pt] (b) at (0:1.5cm) {};
+          \node[draw,very thick,fill=blue, circle, inner sep=2pt] (c) at (320:1.5cm) {};
+          \node[draw,fill=orange, circle, inner sep=2pt] (d) at (340:1.5cm) {};
+          
+          \node (e) at (335:2.2cm) {};
+          \node (f) at (345:2.2cm) {};
+
+          \node (h) at (315:2.2cm) {};
+          \node (g) at (320:2.22cm) {};
+          \node (i) at (325:2.18cm) {};
+
+          \node (j) at (0:2.2cm) {};
+
+          \node[above] (G) at (2.6, -1.2) {$G'$};
+          \draw[domain=120:180] plot ({2*(cos(\x)+1.3)}, {2*(sin(\x)-.6)});
+
+          \draw (j) -- (b) -- (a) -- (c);
+          \draw[very thick] (h) -- (c) -- (g);
+          \draw (a) -- (d);
+          \draw (f) -- (d) -- (e);
+          \draw (i) -- (c);
+          
+      \end{tikzpicture}}
+
+      \only<2>{
+        \begin{tikzpicture}
+          \clip (-.5,.7) rectangle (3,-2);
+          \node[draw,very thick,fill=magenta, circle,inner sep=2pt] (a) at (0,0) {};
+          \node[above] (A) at (0,0) {$v_1$};
+          \node[draw,very thick,fill=blue, circle, inner sep=2pt] (b) at (0:1.5cm) {};
+          \node[draw,very thick,fill=blue, circle, inner sep=2pt] (c) at (320:1.5cm) {};
+          \node[draw,fill=orange, circle, inner sep=2pt] (d) at (340:1.5cm) {};
+          
+          \node (e) at (335:2.2cm) {};
+          \node (f) at (345:2.2cm) {};
+
+          \node (h) at (315:2.2cm) {};
+          \node (g) at (320:2.22cm) {};
+          \node (i) at (325:2.18cm) {};
+
+          \node (j) at (0:2.2cm) {};
+
+          \node[above] (G) at (2.6, -1.2) {$G'$};
+          \draw[domain=120:180] plot ({2*(cos(\x)+1.3)}, {2*(sin(\x)-.6)});
+
+          \draw[very thick] (j) -- (b) -- (a) -- (c);
+          \draw[very thick] (h) -- (c) -- (g);
+          \draw (a) -- (d);
+          \draw (f) -- (d) -- (e);
+          \draw (i) -- (c);
+        \end{tikzpicture}}
+
+      \only<3>{
+        \begin{tikzpicture}
+          \clip (-.5,.7) rectangle (3,-2);
+          \node[draw,fill=cyan, circle,inner sep=2pt] (a) at (0,0) {};
+          \node[above] (A) at (0,0) {$v_1$};
+          \node[draw,fill=blue, circle, inner sep=2pt] (b) at (0:1.5cm) {};
+          \node[draw,very thick,fill=blue, circle, inner sep=2pt] (c) at (320:1.5cm) {};
+          \node[draw,fill=orange, circle, inner sep=2pt] (d) at (340:1.5cm) {};
+          
+          \node (e) at (335:2.2cm) {};
+          \node (f) at (345:2.2cm) {};
+
+          \node (h) at (315:2.2cm) {};
+          \node (g) at (320:2.22cm) {};
+          \node (i) at (325:2.18cm) {};
+
+          \node (j) at (0:2.2cm) {};
+
+          \node[above] (G) at (2.6, -1.2) {$G'$};
+          \draw[domain=120:180] plot ({2*(cos(\x)+1.3)}, {2*(sin(\x)-.6)});
+
+          \draw (j) -- (b) -- (a) -- (c);
+          \draw[very thick] (h) -- (c) -- (g);
+          \draw (a) -- (d);
+          \draw (f) -- (d) -- (e);
+          \draw (i) -- (c);
+        \end{tikzpicture}}
+    \end{column}
+  \end{columns}
+  \uncover<2>{
+  \begin{block}{Natural question}
+   What is the diameter of the reconfiguration graph in this setting ?
+  \end{block}
+  }
+\end{frame}
+
+\section{Recoloring under bounded treewidth}
+\begin{frame}{Recoloring chordal graphs}
+  \begin{block}{Chordal}
+    \begin{itemize}
+    \item A graph is chordal if it all its induced cycles are triangles
+    \item A graph is chordal iff there exists an ordering of the vertices $v_1
+      \prec v_2 \dots \prec v_n$, such that $\forall i, N^+[v_i]$ is a clique
+    \item Chordal graphs are perfect : $\chi(H) = \omega(H)$
+    \end{itemize}
+  \end{block}
+
+  
+  \begin{block}{Bonamy, Heinrich, Ito, Kobayashi, Mizuta, Mühlenthaler, Suzuki,
+      Wasa '20}
+    If $H$ is chordal, $\diam(R^k(G)) \le n$ for $k \ge \chi(H)$ 
+  \end{block}
+
+  \only<1>{
+    \centering
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (6.6,-1.5);
+       
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (b) {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (c) [right of=b] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (d) [right of=c] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (e) [right of=d] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (f) [right of=e] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (g) [right of=f] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (h) [right of=g] {};
+
+
+      \draw (b) -- (c) -- (d) -- (e) -- (f) -- (g) -- (h);
+      \path[every node/.style={font=\sffamily\small}]
+      (e) edge[bend right] node {} (g)
+      (g) edge[bend right] node {} (d)
+      (d) edge[bend right] node {} (f)
+      (f) edge[bend left] node {} (h);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (f) edge[bend right] node {} (c);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (b) edge[bend left] node {} (f);
+
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (B) [below of=b] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (C) [below of=c] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (D) [below of=d] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (E) [below of=e] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (F) [below of=f] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (G) [below of=g] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (H) [below of=h] {};
+  \end{tikzpicture}}
+
+  
+  \only<2>{
+    \centering
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (6.6,-1.5);
+      
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (b) {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (c) [right of=b] {};
+      \node[draw=black,very thick,fill=cyan,circle,inner sep=2pt] (d) [right of=c] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (e) [right of=d] {};
+      \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt] (f) [right of=e] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (g) [right of=f] {};
+      \node[draw=black,very thick,fill=cyan,circle,inner sep=2pt] (h) [right of=g] {};
+
+
+      \draw (b) -- (c) -- (d) -- (e) -- (f) -- (g) -- (h);
+      \path[every node/.style={font=\sffamily\small}]
+      (e) edge[bend right] node {} (g)
+      (g) edge[bend right] node {} (d)
+      (d) edge[bend right,very thick] node {} (f)
+      (f) edge[bend left, very thick] node {} (h);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (f) edge[bend right] node {} (c);
+      
+      \path[every node/.style={font=\sffamily\small}]
+      (b) edge[bend left] node {} (f);
+
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (B) [below of=b] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (C) [below of=c] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (D) [below of=d] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (E) [below of=e] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (F) [below of=f] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (G) [below of=g] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (H) [below of=h] {};
+  \end{tikzpicture}}
+
+  
+  \only<3>{
+    \centering
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (6.6,-1.5);
+      
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (b) {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (c) [right of=b] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (d) [right of=c] {};
+      \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (e) [right of=d] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (f) [right of=e] {};
+      \node[draw=black,very thick,fill=orange,circle,inner sep=2pt] (g) [right of=f] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (h) [right of=g] {};
+
+
+      \draw (b) -- (c) -- (d) -- (e) -- (f) -- (g) -- (h);
+      \path[every node/.style={font=\sffamily\small}]
+      (e) edge[bend right, very thick] node {} (g)
+      (g) edge[bend right] node {} (d)
+      (d) edge[bend right] node {} (f)
+      (f) edge[bend left] node {} (h);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (f) edge[bend right] node {} (c);
+      
+      \path[every node/.style={font=\sffamily\small}]
+      (b) edge[bend left] node {} (f);
+
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (B) [below of=b] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (C) [below of=c] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (D) [below of=d] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (E) [below of=e] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (F) [below of=f] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (G) [below of=g] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (H) [below of=h] {};
+  \end{tikzpicture}}
+
+  
+  \only<4>{
+    \centering
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (6.6,-1.5);
+
+      \node[draw=black,very thick,fill=orange,circle,inner sep=2pt] (b) {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (c) [right of=b] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (d) [right of=c] {};
+      \node[draw=black,very thick,fill=orange,circle,inner sep=2pt] (e) [right of=d] {};
+      \node[draw=black,very thick,fill=cyan,circle,inner sep=2pt] (f) [right of=e] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (g) [right of=f] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (h) [right of=g] {};
+
+
+      \draw (b) -- (c) -- (d) -- (e);
+      \draw[very thick] (e)-- (f);
+      \draw (f) -- (g) -- (h);
+      \path[every node/.style={font=\sffamily\small}]
+      (e) edge[bend right] node {} (g)
+      (g) edge[bend right] node {} (d)
+      (d) edge[bend right] node {} (f)
+      (f) edge[bend left] node {} (h);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (f) edge[bend right] node {} (c);
+      
+      \path[every node/.style={font=\sffamily\small}]
+      (b) edge[bend left,very thick] node {} (f);
+
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (B) [below of=b] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (C) [below of=c] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (D) [below of=d] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (E) [below of=e] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (F) [below of=f] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (G) [below of=g] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (H) [below of=h] {};
+  \end{tikzpicture}}
+  
+  \only<5>{
+    \centering
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (6.6,-1.5);
+      
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (b) {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (c) [right of=b] {};
+      \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt] (d) [right of=c] {};
+      \node[draw=black,very thick,fill=cyan,circle,inner sep=2pt] (e) [right of=d] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (f) [right of=e] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (g) [right of=f] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (h) [right of=g] {};
+
+
+      \draw (b) -- (c) -- (d);
+      \draw[very thick] (d)-- (e);
+      \draw (e) -- (f) -- (g) -- (h);
+      \path[every node/.style={font=\sffamily\small}]
+      (e) edge[bend right] node {} (g)
+      (g) edge[bend right] node {} (d)
+      (d) edge[bend right] node {} (f)
+      (f) edge[bend left] node {} (h);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (f) edge[bend right] node {} (c);
+      
+      \path[every node/.style={font=\sffamily\small}]
+      (b) edge[bend left] node {} (f);
+
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (B) [below of=b] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (C) [below of=c] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (D) [below of=d] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (E) [below of=e] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (F) [below of=f] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (G) [below of=g] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (H) [below of=h] {};
+  \end{tikzpicture}}
+
+  \only<6>{
+    \centering    
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (6.6,-1.5);
+
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (b) {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (c) [right of=b] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (d) [right of=c] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) [right of=d] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (f) [right of=e] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (g) [right of=f] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (h) [right of=g] {};
+
+
+      \draw (b) -- (c) -- (d) -- (e)-- (f) -- (g) -- (h);
+      \path[every node/.style={font=\sffamily\small}]
+      (e) edge[bend right] node {} (g)
+      (g) edge[bend right] node {} (d)
+      (d) edge[bend right] node {} (f)
+      (f) edge[bend left] node {} (h);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (f) edge[bend right] node {} (c);
+      
+      \path[every node/.style={font=\sffamily\small}]
+      (b) edge[bend left] node {} (f);
+
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (B) [below of=b] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (C) [below of=c] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (D) [below of=d] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (E) [below of=e] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (F) [below of=f] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (G) [below of=g] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (H) [below of=h] {};
+  \end{tikzpicture}}
+
+\end{frame}
+
+\begin{frame}{Recoloring with bounded treewidth}
+  
+  \begin{block}{Treewidth}
+    Graph parameter that measures how close a graph is from being a tree:\\
+    $G$ has $\tw \le k$ if $G \subset H$, where $H$ is chordal and $w(H) =
+    \chi(H) \le k+1$
+  \end{block}
+
+  $\tw(G) \le k$ implies $G$ is  $k$-degenerate
+  \begin{block}{Bonamy, Bousquet '13}
+    The shortest sequence of \emph{trivial} Kempe changes between any two
+    $(k+2)$-colorings of a graph with $\tw \le k$ is bounded by $O(n^2)$
+  \end{block}
+  
+  \begin{block}{Bonamy, Delecroix, L. '21}
+    The shortest sequence of Kempe changes between any two
+    $(k+1)$-colorings of a graph with $\tw \le k$ is bounded by $O(kn^2)$
+  \end{block}
+\end{frame}
+
+\begin{frame}{Sketch of the proof}
+  Let $G$ with $\tw(G) \le k$, $H$ an overlying chordal graph with elimination
+  ordering $v_1 \prec v_2 \prec \dots \prec v_n$
+
+  \vspace{1cm}
+  \centering
+  \begin{tikzpicture}
+    \node (G) at (-2,0) {Coloring of $G$};
+    \node (H) at (-2,-1) {Coloring of $H$};
+    \node (a) at (0,0) {$\alpha$};
+    \node (b) at (5,0) {$\beta$};
+    \node (A) at (1.5,-1) {$\alpha'$};
+    \node (B) at (3.5,-1) {$\beta'$};
+
+    \draw[->] (a) -- (A);
+    \draw[->] (A) -- (B);
+    \draw[->] (B) -- (b);
+  \end{tikzpicture}
+
+  \vspace{1cm}
+  \only<1>{
+    \centering
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (7.5,-.8);
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (a) {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (b) [right of=a] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (c) [right of=b] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (d) [right of=c] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) [right of=d] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (f) [right of=e] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (g) [right of=f] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (h) [right of=g] {};
+
+
+      \draw (a) --(b) -- (c) -- (d) -- (e);
+      \draw[dashed] (e) -- (f);
+      \draw (f) -- (g);
+      \draw[dashed] (g)-- (h);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (a) edge[bend left] node {} (c);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (g) edge[bend left] node {} (e)
+      (e) edge[bend left] node {} (b)
+      (b) edge[bend left] node {} (f);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (d) edge[bend left] node {} (f)
+      (f) edge[bend left] node {} (h)
+      (h) edge[bend right] node {} (e)
+      (e) edge[bend left] node {} (c)
+      (c) edge[bend left] node {} (f);
+  \end{tikzpicture}}
+
+  \only<2>{
+    \centering
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (7.5,-.8);
+      \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (a) {};
+      \node[draw=black,very thick,fill=cyan,circle,inner sep=2pt] (b) [right of=a] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (c) [right of=b] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (d) [right of=c] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) [right of=d] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (f) [right of=e] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (g) [right of=f] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (h) [right of=g] {};
+
+
+      \draw[very thick] (a) --(b);
+      \draw (b) -- (c) -- (d) -- (e);
+      \draw[dashed] (e) -- (f);
+      \draw (f) -- (g);
+      \draw[dashed] (g)-- (h);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (a) edge[bend left] node {} (c);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (g) edge[bend left] node {} (e)
+      (e) edge[bend left] node {} (b)
+      (b) edge[bend left] node {} (f);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (d) edge[bend left] node {} (f)
+      (f) edge[bend left] node {} (h)
+      (h) edge[bend right] node {} (e)
+      (e) edge[bend left] node {} (c)
+      (c) edge[bend left] node {} (f);
+  \end{tikzpicture}}
+
+  \only<3>{
+    \centering
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (7.5,-.8);
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (a) {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (b) [right of=a] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (c) [right of=b] {};
+      \node[draw=black,very thick,fill=cyan,circle,inner sep=2pt] (d) [right of=c] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) [right of=d] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (f) [right of=e] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (g) [right of=f] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (h) [right of=g] {};
+
+
+      \draw (a) --(b) -- (c) -- (d) -- (e);
+      \draw[dashed] (e) -- (f);
+      \draw (f) -- (g);
+      \draw[dashed] (g)-- (h);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (a) edge[bend left] node {} (c);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (g) edge[bend left] node {} (e)
+      (e) edge[bend left] node {} (b)
+      (b) edge[bend left] node {} (f);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (d) edge[bend left] node {} (f)
+      (f) edge[bend left] node {} (h)
+      (h) edge[bend right] node {} (e)
+      (e) edge[bend left] node {} (c)
+      (c) edge[bend left] node {} (f);
+  \end{tikzpicture}}
+
+    \only<4>{
+    \centering
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (7.5,-.8);
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (a) {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (b) [right of=a] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (c) [right of=b] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (d) [right of=c] {};
+      \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt] (e) [right of=d] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (f) [right of=e] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (g) [right of=f] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (h) [right of=g] {};
+
+
+      \draw (a) --(b) -- (c) -- (d) -- (e);
+      \draw[dashed] (e) -- (f);
+      \draw (f) -- (g);
+      \draw[dashed] (g)-- (h);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (a) edge[bend left] node {} (c);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (g) edge[bend left] node {} (e)
+      (e) edge[bend left] node {} (b)
+      (b) edge[bend left] node {} (f);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (d) edge[bend left] node {} (f)
+      (f) edge[bend left] node {} (h)
+      (h) edge[bend right] node {} (e)
+      (e) edge[bend left] node {} (c)
+      (c) edge[bend left] node {} (f);
+  \end{tikzpicture}}
+
+  \only<5>{
+    \centering
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (7.5,-.8);
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (a) {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (b) [right of=a] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (c) [right of=b] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (d) [right of=c] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (e) [right of=d] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (f) [right of=e] {};
+      \node[draw=black,very thick,fill=orange,circle,inner sep=2pt] (g) [right of=f] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (h) [right of=g] {};
+
+
+      \draw (a) --(b) -- (c) -- (d) -- (e) -- (f) -- (g);
+      \draw[dashed] (g)-- (h);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (a) edge[bend left] node {} (c);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (g) edge[bend left] node {} (e)
+      (e) edge[bend left] node {} (b)
+      (b) edge[bend left] node {} (f);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (d) edge[bend left] node {} (f)
+      (f) edge[bend left] node {} (h)
+      (h) edge[bend right] node {} (e)
+      (e) edge[bend left] node {} (c)
+      (c) edge[bend left] node {} (f);
+  \end{tikzpicture}}
+
+    
+  \only<6->{
+    \centering
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (7.5,-.8);
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (a) {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (b) [right of=a] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (c) [right of=b] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (d) [right of=c] {};
+      \node[draw=black,fill=cyan,circle,inner sep=2pt] (e) [right of=d] {};
+      \node[draw=black,fill=magenta,circle,inner sep=2pt] (f) [right of=e] {};
+      \node[draw=black,fill=blue,circle,inner sep=2pt] (g) [right of=f] {};
+      \node[draw=black,fill=orange,circle,inner sep=2pt] (h) [right of=g] {};
+
+
+      \draw (a) --(b) -- (c) -- (d) -- (e) -- (f) -- (g) -- (h);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (a) edge[bend left] node {} (c);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (g) edge[bend left] node {} (e)
+      (e) edge[bend left] node {} (b)
+      (b) edge[bend left] node {} (f);
+
+      \path[every node/.style={font=\sffamily\small}]
+      (d) edge[bend left] node {} (f)
+      (f) edge[bend left] node {} (h)
+      (h) edge[bend right] node {} (e)
+      (e) edge[bend left] node {} (c)
+      (c) edge[bend left] node {} (f);
+  \end{tikzpicture}}
+
+  \uncover<7>{
+  \begin{description}
+  \item[Length of the sequence] $(kn + n + kn) \times n = O(kn^2)$
+  \end{description}}
+\end{frame}
+%% %% \backupbegin
+
+%% %% \backupend
+
+\end{document}

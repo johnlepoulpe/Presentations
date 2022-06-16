@@ -1,0 +1,89 @@
+%Compiler avec pdflatex, le résultat ne doit pas dépasser une page
+%Merci de respecter scrupuleusement ce modèle.
+\documentclass[a4paper,titlepage,12pt,normalheadings,makeidx]{article}
+\usepackage{graphicx} 
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{thmtools}
+\usepackage[colorlinks=true, citecolor=green]{hyperref}
+\usepackage[noabbrev,capitalize]{cleveref}
+\declaretheorem[name=Theorem]{theorem}
+\declaretheorem[name=Conjecture, sibling=theorem]{conjecture}
+\crefname{conjecture}{Conjecture}{Conjectures}
+
+\begin{document}
+\newpage
+
+%%%%%%%% Champs titre %%%%%%%
+% Pour le titre
+\subsection*{M. Bonamy, M. Heinrich, C. Legrand--Duchesne et J. Narboni : Autour d'une
+  variante par recoloration de la conjecture d'Hadwiger}
+%
+
+% Pour le sommaire
+\addcontentsline{toc}{section}{M. Bonamy, M. Heinrich, C. Legrand--Duchesne, J. Narboni : Autour d'une
+  variante par recoloration de la conjecture d'Hadwiger}
+%
+
+% Pour la liste des auteurs
+\index{Bonamy, M.}\index{Heinrich, M.}\index{Legrand--Duchesne,
+  C.}\index{Narboni, J.}
+%
+
+% Citer un par un les auteurs et leur affiliation
+Marthe Bonamy, CNRS, LaBRI, Bordeaux, {\tt marthe.bonamy@u-bordeaux.fr}\\
+\indent
+Marc Heinrich, University of Leeds, United Kingdom, {\tt
+  M.Heinrich@leeds.ac.uk}\\
+\indent
+\underline{Clément Legrand-Duchesne}, LaBRI, Bordeaux, {\tt clement.legrand@u-bordeaux.fr}\\ %souligner l'orateur
+\indent
+Jonathan Narboni, LaBRI, Bordeaux, {\tt jonathan.narboni@u-bordeaux.fr}\\
+\\
+%%%%%% Fin Champs titre %%%%%%%%%%%%%%
+
+% Ensuite, le résumé
+En 1879, Kempe introduit la notion de \emph{changement de Kempe} en essayant de
+montrer le théorème des 4 couleurs: étant donné un graphe et une $k$-coloration
+de ce graphe, une \emph{chaîne de Kempe} est une composante connexe
+bichromatique maximale. Un changement de Kempe consiste à intervertir les deux
+couleurs au sein d'une chaîne de Kempe. On dit que deux $k$-colorations sont
+\emph{Kempe-equivalentes} s'il est possible de passer de l'une l'autre via une
+suite de changements de Kempe. Il est alors naturel de se demander sous quelles
+conditions toutes les $k$-colorations d'un graphe sont équivalentes.
+
+Meyniel a prouvé en 1977 que les 5-colorations d'un graphe planaire sont toutes
+Kempe-équivalentes~\cite{meyniel}. Ce résultat a ensuite été étendu à tous les
+graphes sans $K_5$-mineurs en 1979 par Las Vergnas et
+Meyniel~\cite{lasvergnas}. Dans le même article, Las Vergnas et Meyniel ont posé
+la conjecture suivante, qui peut être vue comme le pendant reconfiguration de la
+conjecture d'Hadwiger:
+
+\begin{conjecture}
+  Pour tout $t$, toutes les $t$-colorations d'un graphe sans $K_t$-mineur sont
+  Kempe-équivalentes.
+\end{conjecture}
+
+Nous montrons que cette conjecture ainsi que deux autres issues du même article
+sont fausses :
+\begin{theorem}
+  Pour tout $t$, pour tout $\varepsilon > 0$, il existe un graphe $G$ sans
+  $K_t$-mineur dont les $(\frac32 - \varepsilon)t$-colorations ne sont pas Kempe
+  équivalentes.
+\end{theorem}
+
+\begin{thebibliography}{99}
+
+\bibitem{meyniel}
+H.~Meyniel, \emph{Les 5-colorations d’un graphe planaire forment une classe de commuta-
+  tion unique}, J. Combinatorial Theory Ser. B {\bf 24} (1978), 251–257.
+\bibitem{lasvergnas}
+M.~Las Vergnas, H. Meyniel, \emph{Kempe classes and the Hadwiger conjecture},
+J. Combinatorial Theory Ser. B {\bf 31} (1981), 95–104.
+
+\end{thebibliography}
+
+
+\vfill
+\end{document}

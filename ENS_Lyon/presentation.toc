@@ -1,0 +1,14 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {english}{}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {2}{Recoloring with $\Delta $ colors}{15}{0}{1}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {3}{Other results}{18}{0}{2}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {4}{What next ?}{20}{0}{3}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {5}{Backup : Recoloring bounded treewidth graphs}{21}{0}{4}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {6}{Backup : Recoloring with $\Delta $ colors}{34}{0}{5}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {7}{Backup:Recoloring version of Hadwiger's conjecture}{41}{0}{6}

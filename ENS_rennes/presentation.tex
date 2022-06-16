@@ -1,0 +1,478 @@
+\documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
+
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage[main= english,francais]{babel}%
+\usepackage{mathtools}
+
+\usepackage{graphicx}%
+\usepackage{courier}%
+\usepackage{algorithm2e}
+
+\usepackage{url}%
+\urlstyle{sf}%
+
+\usepackage{subcaption}%
+\usepackage{caption}
+\captionsetup[figure]{labelformat=empty}% redefines the caption setup of the figures environment in the beamer class.
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+
+\usepackage{listings}%
+
+\usepackage{faktor}%
+
+\usepackage{stmaryrd}%
+
+\usepackage[style=verbose,backend=biber]{biblatex}
+\addbibresource{biblio.bib}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+%%%%%%%%% Begin of Beamer Layout %%%%%%%%%%%%%
+\ProcessOptionsBeamer
+\usecolortheme{whale}
+\usecolortheme[named=ForestGreen]{structure}
+\useinnertheme{rounded}
+\useoutertheme{infolines}
+\defbeamertemplate{description item}{align left}{\insertdescriptionitem\hfill}
+\setbeamertemplate{description item}[align left]
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{headline}[default]
+\setbeamertemplate{navigation symbols}{}
+\defbeamertemplate*{headline}{info theme}{}
+\defbeamertemplate*{footline}{info theme}{\leavevmode%
+\hbox{%
+\begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+\usebeamerfont{author in head/foot}\insertshortauthor
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.71\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+\usebeamerfont{title in head/foot}\insertsectionhead
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.09\paperwidth,ht=2.25ex,dp=1ex,right]{section in head/foot}%
+\usebeamerfont{section in head/foot}\insertframenumber{}~/~\inserttotalframenumber\hspace*{2ex}
+\end{beamercolorbox}
+}\vskip0pt}
+\setbeamertemplate{footline}[info theme]
+%%%%%%%%% End of Beamer Layout %%%%%%%%%%%%%
+
+
+\lstset{%
+	basicstyle=\sffamily,%
+	columns=fullflexible,%
+	language=C++,% % À ajuster dans chaque projet!
+	frame=lb,%
+	frameround=fftf,%
+}%
+
+\sloppy
+
+%\setbeamertemplate{headline}{}%
+
+\setbeamertemplate{navigation symbols}{%
+	\insertslidenavigationsymbol%
+	% \insertframenavigationsymbol%
+	% \insertsubsectionnavigationsymbol%
+	% \insertsectionnavigationsymbol%
+	% \insertdocnavigationsymbol%
+	% \insertbackfindforwardnavigationsymbol%
+}
+
+\newcommand{\backupbegin}{
+   \newcounter{finalframe}
+   \setcounter{finalframe}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \setcounter{framenumber}{\value{finalframe}}
+}
+
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\tw}{tw}
+
+\begin{document}
+
+\title{Kempe changes}
+\author[Clément Legrand]{Clément Legrand-Duchesne}
+\institute{ENS Rennes}
+%\date{\today}
+\date{\today}
+
+\begin{frame}
+  \titlepage
+
+  Internship carried out from February 15 to July 28, under the
+  supervision of Marthe Bonamy and Vincent Delecroix at LaBRI in Bordeaux
+\end{frame}
+
+\section*{Some context}
+
+\begin{frame}{Recoloring with Kempe changes}
+  \uncover<1->{
+  \begin{columns}
+    \begin{column}{.66\textwidth}
+      \begin{block}{Kempe chain (1879)}
+        Maximal bichromatic component in $G$
+      \end{block}
+    \end{column}
+    \begin{column}{.33\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=orange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+        \node[draw=black,fill=blue,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,fill=blue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+        \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+      \end{tikzpicture}
+      
+      %\includegraphics[width=.8\textwidth]{../figures/pdf/knot_example.pdf}
+    \end{column}
+  \end{columns}
+  }
+
+  \vspace{1.5cm}
+  
+  \begin{columns}
+    \uncover<2->{
+      \begin{column}{.33\textwidth}
+        \centering
+        \begin{tikzpicture}
+          \node[draw=black,fill=orange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+          \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+          \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (c) at (234:.8cm) {};
+          \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt] (d) at (306:.8cm) {};
+          \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+          \draw (e) -- (a) -- (b);
+          \draw[very thick] (b) -- (c) -- (d) -- (e);
+        \end{tikzpicture}      
+    \end{column}
+    }
+    \uncover<3->{
+    \begin{column}{.33\textwidth}
+       \centering
+      \begin{tikzpicture}
+        \node[draw=black,very thick,fill=blue,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+        \node[draw=black,very thick,fill=orange,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,fill=blue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+        \draw[very thick] (a) -- (b);
+        \draw (b) -- (c) -- (d) -- (e) -- (a);
+      \end{tikzpicture}
+    \end{column}
+    }
+    \uncover<4->{
+    \begin{column}{.33\textwidth}
+       \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=orange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+        \node[draw=black,fill=blue,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,very thick,fill=orange,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+        \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+      \end{tikzpicture}
+    \end{column}
+    }
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Motivation}
+  \begin{block}{Powerful tool}
+    Vizing theorem: The edges of $G$ can be colored with $\Delta(G) +1$ colors
+  \end{block}
+  
+  \begin{block}{Reconfiguration graph}
+    \begin{itemize}
+    \item $V(R^k(G)) =$ $k$-colorings of $G$.
+    \item $\alpha$ and $\beta$ adjacent  if $\alpha
+      \xleftrightarrow[\text{Kempe}]{} \beta$
+    \end{itemize}
+  \end{block}
+  
+  \uncover<2>{
+  \begin{description}
+  \item[Reachability] Are $\alpha$ and $\beta$ Kempe-equivalent ? 
+  \item[Connectivity] Is $R^k(G)$ connected ?
+  \item[Diameter] Estimate $\diam(R^k(G))$ ?
+  \end{description}
+
+  \begin{block}{Sampling coloring with a Markov chain}
+    \begin{itemize}
+    \item What is the mixing time of the associated Markov chain ?
+    \item Estimate the number of colorings
+    \end{itemize}
+  \end{block}}
+\end{frame}
+
+\begin{frame}{Warm up}
+  \begin{block}{$k$-degenerate graph}
+    $G$ is $k$-degenerate if there exists an elimination ordering of the vertices $v_1 \prec
+      v_2 \dots \prec v_n$: $$\forall i, |N^+[v_i]| \le k$$
+  \end{block}
+
+  \begin{itemize}
+  \item $G$ has degree less than $k$ implies $G$ $(k+1)$-degenerate
+  \item $G$ not regular of degree less than $k$ implies $G$ $k$-degenerate
+  \end{itemize}
+
+  \vspace{1cm}
+  \centering
+    \begin{tikzpicture}[auto,node distance=1cm,thick]
+      \clip (-.5,.8) rectangle (7.5,-1.5);
+       
+      \node[draw=black,circle,inner sep=2pt] (1) {};
+      \node[draw=black,circle,inner sep=2pt] (2) [right of=1] {};
+      \node[draw=black,circle,inner sep=2pt] (3) [right of=2] {};
+      \node[draw=black,circle,inner sep=2pt] (4) [right of=3] {};
+      \node[draw=black,circle,inner sep=2pt] (5) [right of=4] {};
+      \node[draw=black,circle,inner sep=2pt] (6) [right of=5] {};
+      \node[draw=black,circle,inner sep=2pt] (7) [right of=6] {};
+
+
+      \draw (1) -- (2);
+      \draw (3) -- (4) -- (5) -- (6) -- (7);
+      \path[every node/.style={font=\sffamily\small}]
+      (4) edge[bend right] node {} (6)
+      (7) edge[bend right] node {} (5)
+      (4) edge[bend left] node {} (2)
+      (2) edge[bend left] node {} (5)
+      (1) edge[bend left] node {} (4)
+      (3) edge[bend right] node {} (7);
+
+  \end{tikzpicture}
+  
+%%   \begin{block}{With $\Delta+ 1$ colors}
+%%     \begin{itemize}
+%%     \item $\forall G, \chi(G) \le \Delta +1$
+%%     \item $\forall G, \forall k \ge \Delta+1, R^k(G)$ is connected
+%%     \end{itemize}
+%%   \end{block}
+\end{frame}
+
+\begin{frame}{Warm up}
+  \begin{block}{Las Vergnas, Meyniel 1981}
+  All $\ell$-colorings of a $k$-degenerate graph are Kempe-equivalent for
+    $\ell > k$. 
+  \end{block}
+  
+  \begin{columns}
+    \begin{column}{.6\textwidth}
+      Induction: Let $\alpha$ and $\beta$ be two colorings of $G$\\
+      Consider $G' = G\setminus\{v_1\}$
+      $$\alpha_{|G'} \mathop{\leadsto}_{K}
+      \beta_{|G'}$$
+      Lift sequence to $G$ then recolor $v_1$
+    \end{column}
+    \hfill
+    \begin{column}{.3\textwidth}
+      \centering
+      \only<1>{
+        \begin{tikzpicture}
+          \clip (-.5,.7) rectangle (3,-2);
+          \node[draw,fill=magenta, circle,inner sep=2pt] (a) at (0,0) {};
+          \node[above] (A) at (0,0) {$v_1$};
+          \node[draw,fill=blue, circle, inner sep=2pt] (b) at (0:1.5cm) {};
+          \node[draw,very thick,fill=blue, circle, inner sep=2pt] (c) at (320:1.5cm) {};
+          \node[draw,fill=orange, circle, inner sep=2pt] (d) at (340:1.5cm) {};
+          
+          \node (e) at (335:2.2cm) {};
+          \node (f) at (345:2.2cm) {};
+
+          \node (h) at (315:2.2cm) {};
+          \node (g) at (320:2.22cm) {};
+          \node (i) at (325:2.18cm) {};
+
+          \node (j) at (0:2.2cm) {};
+
+          \node[above] (G) at (2.6, -1.2) {$G'$};
+          \draw[domain=120:180] plot ({2*(cos(\x)+1.3)}, {2*(sin(\x)-.6)});
+
+          \draw (j) -- (b) -- (a) -- (c);
+          \draw[very thick] (h) -- (c) -- (g);
+          \draw (a) -- (d);
+          \draw (f) -- (d) -- (e);
+          \draw (i) -- (c);
+          
+      \end{tikzpicture}}
+
+      \only<2>{
+        \begin{tikzpicture}
+          \clip (-.5,.7) rectangle (3,-2);
+          \node[draw,very thick,fill=magenta, circle,inner sep=2pt] (a) at (0,0) {};
+          \node[above] (A) at (0,0) {$v_1$};
+          \node[draw,very thick,fill=blue, circle, inner sep=2pt] (b) at (0:1.5cm) {};
+          \node[draw,very thick,fill=blue, circle, inner sep=2pt] (c) at (320:1.5cm) {};
+          \node[draw,fill=orange, circle, inner sep=2pt] (d) at (340:1.5cm) {};
+          
+          \node (e) at (335:2.2cm) {};
+          \node (f) at (345:2.2cm) {};
+
+          \node (h) at (315:2.2cm) {};
+          \node (g) at (320:2.22cm) {};
+          \node (i) at (325:2.18cm) {};
+
+          \node (j) at (0:2.2cm) {};
+
+          \node[above] (G) at (2.6, -1.2) {$G'$};
+          \draw[domain=120:180] plot ({2*(cos(\x)+1.3)}, {2*(sin(\x)-.6)});
+
+          \draw[very thick] (j) -- (b) -- (a) -- (c);
+          \draw[very thick] (h) -- (c) -- (g);
+          \draw (a) -- (d);
+          \draw (f) -- (d) -- (e);
+          \draw (i) -- (c);
+        \end{tikzpicture}}
+
+      \only<3>{
+        \begin{tikzpicture}
+          \clip (-.5,.7) rectangle (3,-2);
+          \node[draw,fill=cyan, circle,inner sep=2pt] (a) at (0,0) {};
+          \node[above] (A) at (0,0) {$v_1$};
+          \node[draw,fill=blue, circle, inner sep=2pt] (b) at (0:1.5cm) {};
+          \node[draw,very thick,fill=blue, circle, inner sep=2pt] (c) at (320:1.5cm) {};
+          \node[draw,fill=orange, circle, inner sep=2pt] (d) at (340:1.5cm) {};
+          
+          \node (e) at (335:2.2cm) {};
+          \node (f) at (345:2.2cm) {};
+
+          \node (h) at (315:2.2cm) {};
+          \node (g) at (320:2.22cm) {};
+          \node (i) at (325:2.18cm) {};
+
+          \node (j) at (0:2.2cm) {};
+
+          \node[above] (G) at (2.6, -1.2) {$G'$};
+          \draw[domain=120:180] plot ({2*(cos(\x)+1.3)}, {2*(sin(\x)-.6)});
+
+          \draw (j) -- (b) -- (a) -- (c);
+          \draw[very thick] (h) -- (c) -- (g);
+          \draw (a) -- (d);
+          \draw (f) -- (d) -- (e);
+          \draw (i) -- (c);
+        \end{tikzpicture}}
+    \end{column}
+  \end{columns}
+
+  \uncover<3>{
+  \begin{block}{Natural question}
+   What is the diameter of the reconfiguration graph in this setting ?
+  \end{block}
+  }
+\end{frame}
+
+\section{Some recoloring problems}
+\begin{frame}{Recoloring with $\Delta$ colors}
+  \begin{block}{Brooks' theorem}
+    All graphs but cliques and odd cycles can be colored with $\Delta$
+    colors
+  \end{block}
+
+  \begin{columns}
+    \begin{column}{.65\textwidth}
+      \begin{block}{Mohar conjecture 06}
+        $\forall k \ge \Delta, R^k(G)$ is connected
+      \end{block}
+
+      \begin{block}{Feghali, Johnson, Paulusma 16}
+        True for all 3-regular graphs but the 3-prism
+      \end{block}
+
+      \begin{block}{Bonamy, Bousquet, Feghali, Johnson 19}
+        True for all $k$-regular graphs with $k \ge 4$
+      \end{block}
+    \end{column}
+    \hfill
+    \begin{column}{.3\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=orange,circle,inner sep=2pt]   (a) at (90:.5cm) {};
+        \node[draw=black,fill=blue,circle,inner sep=2pt]  (b) at (210:.5cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (330:.5cm) {};
+
+        \only<1>{
+          \node[draw=black,fill=blue,circle,inner sep=2pt]   (A) at (90:1.5cm) {};
+          \node[draw=black,fill=magenta,circle,inner sep=2pt]  (B) at
+          (210:1.5cm) {};
+          \node[draw=black,fill=orange,circle,inner sep=2pt] (C) at
+          (330:1.5cm) {};
+        }
+        \only<2->{
+          \node[draw=black,fill=magenta,circle,inner sep=2pt]   (A) at (90:1.5cm) {};
+          \node[draw=black,fill=orange,circle,inner sep=2pt]  (B) at
+          (210:1.5cm) {};
+          \node[draw=black,fill=blue,circle,inner sep=2pt] (C) at
+          (330:1.5cm) {};
+        }
+
+        \draw (a) -- (A);
+        \draw (b) -- (B);
+        \draw (c) -- (C);
+        \draw (a) -- (b) -- (c) -- (a);
+        \draw (A) -- (B) -- (C) -- (A);
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+
+  \uncover<3>{
+  \begin{block}{Bonamy, Delecroix, L. 21+}
+    $R^k(G)$ has diameter $O(\Delta n^2)$ for $k \ge \Delta$
+  \end{block}}
+\end{frame}
+
+\begin{frame}{Other result}
+  \begin{block}{Treewidth}
+    Parameter that measures how much a graph looks like a tree.\\
+    $\tw(G) \le k \Rightarrow G$ is $k$-degenerate
+  \end{block}
+  
+  \begin{block}{Bonamy, Delecroix, L. 21}
+    If $G$ has treewidth $\tw$, then $\forall k \ge \tw+1, \diam(R^k(G)) = O(\tw n^2)$  
+  \end{block}
+\end{frame}
+
+\begin{frame}{What next ?}
+  \begin{itemize}
+  \item Diameter for $k$-degenerate graphs
+  \item Sampling and mixing time
+  \item Aproximate counting of the number of colorings
+  \item Glauber dynamics: trivial Kempe changes
+  \end{itemize}
+\end{frame}
+\backupbegin
+\begin{frame}{Recoloring version of Hadwiger conjecture}
+  \begin{block}{Graph minor}
+    $H$ is a minor of $G$ is $H$ can be obtained from $G$ by deleting vertices
+    and contracting along edges
+  \end{block}
+
+  \begin{block}{Hadwiger conjecture 1943}
+    For all graph $G$, with no $K_t$-minor, $\chi(G) \le t-1$\\
+    True for $t \le 6$ 
+  \end{block}
+
+  \begin{block}{Las Vergnas and Meyniel conjectures 1981}
+    If $G$ has no $K_t$ minor, $R^k(G)$ is connected for $k \ge t-1$\\
+    True for $t \le 9$    
+  \end{block}
+
+  \begin{block}{Bonamy, Delecroix, L.,  Narboni 21}
+    $\forall t, \forall \varepsilon, \exists G$ with a frozen $(\frac{3}{2} + \varepsilon)t$-coloring
+  \end{block}
+
+  
+\end{frame}
+
+
+\backupend
+
+\end{document}
