@@ -101,11 +101,12 @@
 }
 
 \DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\mad}{mad}
 \DeclareMathOperator{\tw}{tw}
 
 \begin{document}
 
-\title{Kempe recoloring version of Hadwiger's conjecture}
+\title{Kempe recoloring of planar graphs}
 \author[Clément Legrand]{Clément Legrand-Duchesne}
 \institute{LaBRI, Bordeaux}
 %\date{\today}
@@ -114,7 +115,7 @@
 \begin{frame}
   \titlepage
 
-  Joint work with Marthe Bonamy, Marc Heinrich and Jonathan Narboni
+  Joint work with Quentin Deschamps, Carl Feghali, František Kardoš and Théo Pierron
 \end{frame}
 
 \section*{Some context}
@@ -203,7 +204,7 @@
 
 \end{frame}
 
-\begin{frame}{Meyniel's lemma}
+\begin{frame}{Recoloring planar graphs}  
   \begin{block}{Meyniel 1978}
     \begin{itemize}
     \item All 5-colorings of a planar graph are Kempe equivalent 
@@ -252,7 +253,109 @@
       \end{tikzpicture}
     \end{column}
   \end{columns}
-    
+
+  \begin{block}{Las Vergnas and Meyniel 1981}
+    All the $k$ colorings of a $d$-degenerate graph are Kempe equivalent, for $k>d$
+  \end{block}
 \end{frame}
 
+\begin{frame}{Bounded diameter}
+  \begin{alertblock}{Conjecture of Bonamy, Bousquet, Feghali, Johnson 19}  
+    $R_k(G)$ has diameter $O(n^2)$, if $G$ is $d$-degenerate and $k > d$
+  \end{alertblock}
+  
+  \begin{block}{Bonamy, Delecroix, L. 22+}
+    $R_k(G)$ has polynomial diameter for: 
+    \begin{itemize}
+    \item $k \ge \Delta$ (unless, $k=3$ and $G = K_2 \square K_3$),
+    \item $k \ge \mad(G) + \varepsilon$
+    \item $k \ge \tw(G)$
+    \end{itemize}
+  \end{block}
+
+  \begin{alertblock}{Journées GrR 2021}
+    What about planar graphs with $k = 5$ or $k = 6$ ?
+  \end{alertblock}
+
+  \begin{block}{Deschamps, Feghali, Kardoš, L., Pierron 22+}
+    $R_k(G)$ has polynomial diameter if $G$ is planar and $k \ge 5$
+  \end{block}
+\end{frame}
+
+\section{Warm-up}
+\begin{frame}{3-colorable planar graphs}
+  \begin{block}{Mohar 2007}
+    $R_4(G)$ is connected if $G$ is a 3-colorable planar graph 
+  \end{block}
+
+  \begin{block}{Fisk 1977}
+    $R_4(G)$ has polynomial diameter if $G$ is a triangulation of the plane
+  \end{block}
+
+  \begin{columns}
+    \begin{column}{.2\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=\mycyan,circle,inner sep=2pt]   (a) at (45:.5cm) {};
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]  (b) at (135:.5cm) {};
+        \node[draw=black,fill=\mycyan,circle,inner sep=2pt] (c) at (225:.5cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (d) at (315:.5cm) {};
+
+        \draw[very thick] (d) -- (b);
+        \draw (d) -- (a) -- (b) -- (c) -- (d);
+      \end{tikzpicture}
+      
+      singular
+    \end{column}
+    
+    \hfill
+    \begin{column}{.2\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=\mycyan,circle,inner sep=2pt]   (a) at (45:.5cm) {};
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]  (b) at (135:.5cm) {};
+        \node[draw=black,fill=\mygreen,circle,inner sep=2pt] (c) at (225:.5cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (d) at (315:.5cm) {};
+
+        \draw[very thick, dashed] (d) -- (b);
+        \draw (d) -- (a) -- (b) -- (c) -- (d);
+      \end{tikzpicture}
+
+      non-singular
+    \end{column}
+    \hfill
+    \begin{column}{.6\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (0:1.5cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt]  (b) at (60:1cm) {};
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt] (c) at (120:2cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (d) at (180:.5cm) {};
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt] (e) at (240:1.5cm) {};
+        \node[draw=black,fill=magenta,circle,inner sep=2pt] (f) at (300:1cm) {};
+
+        \draw[very thick, dashed] (a) -- (b) -- (c) -- (d) -- (e) -- (f) --  (a);
+
+        \begin{scope}[shift = {(-2.5,0)}]
+          \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (A) at (0:.5cm) {};
+          \node[draw=black,fill=magenta,circle,inner sep=2pt]  (B) at (60:1cm) {};
+          \node[draw=black,fill=\myorange,circle,inner sep=2pt] (C) at (180:.8cm) {};
+          \node[draw=black,fill=magenta,circle,inner sep=2pt] (D) at (270:.5cm) {};
+
+          \draw[very thick, dashed] (A) -- (B) -- (C) -- (D) -- (A);
+        \end{scope}
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{General case}
+\begin{frame}{Sketch of proof}
+  \begin{block}{Theorem}
+    Each 5-coloring is equivalent to a 4-coloring up to a polynomial number of
+    Kempe changes
+  \end{block}
+
+  
+\end{frame}
 \end{document}
