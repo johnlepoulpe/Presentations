@@ -352,10 +352,34 @@
 \section{General case}
 \begin{frame}{Sketch of proof}
   \begin{block}{Theorem}
-    Each 5-coloring is equivalent to a 4-coloring up to a polynomial number of
-    Kempe changes
+    For every 5-coloring $\alpha$ and every 4-coloring $\beta$, there is a
+    sequence of Kempe changes going from $\alpha$ to $\beta$ recoloring each
+    vertex at most $f(n)$ times
   \end{block}
 
+  \begin{columns}
+    \begin{column}{.6\textwidth}
+      \begin{description}[<+->][1.]
+      \item[1.] Find an independent set $I$ of linear size, of degree at most 6 in
+        $G$, monochromatic in $\alpha$ and $\beta$,
+      \item[2.] \emph{Collapse} $I$ to obtain $H$, with $F = H \setminus I$ planar,
+        and $I$ of degree at most 4 in $H$,
+      \item[3.] Apply induction on $F$, to recolor $F$ with a 4-coloring avoiding
+        $\alpha(I) = 5$. This sequence extends to $G$ and leads to a 5-coloring
+        $\gamma$ in which $I$ is a color class
+      \item[4.] In $\beta$, $I$ belongs to a color class $B$, recolor $B$ with color
+        5. Now $G \setminus B$ is 3-colorable, recolor $\gamma_{|G \setminus B}$ to
+        $\beta_{|G \setminus B}$
+      \end{description}
+    \end{column}
+    \hfill
+    \begin{column}{.4\textwidth}
+   
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Collapsing $I$}
   
 \end{frame}
 \end{document}
