@@ -36,19 +36,32 @@
   \endgroup
 }
 
+%%%%%%%%% Colors of Beamer Layout %%%%%%%%%%%%%
+\newcommand{\myorange}{Orange}
+\newcommand{\mygreen}{DarkGreen}
+\newcommand{\mycyan}{LightSeaGreen}
+\newcommand{\myred}{RubineRed}
+\newcommand{\myyellow}{Goldenrod}
+\newcommand{\myblue}{RoyalBlue}
+\newcommand{\mydarkblue}{MidnightBlue}
+
 %%%%%%%%% Begin of Beamer Layout %%%%%%%%%%%%%
 \ProcessOptionsBeamer
 \usecolortheme{whale}
-\usecolortheme[named=DarkGreen]{structure}
+\usecolortheme[named=\myblue]{structure}
 \useinnertheme{rounded}
 \useoutertheme{infolines}
+
+
 \setbeamertemplate{footline}[frame number]
 \setbeamertemplate{headline}[default]
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{itemize items}[circle]
 \defbeamertemplate*{headline}{info theme}{}
 \defbeamertemplate*{footline}{info theme}{\leavevmode%
-\hbox{%
+
+
+  \hbox{%
 \begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
 \usebeamerfont{author in head/foot}\insertshortauthor
 \end{beamercolorbox}%
@@ -59,16 +72,12 @@
 \usebeamerfont{section in head/foot}\insertframenumber{}~/~\inserttotalframenumber\hspace*{2ex}
 \end{beamercolorbox}
 }\vskip0pt}
-\setbeamercolor*{block title example}{fg=LightSeaGreen}
-\AtBeginEnvironment{exampleblock}{\setbeamercolor{itemize item}{fg=LightSeaGreen}}
-\setbeamercolor*{block title alerted}{fg=DarkOrange2}
-\AtBeginEnvironment{alertblock}{\setbeamercolor{itemize item}{fg=DarkOrange2}}
+\setbeamercolor*{block title example}{fg=\myorange}
+\AtBeginEnvironment{exampleblock}{\setbeamercolor{itemize item}{fg=\myorange}}
+\setbeamercolor*{block title alerted}{fg=\myred}
+\AtBeginEnvironment{alertblock}{\setbeamercolor{itemize item}{fg=\myred}}
 \setbeamertemplate{footline}[info theme]
 \defbeamertemplate{description item}{align left}{\insertdescriptionitem\hfill}
-%%%%%%%%% End of Beamer Layout %%%%%%%%%%%%%
-\newcommand{\myorange}{DarkOrange2}
-\newcommand{\mygreen}{DarkGreen}
-\newcommand{\mycyan}{LightSeaGreen}
 
 
 \lstset{%
@@ -114,8 +123,10 @@
 
 \begin{frame}
   \titlepage
+  \begin{center}
+  Joint work with Quentin Deschamps, Carl Feghali,\\ František Kardoš and Théo Pierron
+  \end{center}
 
-  Joint work with Quentin Deschamps, Carl Feghali, František Kardoš and Théo Pierron
 \end{frame}
 
 \section*{Some context}
@@ -131,10 +142,10 @@
       \centering
       \begin{tikzpicture}
         \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
-        \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (162:.8cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
-        \node[draw=black,fill=blue,circle,inner sep=2pt] (d) at (306:.8cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (e) at (18:.8cm) {};
 
         \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
       \end{tikzpicture}
@@ -152,10 +163,10 @@
         \centering
         \begin{tikzpicture}
           \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
-          \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (162:.8cm) {};
-          \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (c) at (234:.8cm) {};
-          \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt] (d) at (306:.8cm) {};
-          \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (e) at (18:.8cm) {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+          \node[draw=black,very thick,fill=\myblue,circle,inner sep=2pt] (c) at (234:.8cm) {};
+          \node[draw=black,very thick,fill=\myred,circle,inner sep=2pt] (d) at (306:.8cm) {};
+          \node[draw=black,very thick,fill=\myblue,circle,inner sep=2pt] (e) at (18:.8cm) {};
 
           \draw (e) -- (a) -- (b) -- (c);
           \draw[very thick] (c) -- (d) -- (e);
@@ -167,10 +178,10 @@
        \centering
       \begin{tikzpicture}
         \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
-        \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt]  (b) at (162:.8cm) {};
-        \node[draw=black,very thick,fill=\mycyan,circle,inner sep=2pt] (c) at (234:.8cm) {};
-        \node[draw=black,fill=blue,circle,inner sep=2pt] (d) at (306:.8cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+        \node[draw=black,very thick,fill=\myred,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,very thick,fill=\myyellow,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (e) at (18:.8cm) {};
 
         \draw[very thick] (b) -- (c);
         \draw (a) -- (b);
@@ -183,24 +194,162 @@
        \centering
       \begin{tikzpicture}
         \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
-        \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (162:.8cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
-        \node[draw=black,very thick,fill=\mycyan,circle,inner sep=2pt] (d) at (306:.8cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,very thick,fill=\myyellow,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (e) at (18:.8cm) {};
 
         \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
       \end{tikzpicture}
     \end{column}
     }
   \end{columns}
-  \uncover<5->{
-  \begin{exampleblock}{Reconfiguration graph}
+  %% \uncover<5->{
+  %% \begin{exampleblock}{Reconfiguration graph}
+  %%   \begin{itemize}
+  %%   \item $V(R^k(G)) =$ $k$-colorings of $G$.
+  %%   \item $\alpha$ and $\beta$ adjacent  if $\alpha
+  %%     \xleftrightarrow[\text{Kempe}]{} \beta$
+  %%   \end{itemize}
+  %% \end{exampleblock}}
+
+\end{frame}
+
+\begin{frame}{Fundamental lemma}
+  \begin{block}{Las Vergnas, Meyniel 1981}
+   If $\deg(v) < k$ and all $k$-colorings of $G \setminus v$ are equivalent, then
+   all $k$-colorings of $G$ are equivalent
+  \end{block}
+  
+  \begin{columns}
+    \begin{column}{.6\textwidth}
+      Consider $G' = G\setminus\{v\}$
+      $$\alpha_{|G'} \mathop{\leadsto}_{K}
+      \beta_{|G'}$$
+      Lift sequence to $G$ then recolor $v$
+    \end{column}
+    \hfill
+    \begin{column}{.3\textwidth}
+      \centering
+      \only<1>{
+        \begin{tikzpicture}
+          \clip (-.5,1) rectangle (3,-2);
+          \node[draw,fill=\myred, circle,inner sep=2pt] (A) at (0,0) {};
+          \node[above] (A') at (0,0) {$v$};
+          \node[draw,fill=\myblue, circle, inner sep=2pt] (a) at (20:1.5cm) {};
+          \node[draw,fill=\myyellow, circle, inner sep=2pt] (b) at (0:1.5cm) {};
+          \node[draw,very thick,fill=\myyellow, circle, inner sep=2pt] (c) at (320:1.5cm) {};
+          \node[draw,fill=\myorange, circle, inner sep=2pt] (d) at (340:1.5cm) {};
+          
+          \node (e) at (335:2.2cm) {};
+          \node (f) at (345:2.2cm) {};
+
+          \node (h) at (315:2.2cm) {};
+          \node (g) at (320:2.22cm) {};
+          \node (i) at (325:2.18cm) {};
+
+          \node (j) at (0:2.2cm) {};
+
+          \node (k) at (15:2.18cm) {};
+          \node (l) at (20:2.2cm) {};
+          \node (m) at (25:2.18cm) {};
+
+          \node[above] (G) at (2.6, -1.2) {$G'$};
+          \begin{scope}[shift={(350:2.8cm)}]
+            \draw[domain=135:205] plot ({2*cos(\x)}, {2*sin(\x)});
+          \end{scope}
+          
+          \draw (j) -- (b) -- (A) -- (c);
+          \draw[very thick] (h) -- (c) -- (g);
+          \draw (a) -- (A) -- (d);
+          \draw (f) -- (d) -- (e);
+          \draw (i) -- (c);
+          \draw (m) -- (a) -- (l)  (a) -- (k);
+          
+      \end{tikzpicture}}
+
+      \only<2>{
+        \begin{tikzpicture}
+          \clip (-.5,1) rectangle (3,-2);
+          \node[draw,very thick,fill=\myred, circle,inner sep=2pt] (A) at (0,0) {};
+          \node[above] (A') at (0,0) {$v$};
+          \node[draw,fill=\myblue, circle, inner sep=2pt] (a) at (20:1.5cm) {};
+          \node[draw,very thick,fill=\myyellow, circle, inner sep=2pt] (b) at (0:1.5cm) {};
+          \node[draw,very thick,fill=\myyellow, circle, inner sep=2pt] (c) at (320:1.5cm) {};
+          \node[draw,fill=\myorange, circle, inner sep=2pt] (d) at (340:1.5cm) {};
+          
+          \node (e) at (335:2.2cm) {};
+          \node (f) at (345:2.2cm) {};
+
+          \node (h) at (315:2.2cm) {};
+          \node (g) at (320:2.22cm) {};
+          \node (i) at (325:2.18cm) {};
+
+          \node (j) at (0:2.2cm) {};
+
+          \node (k) at (15:2.18cm) {};
+          \node (l) at (20:2.2cm) {};
+          \node (m) at (25:2.18cm) {};
+
+          \node[above] (G) at (2.6, -1.2) {$G'$};
+          \begin{scope}[shift={(350:2.8cm)}]
+            \draw[domain=135:205] plot ({2*cos(\x)}, {2*sin(\x)});
+          \end{scope}
+
+          \draw[very thick] (j) -- (b) -- (A) -- (c);
+          \draw[very thick] (h) -- (c) -- (g);
+          \draw (a) -- (A) -- (d);
+          \draw (f) -- (d) -- (e);
+          \draw (i) -- (c);
+          \draw (m) -- (a) -- (l)  (a) -- (k);
+          
+      \end{tikzpicture}}
+
+      \only<3->{
+        \begin{tikzpicture}
+          \clip (-.5,1) rectangle (3,-2);
+          \node[draw,fill=\mydarkblue, circle,inner sep=2pt] (A) at (0,0) {};
+          \node[above] (A') at (0,0) {$v$};
+          \node[draw,fill=\myblue, circle, inner sep=2pt] (a) at (20:1.5cm) {};
+          \node[draw,fill=\myyellow, circle, inner sep=2pt] (b) at (0:1.5cm) {};
+          \node[draw,very thick,fill=\myyellow, circle, inner sep=2pt] (c) at (320:1.5cm) {};
+          \node[draw,fill=\myorange, circle, inner sep=2pt] (d) at (340:1.5cm) {};
+          
+          \node (e) at (335:2.2cm) {};
+          \node (f) at (345:2.2cm) {};
+
+          \node (h) at (315:2.2cm) {};
+          \node (g) at (320:2.22cm) {};
+          \node (i) at (325:2.18cm) {};
+
+          \node (j) at (0:2.2cm) {};
+
+          \node (k) at (15:2.18cm) {};
+          \node (l) at (20:2.2cm) {};
+          \node (m) at (25:2.18cm) {};
+
+          \node[above] (G) at (2.6, -1.2) {$G'$};
+          \begin{scope}[shift={(350:2.8cm)}]
+            \draw[domain=135:205] plot ({2*cos(\x)}, {2*sin(\x)});
+          \end{scope}
+
+          \draw (j) -- (b) -- (A) -- (c);
+          \draw[very thick] (h) -- (c) -- (g);
+          \draw (a) -- (A) -- (d);
+          \draw (f) -- (d) -- (e);
+          \draw (i) -- (c);
+          \draw (m) -- (a) -- (l)  (a) -- (k);
+          
+        \end{tikzpicture}}
+    \end{column}
+  \end{columns}
+
+  \uncover<4>{\begin{block}{Bounding the reconfiguration diameter of $d$-degenerate graphs}
     \begin{itemize}
-    \item $V(R^k(G)) =$ $k$-colorings of $G$.
-    \item $\alpha$ and $\beta$ adjacent  if $\alpha
-      \xleftrightarrow[\text{Kempe}]{} \beta$
+    \item total number of Kempe changes : $f(n) \le 2f(n-1) +1$ 
+    \item number of recoloring per vertex : $g(n) \le 4g(n-1) +1$ 
     \end{itemize}
-  \end{exampleblock}}
+  \end{block}}
 
 \end{frame}
 
@@ -216,12 +365,12 @@
     \centering
       \begin{tikzpicture}
         \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (45:1cm) {};
-        \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (135:1cm) {};
-        \node[draw=black,fill=\mygreen,circle,inner sep=2pt] (c) at (225:1cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (d) at (315:1cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (B) at (135:.5cm) {};
-        \node[draw=black,fill=\mycyan,circle,inner sep=2pt] (D) at (315:.5cm) {};
-        \node[draw=black,fill=\mygreen,circle,inner sep=2pt] (A) at (45:1.8cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt]  (b) at (135:1cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt] (c) at (225:1cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (d) at (315:1cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (B) at (135:.5cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt] (D) at (315:.5cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt] (A) at (45:1.8cm) {};
         \node[draw=black,fill=\myorange,circle,inner sep=2pt] (C) at (225:1.8cm) {};
         \node (D') at (315:2cm) {};
         
@@ -237,13 +386,13 @@
     \centering
       \begin{tikzpicture}
         \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (45:1cm) {};
-        \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (135:1cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt]  (b) at (135:1cm) {};
         \node[draw=black,fill=\myorange,circle,inner sep=2pt] (c) at (225:1cm) {};
-        \node[draw=black,fill=\mycyan,circle,inner sep=2pt] (d) at (315:1cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (B) at (135:.5cm) {};
-        \node[draw=black,fill=\mygreen,circle,inner sep=2pt] (D) at (315:.5cm) {};
-        \node[draw=black,fill=\mygreen,circle,inner sep=2pt] (A) at (45:1.8cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (C) at (225:1.8cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt] (d) at (315:1cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (B) at (135:.5cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt] (D) at (315:.5cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt] (A) at (45:1.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (C) at (225:1.8cm) {};
         \node (D') at (315:2cm) {};
         
         \draw (a) -- (b) -- (c) -- (d) -- (a) -- (A) -- (b) -- (B) -- (D) -- (d)
@@ -253,13 +402,9 @@
       \end{tikzpicture}
     \end{column}
   \end{columns}
-
-  \begin{block}{Las Vergnas and Meyniel 1981}
-    All the $k$ colorings of a $d$-degenerate graph are Kempe equivalent, for $k>d$
-  \end{block}
 \end{frame}
 
-\begin{frame}{Bounded diameter}
+\begin{frame}{Bounding the reconfiguration diameter}
   \begin{alertblock}{Conjecture of Bonamy, Bousquet, Feghali, Johnson 19}  
     $R_k(G)$ has diameter $O(n^2)$, if $G$ is $d$-degenerate and $k > d$
   \end{alertblock}
@@ -269,7 +414,7 @@
     \begin{itemize}
     \item $k \ge \Delta$ (unless, $k=3$ and $G = K_2 \square K_3$),
     \item $k \ge \mad(G) + \varepsilon$
-    \item $k \ge \tw(G)$
+    \item $k \ge \tw(G) +1$
     \end{itemize}
   \end{block}
 
@@ -277,12 +422,76 @@
     What about planar graphs with $k = 5$ or $k = 6$ ?
   \end{alertblock}
 
+  \uncover<2>{
   \begin{block}{Deschamps, Feghali, Kardoš, L., Pierron 22+}
-    $R_k(G)$ has polynomial diameter if $G$ is planar and $k \ge 5$
-  \end{block}
+    $R_k(G)$ has diameter $O(n^{195})$ if $G$ is planar and $k \ge 5$
+  \end{block}}
 \end{frame}
 
-\section{Warm-up}
+
+\section*{Recoloring planar graphs}
+\begin{frame}{Sketch of proof}
+  \begin{block}{Theorem}
+    For every 5-coloring $\alpha$ and every 4-coloring $\beta$, there is a
+    sequence of Kempe changes going from $\alpha$ to $\beta$ recoloring each
+    vertex $P(n)$ times
+  \end{block}
+
+  By induction:
+  \begin{itemize}
+    \uncover<2->{\item Find a linear-sized independent set $I$, monochrome in $\alpha$ and
+      $\beta$.}
+    \uncover<3->{
+  \item Collapse $I$ and apply induction $\leadsto$ 5-coloring where 5 appears
+    only in $I$}
+    \uncover<6->{
+  \item Recolor the color class $B$ of $\beta$ that contains $I$, remove $B$
+    $\leadsto$ 3-colorable planar graph}
+  \end{itemize}
+  \begin{center}
+    \begin{tikzpicture}
+    \clip (-3,-1.8) rectangle (3,1.8);
+    \only<2-5>{\node[draw=black,very thick,fill=\myorange,circle,inner sep=2pt]   (a) at (0,0) {};}
+    \only<6->{
+      \draw (.35,.35) -- (0,0) -- (0,.5);
+      \draw (.35,-.35) -- (0,0) -- (0,-.5) (0,0) -- (.5,0);
+      \node[draw=black,fill=\myred,circle,inner sep=2pt]   (a) at (0,0) {};}
+
+    \only<2->{\node[draw=black,fill=\myblue,circle,inner sep=2pt]   (b) at (10:1.5cm) {};}
+    \only<2-5>{
+      \begin{scope}[shift = (70:1.5cm)]
+        \draw (.35,.35) -- (0,0) -- (0,.5);
+      \end{scope}
+      \node[draw=black,fill=\myred,circle,inner sep=2pt]   (c) at
+      (70:1.5cm) {};
+    }
+    \only<2->{\node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (d) at (130:1.5cm) {};}
+    \only<2-4>{\node[draw=black,fill=\myblue,circle,inner sep=2pt]   (e) at (190:1.5cm) {};}
+    \only<5>{\node[draw=black,fill=\myred,circle,inner sep=2pt]   (e) at (190:1.5cm) {};}
+    \only<3>{\node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (f) at
+      (250:1.5cm) {};}
+    \only<2,4->{\node[draw=black,fill=\mydarkblue,circle,inner sep=2pt]   (f) at
+      (250:1.5cm) {};}
+    \only<2-5>{
+      \begin{scope}[shift = (310:1.5cm)]
+        \draw (.35,-.35) -- (0,0) -- (0,-.5) (0,0) -- (.5,0);
+      \end{scope}
+      \node[draw=black,fill=\myred,circle,inner sep=2pt]   (g) at (310:1.5cm) {};}
+
+    \node (ct1) at (170:3cm) {};
+    \node (ct2) at (210:3cm) {};
+
+    \only<2-5>{\draw (c) -- (d) -- (e) -- (a) -- (f) (g) -- (a) -- (b) -- (c) -- (a) --
+      (d);}
+
+    \only<6->{\draw (b) -- (a) -- (d);}
+    
+
+    \only<4,5>{\draw[dashed] (f) .. controls (ct2) and (ct1) .. (d);}
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
 \begin{frame}{3-colorable planar graphs}
   \begin{block}{Mohar 2007}
     $R_4(G)$ is connected if $G$ is a 3-colorable planar graph 
@@ -296,10 +505,10 @@
     \begin{column}{.2\textwidth}
       \centering
       \begin{tikzpicture}
-        \node[draw=black,fill=\mycyan,circle,inner sep=2pt]   (a) at (45:.5cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (a) at (45:.5cm) {};
         \node[draw=black,fill=\myorange,circle,inner sep=2pt]  (b) at (135:.5cm) {};
-        \node[draw=black,fill=\mycyan,circle,inner sep=2pt] (c) at (225:.5cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (d) at (315:.5cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt] (c) at (225:.5cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (d) at (315:.5cm) {};
 
         \draw[very thick] (d) -- (b);
         \draw (d) -- (a) -- (b) -- (c) -- (d);
@@ -312,10 +521,10 @@
     \begin{column}{.2\textwidth}
       \centering
       \begin{tikzpicture}
-        \node[draw=black,fill=\mycyan,circle,inner sep=2pt]   (a) at (45:.5cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (a) at (45:.5cm) {};
         \node[draw=black,fill=\myorange,circle,inner sep=2pt]  (b) at (135:.5cm) {};
-        \node[draw=black,fill=\mygreen,circle,inner sep=2pt] (c) at (225:.5cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (d) at (315:.5cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt] (c) at (225:.5cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (d) at (315:.5cm) {};
 
         \draw[very thick, dashed] (d) -- (b);
         \draw (d) -- (a) -- (b) -- (c) -- (d);
@@ -328,19 +537,19 @@
       \centering
       \begin{tikzpicture}
         \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (0:1.5cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt]  (b) at (60:1cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt]  (b) at (60:1cm) {};
         \node[draw=black,fill=\myorange,circle,inner sep=2pt] (c) at (120:2cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (d) at (180:.5cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (d) at (180:.5cm) {};
         \node[draw=black,fill=\myorange,circle,inner sep=2pt] (e) at (240:1.5cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (f) at (300:1cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (f) at (300:1cm) {};
 
         \draw[very thick, dashed] (a) -- (b) -- (c) -- (d) -- (e) -- (f) --  (a);
 
         \begin{scope}[shift = {(-2.5,0)}]
           \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (A) at (0:.5cm) {};
-          \node[draw=black,fill=magenta,circle,inner sep=2pt]  (B) at (60:1cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt]  (B) at (60:1cm) {};
           \node[draw=black,fill=\myorange,circle,inner sep=2pt] (C) at (180:.8cm) {};
-          \node[draw=black,fill=magenta,circle,inner sep=2pt] (D) at (270:.5cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt] (D) at (270:.5cm) {};
 
           \draw[very thick, dashed] (A) -- (B) -- (C) -- (D) -- (A);
         \end{scope}
@@ -349,37 +558,4 @@
   \end{columns}
 \end{frame}
 
-\section{General case}
-\begin{frame}{Sketch of proof}
-  \begin{block}{Theorem}
-    For every 5-coloring $\alpha$ and every 4-coloring $\beta$, there is a
-    sequence of Kempe changes going from $\alpha$ to $\beta$ recoloring each
-    vertex at most $f(n)$ times
-  \end{block}
-
-  \begin{columns}
-    \begin{column}{.6\textwidth}
-      \begin{description}[<+->][1.]
-      \item[1.] Find an independent set $I$ of linear size, of degree at most 6 in
-        $G$, monochromatic in $\alpha$ and $\beta$,
-      \item[2.] \emph{Collapse} $I$ to obtain $H$, with $F = H \setminus I$ planar,
-        and $I$ of degree at most 4 in $H$,
-      \item[3.] Apply induction on $F$, to recolor $F$ with a 4-coloring avoiding
-        $\alpha(I) = 5$. This sequence extends to $G$ and leads to a 5-coloring
-        $\gamma$ in which $I$ is a color class
-      \item[4.] In $\beta$, $I$ belongs to a color class $B$, recolor $B$ with color
-        5. Now $G \setminus B$ is 3-colorable, recolor $\gamma_{|G \setminus B}$ to
-        $\beta_{|G \setminus B}$
-      \end{description}
-    \end{column}
-    \hfill
-    \begin{column}{.4\textwidth}
-   
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Collapsing $I$}
-  
-\end{frame}
 \end{document}
