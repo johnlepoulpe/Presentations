@@ -7,6 +7,7 @@
 \usepackage[utf8]{inputenc}%
 \usepackage[main= english,francais]{babel}%
 \usepackage{mathtools}
+\usepackage{amssymb}
 
 \usepackage{graphicx}%
 \usepackage{courier}%
@@ -23,7 +24,7 @@
 \usepackage{listings}%
 
 \usepackage{faktor}%
-
+\usepackage{cancel}%
 \usepackage{stmaryrd}%
 
 \usepackage[style=verbose,backend=biber]{biblatex}
@@ -404,11 +405,11 @@
 
 \begin{frame}{Bounding the reconfiguration diameter}
   \begin{alertblock}{Conjecture of Bonamy, Bousquet, Feghali, Johnson 19}  
-    $R_k(G)$ has diameter $O(n^2)$, if $G$ is $d$-degenerate and $k > d$
+    $R^k(G)$ has diameter $O(n^2)$, if $G$ is $d$-degenerate and $k > d$
   \end{alertblock}
   
   \begin{block}{Bonamy, Delecroix, L. 22+}
-    $R_k(G)$ has polynomial diameter for: 
+    $R^k(G)$ has polynomial diameter for: 
     \begin{itemize}
     \item $k \ge \Delta$ (unless, $k=3$ and $G = K_2 \square K_3$),
     \item $k \ge \mad(G) + \varepsilon$
@@ -422,8 +423,74 @@
 
   \uncover<2>{
   \begin{block}{Deschamps, Feghali, Kardoš, L., Pierron 22+}
-    $R_k(G)$ has diameter $O(n^{195})$ if $G$ is planar and $k \ge 5$
+    $R^k(G)$ has diameter $O(n^{195})$ if $G$ is planar and $k \ge 5$
   \end{block}}
+\end{frame}
+
+\begin{frame}{Recoloring 3-colorable planar graphs}
+  \begin{block}{Mohar 2007}
+    $R_4(G)$ is connected if $G$ is a 3-colorable planar graph 
+  \end{block}
+
+  \begin{block}{Fisk 1977}
+    $R_4(G)$ has polynomial diameter if $G$ is a triangulation of the plane
+  \end{block}
+
+  \begin{columns}
+    \begin{column}{.2\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (a) at (45:.5cm) {};
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]  (b) at (135:.5cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt] (c) at (225:.5cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (d) at (315:.5cm) {};
+
+        \draw[very thick] (d) -- (b);
+        \draw (d) -- (a) -- (b) -- (c) -- (d);
+      \end{tikzpicture}
+      
+      singular
+    \end{column}
+    
+    \hfill
+    \begin{column}{.2\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (a) at (45:.5cm) {};
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]  (b) at (135:.5cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt] (c) at (225:.5cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (d) at (315:.5cm) {};
+
+        \draw[very thick, dashed] (d) -- (b);
+        \draw (d) -- (a) -- (b) -- (c) -- (d);
+      \end{tikzpicture}
+
+      non-singular
+    \end{column}
+    \hfill
+    \begin{column}{.6\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (0:1.5cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt]  (b) at (60:1cm) {};
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt] (c) at (120:2cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (d) at (180:.5cm) {};
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt] (e) at (240:1.5cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (f) at (300:1cm) {};
+
+        \draw[very thick, dashed] (a) -- (b) -- (c) -- (d) -- (e) -- (f) --  (a);
+
+        \begin{scope}[shift = {(-2.5,0)}]
+          \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (A) at (0:.5cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt]  (B) at (60:1cm) {};
+          \node[draw=black,fill=\myorange,circle,inner sep=2pt] (C) at (180:.8cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt] (D) at (270:.5cm) {};
+
+          \draw[very thick, dashed] (A) -- (B) -- (C) -- (D) -- (A);
+        \end{scope}
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \section*{Recoloring planar graphs}
@@ -434,6 +501,39 @@
     vertex $P(n)$ times
   \end{block}
 
+  \begin{block}{Idea of proof}
+    \vspace{-.5cm}
+    \begin{columns}
+      \hfill
+      \begin{column}{.35\textwidth}
+        Assumption: there exist $I$,
+        \begin{itemize}
+        \item $I$ linear size independent set
+        \item monochrome in $\alpha$ and in $\beta$
+        \item $\forall v \in I, \deg(v) \le 4$
+        \end{itemize}
+        \vspace{1.5cm}
+      \end{column}
+      \hfill
+      \begin{column}{.65\textwidth}
+        $$\begin{array}{lllll}
+          G && F = G \setminus I && H = G \setminus B\\
+          \alpha &\quad& \alpha_{|F}&\quad& \\
+          && \rotatebox[origin=c]{-90}{$\longrightarrow$} \text{ Induction} && \\
+          \gamma' && \gamma \text{ avoiding } \alpha(I) &&\\
+          \rotatebox[origin=c]{-90}{$\longrightarrow$} \text{ trivial changes}&& && \\
+          \delta \text{ s. t.} \delta(B) = 1 && && \delta_{|B} \text{ 4-col}\\
+          && && \rotatebox[origin=c]{-90}{$\longrightarrow$} \text{ Fisk} \\
+          \beta && && \beta_{|B} \text{ 3-col}\\
+        \end{array}
+        $$        
+      \end{column}
+      \hfill
+    \end{columns}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Collapsing}
   By induction:
   \begin{columns}
     \hfill
@@ -504,12 +604,17 @@
 \begin{frame}{Open questions}
   \begin{alertblock}{Question 1}
     Let $G$ be a $d$-degenerate graph. For $k > d$, do we have
-    $diam(R^k(G)) = O(n^2)$ ?
+    $\diam(R^k(G)) = O(n^2)$ ?
   \end{alertblock}
 
   \begin{alertblock}{Question 2}
     If $R^k(G)$ is connected, can we have a non-linear lower bound on
     $\diam(R^k(G))$ ?
+  \end{alertblock}
+
+  \begin{alertblock}{Question 3}
+    Are there other arguments than frozen colorings to prove that $R^k(G)$ is
+    disconnected ?
   \end{alertblock}
   \vspace{1cm}
   \centering
@@ -517,71 +622,6 @@
 \end{frame}
 
 \backupbegin
-\begin{frame}{3-colorable planar graphs}
-  \begin{block}{Mohar 2007}
-    $R_4(G)$ is connected if $G$ is a 3-colorable planar graph 
-  \end{block}
-
-  \begin{block}{Fisk 1977}
-    $R_4(G)$ has polynomial diameter if $G$ is a triangulation of the plane
-  \end{block}
-
-  \begin{columns}
-    \begin{column}{.2\textwidth}
-      \centering
-      \begin{tikzpicture}
-        \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (a) at (45:.5cm) {};
-        \node[draw=black,fill=\myorange,circle,inner sep=2pt]  (b) at (135:.5cm) {};
-        \node[draw=black,fill=\myblue,circle,inner sep=2pt] (c) at (225:.5cm) {};
-        \node[draw=black,fill=\myred,circle,inner sep=2pt] (d) at (315:.5cm) {};
-
-        \draw[very thick] (d) -- (b);
-        \draw (d) -- (a) -- (b) -- (c) -- (d);
-      \end{tikzpicture}
-      
-      singular
-    \end{column}
-    
-    \hfill
-    \begin{column}{.2\textwidth}
-      \centering
-      \begin{tikzpicture}
-        \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (a) at (45:.5cm) {};
-        \node[draw=black,fill=\myorange,circle,inner sep=2pt]  (b) at (135:.5cm) {};
-        \node[draw=black,fill=\myyellow,circle,inner sep=2pt] (c) at (225:.5cm) {};
-        \node[draw=black,fill=\myred,circle,inner sep=2pt] (d) at (315:.5cm) {};
-
-        \draw[very thick, dashed] (d) -- (b);
-        \draw (d) -- (a) -- (b) -- (c) -- (d);
-      \end{tikzpicture}
-
-      non-singular
-    \end{column}
-    \hfill
-    \begin{column}{.6\textwidth}
-      \centering
-      \begin{tikzpicture}
-        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (0:1.5cm) {};
-        \node[draw=black,fill=\myred,circle,inner sep=2pt]  (b) at (60:1cm) {};
-        \node[draw=black,fill=\myorange,circle,inner sep=2pt] (c) at (120:2cm) {};
-        \node[draw=black,fill=\myred,circle,inner sep=2pt] (d) at (180:.5cm) {};
-        \node[draw=black,fill=\myorange,circle,inner sep=2pt] (e) at (240:1.5cm) {};
-        \node[draw=black,fill=\myred,circle,inner sep=2pt] (f) at (300:1cm) {};
-
-        \draw[very thick, dashed] (a) -- (b) -- (c) -- (d) -- (e) -- (f) --  (a);
-
-        \begin{scope}[shift = {(-2.5,0)}]
-          \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (A) at (0:.5cm) {};
-          \node[draw=black,fill=\myred,circle,inner sep=2pt]  (B) at (60:1cm) {};
-          \node[draw=black,fill=\myorange,circle,inner sep=2pt] (C) at (180:.8cm) {};
-          \node[draw=black,fill=\myred,circle,inner sep=2pt] (D) at (270:.5cm) {};
-
-          \draw[very thick, dashed] (A) -- (B) -- (C) -- (D) -- (A);
-        \end{scope}
-      \end{tikzpicture}
-    \end{column}
-  \end{columns}
-\end{frame}
 \backupend
 
 \end{document}
