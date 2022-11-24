@@ -19,7 +19,11 @@
 \usepackage{subcaption}%
 \usepackage{caption}
 \captionsetup[figure]{labelformat=empty}% redefines the caption setup of the figures environment in the beamer class.
+
 \usepackage{tikz}
+\usetikzlibrary{calc,backgrounds}%
+
+
 
 \usepackage{listings}%
 
@@ -534,71 +538,156 @@
 \end{frame}
 
 \begin{frame}{Collapsing}
-  By induction:
-  \begin{columns}
-    \hfill
-    \begin{column}{.6\linewidth}
-      \begin{itemize}
-        \uncover<2->{\item Find a linear-sized independent set $I$, monochrome in $\alpha$ and
-          $\beta$ with $\forall v \in I, \deg(v) \le 6$.}
-        \uncover<3->{
-        \item Collapse $I$ to obtain $H$ s. t.
-          \begin{itemize}
-          \item $F = H \setminus I$ is planar
-          \item $\forall v \in I, \deg_H(v) \le 4$
-        \end{itemize}
-        Apply induction to recolor $F$ to a 4-coloring avoiding $\alpha(I)$.} 
-        \uncover<6->{
-        \item Recolor the color class $B$ of $\beta$ that contains $I$, remove $B$
-          $\leadsto$ 3-colorable planar graph}
-      \end{itemize}
-    \end{column}
 
-    \hfill
-    \begin{column}{.35\linewidth}
+  \begin{block}{Collapsable configurations}
+    \begin{columns}
+      \begin{column}{.3\linewidth}
+        \centering
         \begin{tikzpicture}
-          \clip (-3,-1.8) rectangle (3,1.8);
-          \only<2-5>{\node[draw=black,very thick,fill=\myorange,circle,inner sep=2pt]   (a) at (0,0) {};}
-          \only<6->{
-            \draw (.35,.35) -- (0,0) -- (0,.5);
-            \draw (.35,-.35) -- (0,0) -- (0,-.5) (0,0) -- (.5,0);
-            \node[draw=black,fill=\myred,circle,inner sep=2pt]   (a) at (0,0) {};}
-          
-          \only<2->{\node[draw=black,fill=\myblue,circle,inner sep=2pt]   (b) at (10:1.5cm) {};}
-          \only<2-5>{
-            \begin{scope}[shift = (70:1.5cm)]
-              \draw (.35,.35) -- (0,0) -- (0,.5);
-            \end{scope}
-            \node[draw=black,fill=\myred,circle,inner sep=2pt]   (c) at
-            (70:1.5cm) {};
-    }
-          \only<2->{\node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (d) at (130:1.5cm) {};}
-          \only<2-4>{\node[draw=black,fill=\myblue,circle,inner sep=2pt]   (e) at (190:1.5cm) {};}
-          \only<5>{\node[draw=black,fill=\myred,circle,inner sep=2pt]   (e) at (190:1.5cm) {};}
-          \only<3>{\node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (f) at
-            (250:1.5cm) {};}
-          \only<2,4->{\node[draw=black,fill=\mydarkblue,circle,inner sep=2pt]   (f) at
-            (250:1.5cm) {};}
-          \only<2-5>{
-            \begin{scope}[shift = (310:1.5cm)]
-              \draw (.35,-.35) -- (0,0) -- (0,-.5) (0,0) -- (.5,0);
-            \end{scope}
-            \node[draw=black,fill=\myred,circle,inner sep=2pt]   (g) at (310:1.5cm) {};}
-          
-          \node (ct1) at (170:3cm) {};
-          \node (ct2) at (210:3cm) {};
-          
-          \only<2-5>{\draw (c) -- (d) -- (e) -- (a) -- (f) (g) -- (a) -- (b) -- (c) -- (a) --
-            (d);}
-          
-          \only<6->{\draw (b) -- (a) -- (d);}
-          
-          
-          \only<4,5>{\draw[dashed] (f) .. controls (ct2) and (ct1) .. (d);}
+          \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (0,0) {};
+          \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (b) at (0:1cm) {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (c) at (72:1cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt]   (d) at (144:1cm) {};
+          \node[draw=black,fill=\mydarkblue,circle,inner sep=2pt]   (e) at (216:1cm) {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (f) at
+          (288:1cm) {};
+
+          \draw (b) -- (a);
+          \draw (c) -- (a);
+          \draw (d) -- (a);
+          \draw (e) -- (a);
+          \draw (f) -- (a);
+          \draw[dashed] (b) -- (c) -- (d) -- (e) -- (f)-- (b);
+          \fill[\myyellow,rounded corners=2mm,opacity=0.5]  ($(c) +(45:.3cm)$)
+          -- ($(c) + (135:.3cm)$) -- ($(f)+(225:.3cm)$) -- ($(f)+(315:.3cm)$) -- cycle;
         \end{tikzpicture}
-    \end{column}
-    \hfill
-  \end{columns}
+      \end{column}
+      \hfill
+
+      \begin{column}{.3\linewidth}
+        \centering
+        \begin{tikzpicture}
+          \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (0,0) {};
+          \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (b) at (0:1cm) {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (c) at (60:1cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt]   (d) at (120:1cm) {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (e) at (180:1cm) {};
+          \node[draw=black,fill=\mydarkblue,circle,inner sep=2pt]   (f) at (240:1cm) {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (g) at (300:1cm) {};
+
+          \draw (b) -- (a);
+          \draw (c) -- (a);
+          \draw (d) -- (a);
+          \draw (e) -- (a);
+          \draw (f) -- (a);
+          \draw (g) -- (a);
+          \draw[dashed] (b) -- (c) -- (d) -- (e) -- (f) -- (g) -- (b);
+          \fill[\myyellow,rounded corners=5mm,opacity=0.5]  ($(c) + (60:.5cm)$) --
+          ($(e) +(180:.5cm)$) -- ($(g)+(300:.5cm)$) -- cycle;
+        \end{tikzpicture}        
+      \end{column}
+      \hfill
+      \begin{column}{.3\linewidth}
+        \centering
+        \begin{tikzpicture}
+          \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (0,0) {};
+          \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (b) at (0:1cm) {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (c) at (60:1cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt]   (d) at (120:1cm) {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (e) at (180:1cm) {};
+          \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (f) at (240:1cm) {};
+          \node[draw=black,fill=\mydarkblue,circle,inner sep=2pt]   (g) at (300:1cm) {};
+
+          \draw (b) -- (a);
+          \draw (c) -- (a);
+          \draw (d) -- (a);
+          \draw (e) -- (a);
+          \draw (f) -- (a);
+          \draw (g) -- (a);
+          \draw[dashed] (b) -- (c) -- (d) -- (e) -- (f) -- (g) -- (b);
+          \fill[\myyellow,rounded corners=2mm,opacity=0.5]  ($(c) +(345:.3cm)$) --
+          ($(c)+(75:.3cm)$) -- ($(e) + (165:.3cm)$) -- ($(e) + (255:.3cm)$) -- cycle;
+
+          \fill[\myblue,rounded corners=2mm,opacity=0.5] ($(b) +(345:.3cm)$) --
+          ($(b)+(75:.3cm)$) -- ($(f) + (165:.3cm)$) -- ($(f) + (255:.3cm)$) -- cycle;
+
+        \end{tikzpicture}        
+      \end{column}
+      
+    \end{columns}
+  \end{block}
+
+  \begin{block}{Non-collapsable collapsable in at most 3 Kempe changes}
+        \centering
+        \begin{tikzpicture}
+          \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (0,0) {};
+          \node[draw=black,fill=\mydarkblue,circle,inner sep=2pt]   (b) at (0:1cm) {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (c) at (60:1cm) {};
+          \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (d) at (120:1cm) {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (e) at (180:1cm) {};
+          \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (f) at (240:1cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt]   (g) at (300:1cm) {};
+
+          \draw (b) -- (a);
+          \draw (c) -- (a);
+          \draw (d) -- (a);
+          \draw (e) -- (a);
+          \draw (f) -- (a);
+          \draw (g) -- (a);
+          \draw[dashed] (b) -- (c) -- (d) -- (e) -- (f) -- (g) -- (b);
+          \fill[\myyellow,rounded corners=2mm,opacity=0.5]  ($(c) +(345:.3cm)$) --
+          ($(c)+(75:.3cm)$) -- ($(e) + (165:.3cm)$) -- ($(e) + (255:.3cm)$) -- cycle;
+
+          \fill[\myblue,rounded corners=2mm,opacity=0.5] ($(d) +(45:.3cm)$) --
+          ($(d)+(135:.3cm)$) -- ($(f) + (225:.3cm)$) -- ($(f) + (315:.3cm)$) -- cycle;
+
+        \end{tikzpicture}        
+
+  \end{block}
+  %% \begin{block} {Non-collapsable configurations}
+    
+    
+  %% \end{block}
+  %%       \begin{tikzpicture}
+  %%         \clip (-3,-1.8) rectangle (3,1.8);
+  %%         \only<2-5>{\node[draw=black,very thick,fill=\myorange,circle,inner sep=2pt]   (a) at (0,0) {};}
+  %%         \only<6->{
+  %%           \draw (.35,.35) -- (0,0) -- (0,.5);
+  %%           \draw (.35,-.35) -- (0,0) -- (0,-.5) (0,0) -- (.5,0);
+  %%           \node[draw=black,fill=\myred,circle,inner sep=2pt]   (a) at (0,0) {};}
+          
+  %%         \only<2->{\node[draw=black,fill=\myblue,circle,inner sep=2pt]   (b) at (10:1.5cm) {};}
+  %%         \only<2-5>{
+  %%           \begin{scope}[shift = (70:1.5cm)]
+  %%             \draw (.35,.35) -- (0,0) -- (0,.5);
+  %%           \end{scope}
+  %%           \node[draw=black,fill=\myred,circle,inner sep=2pt]   (c) at
+  %%           (70:1.5cm) {};
+  %%   }
+  %%         \only<2->{\node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (d) at (130:1.5cm) {};}
+  %%         \only<2-4>{\node[draw=black,fill=\myblue,circle,inner sep=2pt]   (e) at (190:1.5cm) {};}
+  %%         \only<5>{\node[draw=black,fill=\myred,circle,inner sep=2pt]   (e) at (190:1.5cm) {};}
+  %%         \only<3>{\node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (f) at
+  %%           (250:1.5cm) {};}
+  %%         \only<2,4->{\node[draw=black,fill=\mydarkblue,circle,inner sep=2pt]   (f) at
+  %%           (250:1.5cm) {};}
+  %%         \only<2-5>{
+  %%           \begin{scope}[shift = (310:1.5cm)]
+  %%             \draw (.35,-.35) -- (0,0) -- (0,-.5) (0,0) -- (.5,0);
+  %%           \end{scope}
+  %%           \node[draw=black,fill=\myred,circle,inner sep=2pt]   (g) at (310:1.5cm) {};}
+          
+  %%         \node (ct1) at (170:3cm) {};
+  %%         \node (ct2) at (210:3cm) {};
+          
+  %%         \only<2-5>{\draw (c) -- (d) -- (e) -- (a) -- (f) (g) -- (a) -- (b) -- (c) -- (a) --
+  %%           (d);}
+          
+  %%         \only<6->{\draw (b) -- (a) -- (d);}
+          
+          
+  %%         \only<4,5>{\draw[dashed] (f) .. controls (ct2) and (ct1) .. (d);}
+  %%       \end{tikzpicture}
 \end{frame}
 
 \begin{frame}{Open questions}
