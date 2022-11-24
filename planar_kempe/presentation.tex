@@ -625,9 +625,17 @@
           \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (0,0) {};
           \node[draw=black,fill=\mydarkblue,circle,inner sep=2pt]   (b) at (0:1cm) {};
           \node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (c) at (60:1cm) {};
-          \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (d) at (120:1cm) {};
-          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (e) at (180:1cm) {};
-          \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (f) at (240:1cm) {};
+          \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (d) at (120:1cm)
+               {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (e) at
+          (180:1cm) {};}
+          \only<2>{          
+          \node[draw=black,fill=\myblue,circle,inner sep=2pt]   (f) at (240:1cm)
+               {};}
+          \only<3->{          
+          \node[draw=black,fill=\mydarkblue,circle,inner sep=2pt]   (f) at (240:1cm)
+               {};}
+          \only<2->{
           \node[draw=black,fill=\myred,circle,inner sep=2pt]   (g) at (300:1cm) {};
 
           \draw (b) -- (a);
@@ -637,7 +645,7 @@
           \draw (f) -- (a);
           \draw (g) -- (a);
           \draw[dashed] (b) -- (c) -- (d) -- (e) -- (f) -- (g) -- (b);}
-          \only<2>{\fill[\myyellow,rounded corners=2mm,opacity=0.5]  ($(c) +(345:.3cm)$) --
+          \only<2->{\fill[\myyellow,rounded corners=2mm,opacity=0.5]  ($(c) +(345:.3cm)$) --
           ($(c)+(75:.3cm)$) -- ($(e) + (165:.3cm)$) -- ($(e) + (255:.3cm)$) -- cycle;}
 
           \only<2>{\fill[\myblue,rounded corners=2mm,opacity=0.5] ($(d) +(45:.3cm)$) --
