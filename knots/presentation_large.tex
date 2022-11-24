@@ -1,4 +1,4 @@
-\documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
+\documentclass[11pt,xcolor=dvipsnames,presentation,aspectratio=169]{beamer}
 
 \usepackage{BeamerColor}
 \usepackage{etoolbox}
@@ -11,6 +11,7 @@
 \usepackage{graphicx}%
 \usepackage{courier}%
 \usepackage{algorithm2e}
+\usepackage{amsmath,bm}
 
 \usepackage{url}%
 \urlstyle{sf}%
@@ -20,6 +21,7 @@
 \captionsetup[figure]{labelformat=empty}% redefines the caption setup of the figures environment in the beamer class.
 \usepackage{tikz}
 \usetikzlibrary{positioning}
+\usepackage{animate}
 
 \usepackage{listings}%
 
@@ -126,7 +128,7 @@
 \author[Clément Legrand]{Clément Legrand-Duchesne}
 \institute{LaBRI, Bordeaux}
 %\date{\today}
-\date{September 28, 2022}
+\date{October 26, 2022}
 
 \begin{frame}
   \titlepage
@@ -137,6 +139,44 @@
 \end{frame}
 
 \section*{Knot theory background}
+
+\begin{frame}{A history of knots}
+  \begin{block}{Definitions}
+    \begin{description}
+    \item[Knot] Embedding of a circle in $\mathbb{R}^3$ : piece of rope whose ends are
+      glued together 
+    \item[Isotopy] Distortion of the knot ``without cutting it open or breaking
+      it''
+      \uncover<2>{
+    \item[Diagram] Projection of the knot on a plane}
+    \end{description}
+  \end{block}
+   \uncover<2>{
+  \centering
+  \includegraphics[width=.2\linewidth]{culprit.pdf}}
+\end{frame}
+
+\begin{frame}{Classifying knots}
+
+  \begin{columns}
+    \begin{column}{.5\linewidth}
+      \begin{block}{How to tell if two knots are equivalent ?}
+        \centering
+        \animategraphics[autoplay,loop,width=.3\linewidth]{10}{./unfolding/Knot_Unfolding-}{0}{48}
+      \end{block}
+
+      \begin{block}{How to tell if two knots are not equivalent?}
+        Find an invariant: quantity unchanged by isotopy
+      \end{block}
+    \end{column}
+    \hfill
+    \begin{column}{.45\linewidth}
+      \uncover<2>{
+      \centering
+      \includegraphics[width=1\linewidth]{classification.png}}
+    \end{column}
+  \end{columns}
+\end{frame}
 
 \begin{frame}{Untangling problem}
   \begin{columns}
@@ -158,16 +198,95 @@
 
   \begin{block}{Lackenby 2015}
     Any diagram of the unknot can be untangled with a polynomial number of moves
-  \end{block}
+  \end{block}}
+\end{frame}
 
-  \begin{block}{de Mesmay, Rieck, Sedgwick and Tancer 2021}
+\begin{frame}{Crash course on complexity}
+  \begin{block}{Shortest Untangling}
+    \begin{description}
+    \item[Input] A diagram $D$ of the unknot, an integer $k$
+    \item[Question] Can $D$ be untangled with at most $k$ Reidemeister moves ?
+    \end{description}
+  \end{block}
+  
+  Idea: classify problems according to their running time as a function of the
+  size \textcolor{\myblue}{$n$} of the instance \\
+  Here: size = number of crossings of $D$
+  
+  \begin{center}
+  \begin{tikzpicture}
+    \pgfmathsetlengthmacro{\yoff}{1cm}%
+    %% \uncover<3->{
+    %% \draw [thick, fill=gray!10] (0,1.7*\yoff) circle[x radius=1.5cm, y
+    %%   radius=3cm] ++(0,2.7*\yoff) node (xp) {XP};}
+
+    %% \uncover<4->{
+    %% \draw [thick, fill=gray!50] (0,1.5*\yoff) circle[x radius=1.3cm, y
+    %%   radius=2.6cm] ++(0,2*\yoff) node (wp) {W[P]};
+    %% \node (dots) at (0,2.5*\yoff) {$\vdots$};}
+
+    \uncover<2->{
+    \draw [thick, fill=gray!90] (0,0.6*\yoff) circle[x radius=1cm, y
+      radius=1.2cm] ++(0,.5*\yoff) node (np) {NP};}
+
+    \draw [thick, fill=gray!170] (0,0) circle[x radius=.5cm, y radius=.5cm] node
+    (fpt) {P}; 
+
+    \pgfmathsetlengthmacro{\xoff}{1.8cm}%
+
+
+    \node (legendfpt) at (\xoff,0) {};
+    \node[right =.2cm of legendfpt,align=left] (compfpt) {solved by a
+      deterministic \\ Turing machine in time $\textcolor{\myblue}{P(n)}$};
+    %% \node[align = left,right] at (4.5*\xoff, 0cm) {SAT with \textcolor{\myorange}{$k$} variables};
+    \draw[thick,->] (legendfpt) -- (fpt);
+
+    \uncover<2->{
+      \node (legendw1) at (\xoff,1.1*\yoff) {};
+      \node[right =.2cm of legendw1, align=left] (compw1) {solved by a
+        \textbf{non}-deterministic \\ Turing machine in time $\textcolor{\myblue}{P(n)}$};
+      %% \node[align = left,right] at (4.5*\xoff, 1.2*\yoff){independent set of size \textcolor{\myorange}{$k$}};
+      \draw[thick,->] (legendw1) -- (np);}
+  \end{tikzpicture}
+  \end{center}
+
+  \centering
+  \uncover<3>{Do we have $P = NP$ ?}
+\end{frame}
+
+\begin{frame}{How can we compare the complexity of two problems ?}
+   Problem $A$ is easier than problem $B$ if \quad ``solving $B$
+   efficiently'' $\Rightarrow$ ``solving $A$ efficiently''
+   \begin{block}{Reduction}
+     $A \prec B$ if there exist an algorithm $f : A \to B$, such that for any
+     instance $x$ of $A$:
+     \begin{itemize}
+     \item $f(x)$ runs in time $P(|x|)$ 
+     \item $x$ is a yes-instance of $A$ if and only if
+     $f(x)$ is a yes-instance of $B$
+     \end{itemize}
+        \centering
+   $\leadsto$ if we can solve $B$ in time $Q(y)$, then we can solve $A$ in time $Q(P(x))$
+   \end{block}
+   
+   \uncover<2>{
+   \begin{block}{Definitions}
+   \begin{itemize}
+   \item $A$ is \textcolor{\myblue}{NP-hard} if it is harder than all the problems
+     in NP
+   \item $A$ is \textcolor{\myblue}{NP-complete} if it is in NP and NP-hard
+   \end{itemize}
+   \end{block}
+
+   \begin{block}{de Mesmay, Rieck, Sedgwick and Tancer 2021}
     Shortest Untangling is NP-complete 
   \end{block}}
 \end{frame}
 
+
 \section*{Parameterized complexity background}
 
-\begin{frame}{Main Parameterized complexity classes}
+\begin{frame}{Parameterized complexity crash course}
   Idea: express the complexity with regard to the size \textcolor{\myblue}{$n$} and a parameter \textcolor{\myorange}{$k$}
 
   \vspace{.4cm}
@@ -232,7 +351,7 @@
 
 \begin{frame}{Choice of the parameter}
   \centering
-  \includegraphics[width=.6\textwidth]{rm.pdf}
+  \includegraphics[width=.4\textwidth]{rm.pdf}
   
   \begin{block}{Parameterized by size of the sequence}
     Instances of bounded size $\leadsto$ linear kernel, trivially FPT
@@ -241,7 +360,7 @@
   \uncover<2>{
   \begin{block}{Parameterized by defect}
     $$\defect(S) = 2|S| - n \quad \quad \defect(D) = \min_{S} \defect(S)$$
-    \vspace{-.3cm}
+    \vspace{-.7cm}
     \begin{itemize}
     \item ``counts'' the number non-optimal moves
       $$\defect(S) = \sum_{m \in S} w(m) \quad \quad
@@ -296,7 +415,7 @@
       \vspace{-.8cm}
       \begin{block}{Kauffman, Lambropoulou}
         \centering
-        \includegraphics[width=.3\linewidth]{culprit.pdf}
+        \includegraphics[width=.2\linewidth]{culprit.pdf}
       \end{block}}
     \only<5>{
       \begin{block}{Key lemma}
@@ -313,51 +432,147 @@
 \begin{frame}{Reduction from mimimum axiom set}
   \begin{block}{FPT-reduction}
     \begin{itemize}
-    \item $(x,k) \leadsto (x',k')$ in time $O(f(k)P(|x|))$
+    \item $(x,k) \in A \leadsto (x',k') \in B$ in time $O(f(k)P(|x|))$
     \item $k' \le g(k)$
     \end{itemize}
+    \centering
+    $\leadsto$ if we can solve $B$ in time  $h(k)Q(|x|)$ then we can solve $A$
+    in time $f(k)P(|x|) + h(g(k))\cdot Q(h(k)P(|x|))$
   \end{block}
+
   
   \begin{block}{Minimum Axiom Set}
   \begin{description}
   \item[Input] A finite set of variables $\mathcal{S} = \{s_1, \dots s_p\}$\\
-    A finite set of relations $\mathcal{R}$ of the form $(T,t)$ with $T \subset
-    \mathcal{S}$ and $t \in \mathcal{S}$
+    A finite set of relations $\mathcal{R}$ of the form $s_1 \wedge s_2 \wedge
+    s_4 \Rightarrow s_6$ 
   \item[Parameter] $k$
-  \item[Ouput] Does there exist $S_0 \subset \mathcal{S}$ of size $k$ such that
-    the sequence $$S_{i+1} = S_i \cup \{t | T \subset S_i \text{ with } (T,t)
-    \in \mathcal{R}\}$$ verifies $\bigcup_{i=0}^\infty S_i = \mathcal{S}$ ?
+  \item[Question] Does there exist $\mathcal{S}_0 \subset \mathcal{S}$ of size $k$ such that $\mathcal{S}_0$
+    implies $\mathcal{S}$ ?
   \end{description}
 \end{block}
 \end{frame}
 
 \begin{frame}{Sketch of the reduction}
+  Instance of Minimum Axiom Set:
+  \begin{itemize}
+  \item $\mathcal{S} = \{s_1, s_2, s_3, s_4, s_5, s_6\}$
+  \item $\mathcal{R} = \{\only<3>{\underline}{s_1 \wedge s_2 \wedge s_4 \Rightarrow s_6}, \quad \quad
+    \only<5->{\underline}{s_5 \wedge s_6 \Rightarrow s_3}, \quad \quad
+    \only<2>{\underline}{s_2 \wedge s_4 \Rightarrow s_1},\quad \quad
+    \only<4>{\underline}{s_1 \wedge s_2 \Rightarrow s_5} \}$ \textcolor{white}{\underline{$s_4$}}
+  \end{itemize}
+  
+  \centering 
+  \begin{tikzpicture}
+    \clip (-2,-4) rectangle (10,1);
+    \only<1>{
+    \node (s1) at (0,0) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};
+    \node (s2) at (4,0) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};
+    \node (s3) at (8,0) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};
+    \node (s4) at (0,-3) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};
+    \node (s5) at (4,-3) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};
+    \node (s6) at (8,-3) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};}
+
+    \only<2>{
+    \node (s1) at (0,0) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};
+    \node (s2) at (4,0) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+    \node (s3) at (8,0) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};
+    \node (s4) at (0,-3) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+    \node (s5) at (4,-3) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};
+    \node (s6) at (8,-3) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};}
+
+    \only<3>{
+    \node (s1) at (0,0) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+    \node (s2) at (4,0) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+    \node (s3) at (8,0) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};
+    \node (s4) at (0,-3) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+    \node (s5) at (4,-3) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};
+    \node (s6) at (8,-3) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};}
+
+    \only<4>{
+    \node (s1) at (0,0) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+    \node (s2) at (4,0) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+    \node (s3) at (8,0) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};
+    \node (s4) at (0,-3) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+    \node (s5) at (4,-3) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};
+    \node (s6) at (8,-3) {\includegraphics[width=1cm]{cadenas_vert.jpg}};}
+
+    \only<5>{
+      \node (s1) at (0,0) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+      \node (s2) at (4,0) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+      \node (s3) at (8,0) {\includegraphics[width=1cm]{cadenas_rouge.jpg}};
+      \node (s4) at (0,-3) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+      \node (s5) at (4,-3) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+      \node (s6) at (8,-3) {\includegraphics[width=1cm]{cadenas_vert.jpg}};}
+
+    \only<6>{
+      \node (s1) at (0,0) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+      \node (s2) at (4,0) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+      \node (s3) at (8,0) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+      \node (s4) at (0,-3) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+      \node (s5) at (4,-3) {\includegraphics[width=1cm]{cadenas_vert.jpg}};
+      \node (s6) at (8,-3) {\includegraphics[width=1cm]{cadenas_vert.jpg}};}
+
+    %% \draw[thick,rounded corners=1.5cm] (-1,1)--(-1,-5)--(7,1)--cycle;
+    \node[above] at (s1) {$s_1$};
+    \node[above] at (s2) {$s_2$};
+    \node[above] at (s3) {$s_3$};
+    \node[above] at (s4) {$s_4$};
+    \node[above] at (s5) {$s_5$};
+    \node[above] at (s6) {$s_6$};
+  \end{tikzpicture}
+  
+  Each lock can be opened by being picked in $\mathcal{S}_0$ or by being implied
+  by opened locks
+\end{frame}
+
+\begin{frame}{Lock gadget}
   \begin{block}{Brunnian link}
     Non-trivial link that becomes trivial if any of its components is removed
   \end{block}
   \begin{columns}
     \begin{column}{.47\linewidth}
       \centering
-      \includegraphics[width=1\linewidth]{rubberband.pdf}
+      \includegraphics[width=.7\linewidth]{rubberband.pdf}
     \end{column}
     \hfill
     \uncover<2->{
     \begin{column}{.52\linewidth}
       \centering
-      \includegraphics[width=1\linewidth]{rubberband_doubled.pdf}
+      \includegraphics[width=.7\linewidth]{rubberband_doubled.pdf}
      \end{column}}
   \end{columns}
 \end{frame}
 
 \begin{frame}{Sketch of the reduction}
   \begin{itemize}
-  \item One gadget for every variable
-  \item In each gadget, twist both ends of the components
-  \item Connect
+  \item One lock gadget for every variable
+  \item In each lock gadget, twist both ends of the first component
+  \item Connect :
   \end{itemize}
-  \centering
- \includegraphics[width=.7\linewidth]{example.pdf} 
+  \begin{columns}
+    \begin{column}{.5\linewidth}
+      \centering
+      \includegraphics[width=\linewidth]{example.pdf} 
+    \end{column}
+    \hfill
+    \begin{column}{.5\linewidth}
+      \begin{itemize}
+      \item Picking a lock = untwisting with a $I^-$ move
+      \item Opening a lock = Removing all the strands blocking one of its
+        components with $II^-$ moves
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \end{frame}
 
+\begin{frame}
+  \begin{center}
+    Thank you !
+    
+  \includegraphics[width=.3\linewidth]{thanks.jpg}
+  \end{center}
+\end{frame}
 
 \end{document}
