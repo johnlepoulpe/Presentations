@@ -1,4 +1,4 @@
-\documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
+\documentclass[11pt,xcolor=dvipsnames,presentation,aspectratio=169]{beamer}
 
 \usepackage{BeamerColor}
 \usepackage{etoolbox}
@@ -40,7 +40,7 @@
 \newcommand{\myorange}{Orange}
 \newcommand{\mygreen}{DarkGreen}
 \newcommand{\mycyan}{LightSeaGreen}
-\newcommand{\myred}{RubineRed}
+\newcommand{\myred}{Fuchsia}
 \newcommand{\myyellow}{Goldenrod}
 \newcommand{\myblue}{RoyalBlue}
 \newcommand{\mydarkblue}{MidnightBlue}
@@ -131,16 +131,17 @@
 
 \section*{Some context}
 \begin{frame}{Recoloring with Kempe changes}
-  \uncover<1->{
+
   \begin{columns}
-    \begin{column}{.66\textwidth}
+    \begin{column}{.55\linewidth}
       \begin{exampleblock}{Kempe chain (1879)}
         Maximal bichromatic connected component in $G$
       \end{exampleblock}
     \end{column}
-    \begin{column}{.33\textwidth}
+    \begin{column}{.2\linewidth}
       \centering
       \begin{tikzpicture}
+        \clip (-1,1) rectangle (1,-1);
         \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
         \node[draw=black,fill=\myyellow,circle,inner sep=2pt]  (b) at (162:.8cm) {};
         \node[draw=black,fill=\myred,circle,inner sep=2pt] (c) at (234:.8cm) {};
@@ -152,16 +153,12 @@
       
       %\includegraphics[width=.8\textwidth]{../figures/pdf/knot_example.pdf}
     \end{column}
-  \end{columns}
-  }
 
-  \vspace{1.5cm}
-  
-  \begin{columns}
-    \uncover<2->{
-      \begin{column}{.33\textwidth}
-        \centering
-        \begin{tikzpicture}
+    \begin{column}{.2\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \only<1>{
+          \clip (-1,1) rectangle (1,-1);
           \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
           \node[draw=black,fill=\myyellow,circle,inner sep=2pt]  (b) at (162:.8cm) {};
           \node[draw=black,very thick,fill=\myblue,circle,inner sep=2pt] (c) at (234:.8cm) {};
@@ -170,60 +167,65 @@
 
           \draw (e) -- (a) -- (b) -- (c);
           \draw[very thick] (c) -- (d) -- (e);
-        \end{tikzpicture}      
-    \end{column}
-    }
-    \uncover<3->{
-    \begin{column}{.33\textwidth}
-       \centering
-      \begin{tikzpicture}
-        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
-        \node[draw=black,very thick,fill=\myred,circle,inner sep=2pt]  (b) at (162:.8cm) {};
-        \node[draw=black,very thick,fill=\myyellow,circle,inner sep=2pt] (c) at (234:.8cm) {};
-        \node[draw=black,fill=\myblue,circle,inner sep=2pt] (d) at (306:.8cm) {};
-        \node[draw=black,fill=\myred,circle,inner sep=2pt] (e) at (18:.8cm) {};
+        }
 
-        \draw[very thick] (b) -- (c);
-        \draw (a) -- (b);
-        \draw (c) -- (d) -- (e) -- (a);
+        \only<2>{
+          \clip (-1,1) rectangle (1,-1);
+          \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+          \node[draw=black,very thick,fill=\myred,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+          \node[draw=black,very thick,fill=\myyellow,circle,inner sep=2pt] (c) at (234:.8cm) {};
+          \node[draw=black,fill=\myblue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt] (e) at (18:.8cm) {};
+          
+          \draw[very thick] (b) -- (c);
+          \draw (a) -- (b);
+          \draw (c) -- (d) -- (e) -- (a);
+        }
+
+        \only<3->{
+          \clip (-1,1) rectangle (1,-1);
+          \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt] (c) at (234:.8cm) {};
+          \node[draw=black,very thick,fill=\myyellow,circle,inner sep=2pt] (d) at (306:.8cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt] (e) at (18:.8cm) {};
+          
+          \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+        }
       \end{tikzpicture}
     \end{column}
-    }
-    \uncover<4->{
-    \begin{column}{.33\textwidth}
-       \centering
-      \begin{tikzpicture}
-        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
-        \node[draw=black,fill=\myyellow,circle,inner sep=2pt]  (b) at (162:.8cm) {};
-        \node[draw=black,fill=\myred,circle,inner sep=2pt] (c) at (234:.8cm) {};
-        \node[draw=black,very thick,fill=\myyellow,circle,inner sep=2pt] (d) at (306:.8cm) {};
-        \node[draw=black,fill=\myred,circle,inner sep=2pt] (e) at (18:.8cm) {};
-
-        \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
-      \end{tikzpicture}
-    \end{column}
-    }
   \end{columns}
-  %% \uncover<5->{
-  %% \begin{exampleblock}{Reconfiguration graph}
-  %%   \begin{itemize}
-  %%   \item $V(R^k(G)) =$ $k$-colorings of $G$.
-  %%   \item $\alpha$ and $\beta$ adjacent  if $\alpha
-  %%     \xleftrightarrow[\text{Kempe}]{} \beta$
-  %%   \end{itemize}
-  %% \end{exampleblock}}
+  
+  \uncover<4->{
+  \begin{exampleblock}{Reconfiguration graph}
+    \begin{itemize}
+    \item $V(R^k(G)) =$ $k$-colorings of $G$.
+    \item $\alpha$ and $\beta$ adjacent  if $\alpha
+      \xleftrightarrow[\text{Kempe}]{} \beta$
+    \end{itemize}
+  \end{exampleblock}}
+  \vspace{-.3cm}
+  \uncover<5->{
+  \begin{alertblock}{Usual questions}
+    \begin{itemize}
+    \item Given two $k$-colorings $\alpha$ and $\beta$, $\alpha
+      \leftrightsquigarrow \beta$ ?
+    \item Is $R^k(G)$ connected ?
+    \item What is $\diam(R^k(G))$ ?
+    \item Does the corresponding Markov chain mix well ?
+    \end{itemize}
+  \end{alertblock}}
 
 \end{frame}
 
 \begin{frame}{Fundamental lemma}
   \begin{block}{Las Vergnas, Meyniel 1981}
-   If $\deg(v) < k$ and all $k$-colorings of $G \setminus v$ are equivalent, then
-   all $k$-colorings of $G$ are equivalent
+   All $k$-colorings of a $d$-degenerate graph are equivalent, for $k > d$
   \end{block}
   
   \begin{columns}
     \begin{column}{.6\textwidth}
-      Consider $G' = G\setminus\{v\}$
+      By induction: Let $v$ with $\deg(v) \le d$, consider $G' = G\setminus\{v\}$
       $$\alpha_{|G'} \mathop{\leadsto}_{K}
       \beta_{|G'}$$
       Lift sequence to $G$ then recolor $v$
@@ -231,8 +233,8 @@
     \hfill
     \begin{column}{.3\textwidth}
       \centering
-      \only<1>{
         \begin{tikzpicture}
+          \only<1>{
           \clip (-.5,1) rectangle (3,-2);
           \node[draw,fill=\myred, circle,inner sep=2pt] (A) at (0,0) {};
           \node[above] (A') at (0,0) {$v$};
@@ -265,11 +267,9 @@
           \draw (f) -- (d) -- (e);
           \draw (i) -- (c);
           \draw (m) -- (a) -- (l)  (a) -- (k);
-          
-      \end{tikzpicture}}
+          }
 
-      \only<2>{
-        \begin{tikzpicture}
+          \only<2>{
           \clip (-.5,1) rectangle (3,-2);
           \node[draw,very thick,fill=\myred, circle,inner sep=2pt] (A) at (0,0) {};
           \node[above] (A') at (0,0) {$v$};
@@ -302,11 +302,9 @@
           \draw (f) -- (d) -- (e);
           \draw (i) -- (c);
           \draw (m) -- (a) -- (l)  (a) -- (k);
-          
-      \end{tikzpicture}}
+          }
 
-      \only<3->{
-        \begin{tikzpicture}
+          \only<3->{
           \clip (-.5,1) rectangle (3,-2);
           \node[draw,fill=\mydarkblue, circle,inner sep=2pt] (A) at (0,0) {};
           \node[above] (A') at (0,0) {$v$};
@@ -339,17 +337,17 @@
           \draw (f) -- (d) -- (e);
           \draw (i) -- (c);
           \draw (m) -- (a) -- (l)  (a) -- (k);
-          
-        \end{tikzpicture}}
+          }            
+      \end{tikzpicture}
     \end{column}
   \end{columns}
 
-  \uncover<4>{\begin{block}{Bounding the reconfiguration diameter of $d$-degenerate graphs}
-    \begin{itemize}
-    \item total number of Kempe changes : $f(n) \le 2f(n-1) +1$ 
-    \item number of recoloring per vertex : $g(n) \le 4g(n-1) +1$ 
-    \end{itemize}
-  \end{block}}
+  %% \uncover<4>{\begin{block}{Bounding the reconfiguration diameter of $d$-degenerate graphs}
+  %%   \begin{itemize}
+  %%   \item total number of Kempe changes : $f(n) \le 2f(n-1) +1$ 
+  %%   \item number of recoloring per vertex : $g(n) \le dg(n-1) +1$ 
+  %%   \end{itemize}
+  %% \end{block}}
 
 \end{frame}
 
@@ -428,7 +426,6 @@
   \end{block}}
 \end{frame}
 
-
 \section*{Recoloring planar graphs}
 \begin{frame}{Sketch of proof}
   \begin{block}{Theorem}
@@ -438,60 +435,88 @@
   \end{block}
 
   By induction:
-  \begin{itemize}
-    \uncover<2->{\item Find a linear-sized independent set $I$, monochrome in $\alpha$ and
-      $\beta$.}
-    \uncover<3->{
-  \item Collapse $I$ and apply induction $\leadsto$ 5-coloring where 5 appears
-    only in $I$}
-    \uncover<6->{
-  \item Recolor the color class $B$ of $\beta$ that contains $I$, remove $B$
-    $\leadsto$ 3-colorable planar graph}
-  \end{itemize}
-  \begin{center}
-    \begin{tikzpicture}
-    \clip (-3,-1.8) rectangle (3,1.8);
-    \only<2-5>{\node[draw=black,very thick,fill=\myorange,circle,inner sep=2pt]   (a) at (0,0) {};}
-    \only<6->{
-      \draw (.35,.35) -- (0,0) -- (0,.5);
-      \draw (.35,-.35) -- (0,0) -- (0,-.5) (0,0) -- (.5,0);
-      \node[draw=black,fill=\myred,circle,inner sep=2pt]   (a) at (0,0) {};}
+  \begin{columns}
+    \hfill
+    \begin{column}{.6\linewidth}
+      \begin{itemize}
+        \uncover<2->{\item Find a linear-sized independent set $I$, monochrome in $\alpha$ and
+          $\beta$ with $\forall v \in I, \deg(v) \le 6$.}
+        \uncover<3->{
+        \item Collapse $I$ to obtain $H$ s. t.
+          \begin{itemize}
+          \item $F = H \setminus I$ is planar
+          \item $\forall v \in I, \deg_H(v) \le 4$
+        \end{itemize}
+        Apply induction to recolor $F$ to a 4-coloring avoiding $\alpha(I)$.} 
+        \uncover<6->{
+        \item Recolor the color class $B$ of $\beta$ that contains $I$, remove $B$
+          $\leadsto$ 3-colorable planar graph}
+      \end{itemize}
+    \end{column}
 
-    \only<2->{\node[draw=black,fill=\myblue,circle,inner sep=2pt]   (b) at (10:1.5cm) {};}
-    \only<2-5>{
-      \begin{scope}[shift = (70:1.5cm)]
-        \draw (.35,.35) -- (0,0) -- (0,.5);
-      \end{scope}
-      \node[draw=black,fill=\myred,circle,inner sep=2pt]   (c) at
-      (70:1.5cm) {};
+    \hfill
+    \begin{column}{.35\linewidth}
+        \begin{tikzpicture}
+          \clip (-3,-1.8) rectangle (3,1.8);
+          \only<2-5>{\node[draw=black,very thick,fill=\myorange,circle,inner sep=2pt]   (a) at (0,0) {};}
+          \only<6->{
+            \draw (.35,.35) -- (0,0) -- (0,.5);
+            \draw (.35,-.35) -- (0,0) -- (0,-.5) (0,0) -- (.5,0);
+            \node[draw=black,fill=\myred,circle,inner sep=2pt]   (a) at (0,0) {};}
+          
+          \only<2->{\node[draw=black,fill=\myblue,circle,inner sep=2pt]   (b) at (10:1.5cm) {};}
+          \only<2-5>{
+            \begin{scope}[shift = (70:1.5cm)]
+              \draw (.35,.35) -- (0,0) -- (0,.5);
+            \end{scope}
+            \node[draw=black,fill=\myred,circle,inner sep=2pt]   (c) at
+            (70:1.5cm) {};
     }
-    \only<2->{\node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (d) at (130:1.5cm) {};}
-    \only<2-4>{\node[draw=black,fill=\myblue,circle,inner sep=2pt]   (e) at (190:1.5cm) {};}
-    \only<5>{\node[draw=black,fill=\myred,circle,inner sep=2pt]   (e) at (190:1.5cm) {};}
-    \only<3>{\node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (f) at
-      (250:1.5cm) {};}
-    \only<2,4->{\node[draw=black,fill=\mydarkblue,circle,inner sep=2pt]   (f) at
-      (250:1.5cm) {};}
-    \only<2-5>{
-      \begin{scope}[shift = (310:1.5cm)]
-        \draw (.35,-.35) -- (0,0) -- (0,-.5) (0,0) -- (.5,0);
-      \end{scope}
-      \node[draw=black,fill=\myred,circle,inner sep=2pt]   (g) at (310:1.5cm) {};}
-
-    \node (ct1) at (170:3cm) {};
-    \node (ct2) at (210:3cm) {};
-
-    \only<2-5>{\draw (c) -- (d) -- (e) -- (a) -- (f) (g) -- (a) -- (b) -- (c) -- (a) --
-      (d);}
-
-    \only<6->{\draw (b) -- (a) -- (d);}
-    
-
-    \only<4,5>{\draw[dashed] (f) .. controls (ct2) and (ct1) .. (d);}
-    \end{tikzpicture}
-  \end{center}
+          \only<2->{\node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (d) at (130:1.5cm) {};}
+          \only<2-4>{\node[draw=black,fill=\myblue,circle,inner sep=2pt]   (e) at (190:1.5cm) {};}
+          \only<5>{\node[draw=black,fill=\myred,circle,inner sep=2pt]   (e) at (190:1.5cm) {};}
+          \only<3>{\node[draw=black,fill=\myyellow,circle,inner sep=2pt]   (f) at
+            (250:1.5cm) {};}
+          \only<2,4->{\node[draw=black,fill=\mydarkblue,circle,inner sep=2pt]   (f) at
+            (250:1.5cm) {};}
+          \only<2-5>{
+            \begin{scope}[shift = (310:1.5cm)]
+              \draw (.35,-.35) -- (0,0) -- (0,-.5) (0,0) -- (.5,0);
+            \end{scope}
+            \node[draw=black,fill=\myred,circle,inner sep=2pt]   (g) at (310:1.5cm) {};}
+          
+          \node (ct1) at (170:3cm) {};
+          \node (ct2) at (210:3cm) {};
+          
+          \only<2-5>{\draw (c) -- (d) -- (e) -- (a) -- (f) (g) -- (a) -- (b) -- (c) -- (a) --
+            (d);}
+          
+          \only<6->{\draw (b) -- (a) -- (d);}
+          
+          
+          \only<4,5>{\draw[dashed] (f) .. controls (ct2) and (ct1) .. (d);}
+        \end{tikzpicture}
+    \end{column}
+    \hfill
+  \end{columns}
 \end{frame}
 
+\begin{frame}{Open questions}
+  \begin{alertblock}{Question 1}
+    Let $G$ be a $d$-degenerate graph. For $k > d$, do we have
+    $diam(R^k(G)) = O(n^2)$ ?
+  \end{alertblock}
+
+  \begin{alertblock}{Question 2}
+    If $R^k(G)$ is connected, can we have a non-linear lower bound on
+    $\diam(R^k(G))$ ?
+  \end{alertblock}
+  \vspace{1cm}
+  \centering
+  Thank you !
+\end{frame}
+
+\backupbegin
 \begin{frame}{3-colorable planar graphs}
   \begin{block}{Mohar 2007}
     $R_4(G)$ is connected if $G$ is a 3-colorable planar graph 
@@ -557,5 +582,6 @@
     \end{column}
   \end{columns}
 \end{frame}
+\backupend
 
 \end{document}
