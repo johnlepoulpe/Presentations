@@ -15,282 +15,593 @@
 
 \usepackage{BeamerColor}
 \usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+\newcommand{\thm}[1]{\textcolor{bleuLaBRI}{\textbf{[#1]\xspace}}}
+\newcommand{\conj}{\textcolor{rougeLaBRI}{\textbf{Conjecture:\xspace }}}
+
+\usepackage{ellipsis}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathreplacing,decorations.markings,shapes.geometric}
+\tikzset{naming/.style={align=center,font=\small}}
+\tikzset{antenna/.style={insert path={-- coordinate (ant#1) ++(0,0.25) -- +(135:0.25) + (0,0) -- +(45:0.25)}}}
+\tikzset{station/.style ={naming,draw,shape=dart,shape border
+    rotate=90, minimum width=10mm, minimum height=10mm,outer sep=0pt,inner
+    sep=3pt}}
+%\tikzset{mobile/.style={naming,draw,shape=rectangle,minimum width=15mm,minimum height=7.5mm, outer sep=0pt,inner sep=3pt}}
+\tikzset{mobile/.style={naming,draw,shape=rectangle,minimum width=12mm,minimum height=6mm, outer sep=0pt,inner sep=3pt}}
+\tikzset{radiation/.style={{decorate,decoration={expanding
+        waves,angle=90,segment length=4pt}}}}
+
+\newcommand{\BS}[1]{%
+\begin{tikzpicture}
+\node[station] (base) {};
+
+% %\draw[line join=bevel] (base.110) -- (base.70) -- (base.north west) -- (base.north east) -- cycle;
+\draw[thick,line join=bevel,draw=#1] (base.100) -- (base.80) -- (base.110) -- (base.70)
+-- (base.north west) -- (base.north east) -- (base.180) -- (base.0);
+\draw[thick,line join=bevel,draw=#1] (base.100) -- (base.70) (base.110) -- (base.north
+east) (base.north west) -- (base.0);
+
+% % original yshift=.8pt
+% \draw[line cap=rect,draw=#1] ([yshift=0pt]base.north) [antenna=1];
+\end{tikzpicture}
+}
+
 
 %%%%%%%%% Colors of Beamer Layout %%%%%%%%%%%%%
 \begin{document}
 \begin{frame}
-\begin{columns}
-\begin{column}{.49\textwidth}
-\begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
-\begin{minipage}[T]{.95\textwidth}
+  \begin{columns}
+    \begin{column}{.49\textwidth}
+      \begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
+        \begin{minipage}[T]{.95\textwidth}
 
-  \begin{block}{Graph coloring}
-    \begin{columns}
-      \begin{column}{.49\textwidth}
+          \begin{block}{Graph coloring}
+            \begin{columns}
+              \begin{column}{.49\textwidth}
 
-        \centering
-        \pgfdeclarelayer{background}
-        \pgfdeclarelayer{foreground}
-        \pgfsetlayers{background,main,foreground}
-        \begin{tikzpicture}
+                \centering
+                \pgfdeclarelayer{background}
+                \pgfdeclarelayer{foreground}
+                \pgfsetlayers{background,main,foreground}
+                \begin{tikzpicture}
 
-          \begin{pgfonlayer}{background} 
-            \clip (-5,5) rectangle (5,-5);
-            \draw[fill=yellow]  (0,0) -- (126:10cm) -- (198:10cm) -- cycle; 
-            \draw[fill=rougeLaBRI]  (0,0) -- (198:10cm) -- (270:10cm) -- cycle;
-            \draw[fill=bleuLaBRI]  (0,0) -- (270:10cm) -- (342:10cm) -- cycle;
-            \draw[fill=yellow]  (0,0) -- (342:10cm) -- (54:10cm) -- cycle;
-            \draw[fill=orange]  (0,0) -- (54:10cm) -- (126:10cm) -- cycle;
-          \end{pgfonlayer}
+                  \begin{pgfonlayer}{background} 
+                    \clip (-5,5) rectangle (5,-5);
+                    \draw[fill=yellow]  (0,0) -- (126:10cm) -- (198:10cm) -- cycle; 
+                    \draw[fill=rougeLaBRI]  (0,0) -- (198:10cm) -- (270:10cm) -- cycle;
+                    \draw[fill=bleuLaBRI]  (0,0) -- (270:10cm) -- (342:10cm) -- cycle;
+                    \draw[fill=yellow]  (0,0) -- (342:10cm) -- (54:10cm) -- cycle;
+                    \draw[fill=orange]  (0,0) -- (54:10cm) -- (126:10cm) -- cycle;
+                  \end{pgfonlayer}
 
-          \begin{scope}[shift={(0,.75)}]
-            \draw[fill=bleuLaBRI] (0,0) -- (45:3cm) -- (135:3cm) -- (0,0); 
-            \draw[fill=orange] (0,0) -- (135:3cm) -- (225:3cm)-- (-90:2.12cm) -- (0,0); 
-            \draw[fill=rougeLaBRI] (0,0) -- (-90:2.12cm) -- (315:3cm) -- (45:3cm) -- (0,0); 
-          \end{scope}
+                  \begin{scope}[shift={(0,.75)}]
+                    \draw[fill=bleuLaBRI] (0,0) -- (45:3cm) -- (135:3cm) -- (0,0); 
+                    \draw[fill=orange] (0,0) -- (135:3cm) -- (225:3cm)-- (-90:2.12cm) -- (0,0); 
+                    \draw[fill=rougeLaBRI] (0,0) -- (-90:2.12cm) -- (315:3cm) -- (45:3cm) -- (0,0); 
+                  \end{scope}
+                  
+                  \begin{pgfonlayer}{foreground}
+                    \draw[fill=yellow] (0,-1.37) circle (1cm);
+                  \end{pgfonlayer}
+                \end{tikzpicture}
+              \end{column}
+              \begin{column}{.49\textwidth}
+
+                \centering
+                \begin{tikzpicture}    
+                  \clip (-5,5) rectangle (5,-5);
+                  \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (90:4cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt]  (b) at (162:4cm) {};
+                  \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (c) at (234:4cm) {};
+                  \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (306:4cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt] (e) at (18:4cm) {};
+
+                  \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt]   (f) at (90:1.7cm) {};
+                  \node[draw=black,fill=orange,circle,inner sep=6pt]  (g) at (180:1.7cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt] (h) at (270:1.7cm) {};
+                  \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (i) at (0:1.7cm) {};
+
+                  \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+                  \draw (f) -- (a)  (g) -- (b)  (i) -- (e);
+                  \draw (g) -- (i) -- (d) -- (h) -- (c) -- (g) -- (f) -- (i) -- (h) -- (g);
+                \end{tikzpicture}
+              \end{column}
+            \end{columns}
+            \vspace{1cm}
+            \thm{Apple, Haken 1989} Every planar map (or graph) is 4-colorable
+          \end{block}
+        \end{minipage}
+      \end{beamercolorbox}
+    \end{column}
           
-          \begin{pgfonlayer}{foreground}
-            \draw[fill=yellow] (0,-1.37) circle (1cm);
-          \end{pgfonlayer}
-        \end{tikzpicture}
-      \end{column}
-      \begin{column}{.49\textwidth}
+    \begin{column}{.49\textwidth}
+      \begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
+        \begin{minipage}[T]{.95\textwidth}
 
-        \centering
-        \begin{tikzpicture}    
-          \clip (-5,5) rectangle (5,-5);
-          \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (90:4cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt]  (b) at (162:4cm) {};
-          \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (c) at (234:4cm) {};
-          \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (306:4cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt] (e) at (18:4cm) {};
+          \begin{block}{Kempe change}            
+            \centering
+            \begin{columns}
+              \begin{column}{.49\textwidth}
+                \centering
+                \begin{tikzpicture}    
+                  \clip (-5,5) rectangle (5,-5);
+                  \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (90:4cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt]  (b) at (162:4cm) {};
+                  \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (c) at (234:4cm) {};
+                  \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (306:4cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt] (e) at (18:4cm) {};
 
-          \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt]   (f) at (90:1.7cm) {};
-          \node[draw=black,fill=orange,circle,inner sep=6pt]  (g) at (180:1.7cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt] (h) at (270:1.7cm) {};
-          \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (i) at (0:1.7cm) {};
+                  \node[draw=black,line width = 4pt,fill=yellow,circle,inner sep=6pt]   (f) at (90:1.7cm) {};
+                  \node[draw=black,fill=orange,circle,inner sep=6pt]  (g) at (180:1.7cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt] (h) at (270:1.7cm) {};
+                  \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (i) at (0:1.7cm) {};
 
-          \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
-          \draw (f) -- (a)  (g) -- (b)  (i) -- (e);
-          \draw (g) -- (i) -- (d) -- (h) -- (c) -- (g) -- (f) -- (i) -- (h) -- (g);
-        \end{tikzpicture}
-      \end{column}
-    \end{columns}
-    \vspace{1cm}
-    [Apple, Haken 1989] Every planar map (or graph) is 4-colorable
-  \end{block}
+                  \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+                  \draw (f) -- (a)  (g) -- (b)  (i) -- (e);
+                  \draw (g) -- (i) -- (d) -- (h) -- (c) -- (g) -- (f) -- (i) -- (h) -- (g);
+                \end{tikzpicture}
+              \end{column}
+              
+              \begin{column}{.49\textwidth}
+                \centering
+                \begin{tikzpicture}    
+                  \clip (-5,5) rectangle (5,-5);
+                  \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (90:4cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt]  (b) at (162:4cm) {};
+                  \node[draw=black,line width = 4pt, fill=orange,circle,inner sep=6pt] (c) at (234:4cm) {};
+                  \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (306:4cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt] (e) at (18:4cm) {};
 
-  \vfill
+                  \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt]   (f) at (90:1.7cm) {};
+                  \node[draw=black,line width = 4pt, fill=rougeLaBRI,circle,inner sep=6pt]  (g) at (180:1.7cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt] (h) at (270:1.7cm) {};
+                  \node[draw=black,line width = 4pt, fill=orange,circle,inner sep=6pt] (i) at (0:1.7cm) {};
 
-  \begin{block}{Kempe change}            
-    \centering
-    \begin{columns}
-      \begin{column}{.49\textwidth}
-        \centering
-        \begin{tikzpicture}    
-          \clip (-5,5) rectangle (5,-5);
-          \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (90:4cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt]  (b) at (162:4cm) {};
-          \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (c) at (234:4cm) {};
-          \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (306:4cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt] (e) at (18:4cm) {};
+                  \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+                  \draw (f) -- (a)  (g) -- (b)  (i) -- (e);
+                  \draw  (i) -- (d) -- (h) -- (c)  (g) -- (f) -- (i) -- (h) -- (g);
+                  \draw[line width = 4pt] (c) -- (g) -- (i);
+                \end{tikzpicture}
+              \end{column}
+            \end{columns}
+            \vspace{1cm}
+            Swap the colors in a maximal bichromatic connected subgraph
+            
+          \end{block}
 
-          \node[draw=black,line width = 4pt,fill=yellow,circle,inner sep=6pt]   (f) at (90:1.7cm) {};
-          \node[draw=black,fill=orange,circle,inner sep=6pt]  (g) at (180:1.7cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt] (h) at (270:1.7cm) {};
-          \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (i) at (0:1.7cm) {};
+        \end{minipage}
+      \end{beamercolorbox}
+    \end{column}
+  \end{columns}
 
-          \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
-          \draw (f) -- (a)  (g) -- (b)  (i) -- (e);
-          \draw (g) -- (i) -- (d) -- (h) -- (c) -- (g) -- (f) -- (i) -- (h) -- (g);
-        \end{tikzpicture}
-      \end{column}
-      
-      \begin{column}{.49\textwidth}
-        \centering
-        \begin{tikzpicture}    
-          \clip (-5,5) rectangle (5,-5);
-          \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (90:4cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt]  (b) at (162:4cm) {};
-          \node[draw=black,line width = 4pt, fill=orange,circle,inner sep=6pt] (c) at (234:4cm) {};
-          \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (306:4cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt] (e) at (18:4cm) {};
-
-          \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt]   (f) at (90:1.7cm) {};
-          \node[draw=black,line width = 4pt, fill=rougeLaBRI,circle,inner sep=6pt]  (g) at (180:1.7cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt] (h) at (270:1.7cm) {};
-          \node[draw=black,line width = 4pt, fill=orange,circle,inner sep=6pt] (i) at (0:1.7cm) {};
-
-          \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
-          \draw (f) -- (a)  (g) -- (b)  (i) -- (e);
-          \draw  (i) -- (d) -- (h) -- (c)  (g) -- (f) -- (i) -- (h) -- (g);
-          \draw[line width = 4pt] (c) -- (g) -- (i);
-        \end{tikzpicture}
-      \end{column}
-    \end{columns}
-    \vspace{1cm}
-    Swap the colors in a maximal bichromatic connected subgraph
-    
-  \end{block}
-
-  \vfill
-
-  \begin{block}{Objectives and questions}
-    
-    \centering
-    \begin{itemize}
-    \item Color a graph  with as few colors as possible
-    \item Study of the reconfiguration graph\\ {\small Vertices: $k$-colorings of a
-        graph $G$, edge if Kempe change between two colorings}
-      \begin{itemize}
-      \item Connectivity 
-      \item Diameter
-      \item Complexity of reachability problem
-      \end{itemize}
-    \item Sampling colorings
-    \end{itemize}
-  \end{block}
-
-  \vfill
-
-  \begin{block}{Color a graph with as few colors as possible}
-    Every planar graph is 5-colorable
-
-    \centering
-    \begin{columns}
-      \begin{column}{.33\textwidth}
-        \centering
-        \begin{tikzpicture}
-          \clip (-4,4) rectangle (4,-4.5);
-          \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (90:3cm) {};
-          \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt]  (b) at (162:3cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt] (c) at (234:3cm) {};
-          \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (306:3cm) {};
-          \node[draw=black,fill=black,circle,inner sep=6pt] (e) at (18:3cm) {};
-          \node[draw=black,fill=white,circle,inner sep=6pt] (A) at (0,0) {};
-          
-          
-          \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
-          \draw (b) -- (A) -- (a) (c) -- (A) -- (d) (A) --(e);
-        \end{tikzpicture}
-      \end{column}
-      $\rightarrow$
-      \begin{column}{.33\textwidth}
-        \centering
-        \begin{tikzpicture}
-          \clip (-4,4) rectangle (4,-4.5);
-          \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (90:3cm) {};
-          \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt]  (b) at (162:3cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt] (c) at (234:3cm) {};
-          \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (306:3cm) {};
-          \node[draw=black,line width=4pt,fill=yellow,circle,inner sep=6pt] (e) at (18:3cm) {};
-          \node[draw=black,fill=black,circle,inner sep=6pt] (A) at (0,0) {};
-          
-          
-          \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
-          \draw (b) -- (A) -- (a) (c) -- (A) -- (d) (A) --(e);
-        \end{tikzpicture}
-      \end{column}
-      or
-      \begin{column}{.33\textwidth}
-        \centering
-        \begin{tikzpicture}
-          \clip (-4,4) rectangle (4,-4.5);
-          \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (90:3cm) {};
-          \node[draw=black,line width = 4pt,fill=bleuLaBRI,circle,inner sep=6pt]  (b) at (162:3cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt] (c) at (234:3cm) {};
-          \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (306:3cm) {};
-          \node[draw=black,fill=black,circle,inner sep=6pt] (e) at (18:3cm) {};
-          \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (A) at (0,0) {};
-          \node (D1) at (286:6cm) {};
-          \node (D2) at (326:6cm) {};
-          
-          \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
-          \draw (b) -- (A) -- (a) (c) -- (A) -- (d) (A) --(e);
-          \draw[dashed] (c) .. controls (D1) and (D2) .. (e);
-        \end{tikzpicture}
-      \end{column}
-    \end{columns}
-
-  \end{block}
-
-  \vfill
-
-  \begin{block}{Connectivity of the reconfiguration graph}
-    [Meyniel 1989] For all planar graph $G$, all the 5-colorings of $G$ are Kempe
-    equivalent
-
-    \vspace{.5cm}
-    False for 4-colorings because of frozen colorings :
-
-    \centering
-    \begin{columns}
-      \begin{column}{.49\textwidth}
-        \centering
-        \begin{tikzpicture}
-          \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (45:3cm) {};
-          \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt]  (b) at (135:3cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt] (c) at (225:3cm) {};
-          \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (d) at (315:3cm) {};
-          \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (B) at (135:1.5cm) {};
-          \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (D) at (315:1.5cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt] (A) at (45:5.4cm) {};
-          \node[draw=black,fill=orange,circle,inner sep=6pt] (C) at (225:5.4cm) {};
-          \node (D') at (315:6cm) {};
-          
-          \draw (a) -- (b) -- (c) -- (d) -- (a) -- (A) -- (b) -- (B) -- (D) -- (d)
-          -- (A);
-          \draw (c) -- (B) -- (a) -- (D) -- (c) -- (C)  (b) -- (C) -- (d) ;
-          \draw (A) .. controls (D') ..  (C);
-        \end{tikzpicture}
-      \end{column}
-      \hfill
-      
-      \begin{column}{.49\textwidth}
-        \centering
-        \begin{tikzpicture}
-          \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (45:3cm) {};
-          \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt]  (b) at (135:3cm) {};
-          \node[draw=black,fill=orange,circle,inner sep=6pt] (c) at (225:3cm) {};
-          \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (315:3cm) {};
-          \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (B) at (135:1.5cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt] (D) at (315:1.5cm) {};
-          \node[draw=black,fill=yellow,circle,inner sep=6pt] (A) at (45:5.4cm) {};
-          \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (C) at (225:5.4cm) {};
-          \node (D') at (315:6cm) {};
-          
-          \draw (a) -- (b) -- (c) -- (d) -- (a) -- (A) -- (b) -- (B) -- (D) -- (d)
-          -- (A);
-          \draw (c) -- (B) -- (a) -- (D) -- (c) -- (C)  (b) -- (C) -- (d) ;
-          \draw (A) .. controls (D') ..  (C);
-        \end{tikzpicture}
-      \end{column}
-    \end{columns}
-  \end{block}
-      
-  \begin{block}{Diameter of the reconfiguration graph}
-    [Deschamps, Feghali, Kardoš, L-D., Pierron 22] All the 5-colorings
-    of a planar graph are equivalent up to $O(n^{195})$ Kempe changes 
-  \end{block}
-\end{minipage}
-\end{beamercolorbox}
-\end{column}
-\begin{column}{.49\textwidth}
   \begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
-    \begin{minipage}[T]{.95\textwidth}
-      \begin{block}{Sampling coloring}
-        Do random Kempe changes until reaching a close to random uniform
-        $k$-coloring
-        \begin{itemize}
-        \item Studied for single vertex recoloring
-        \item 
-        \item 
-        \end{itemize}
+    \begin{minipage}[T]{.97\textwidth}
+      \begin{block}{Objectives and questions}            
+        \centering
+        \begin{columns}
+          \begin{column}{.49\textwidth}
+            \begin{itemize}
+            \item Color a graph  with as few colors as possible
+            \item Sampling colorings efficiently
+            \item Counting colorings
+            \item Efficient enumeration of colorings 
+            \end{itemize}
+            
+          \end{column}
+          \begin{column}{.49\textwidth}
+            \begin{itemize}
+            \item Study of the reconfiguration graph\\ {\small Vertices: $k$-colorings of a
+                graph $G$, edge if Kempe change between two colorings}
+              \begin{itemize}
+              \item Connectivity 
+              \item Diameter
+              \item Complexity of reachability problem
+              \end{itemize}
+            \end{itemize}
+          \end{column}
+        \end{columns}
       \end{block}
+      
+      \begin{block}{Applications}
+        \begin{columns}
+          \begin{column}{.45\textwidth}
+            \begin{block}{Statistical physics}
+              \centering
+              \begin{tikzpicture}
+                \pgfmathsetmacro{\r}{5}
+                \pgfmathsetmacro{\long}{5}
+                \pgfmathsetmacro{\haut}{3}
+
+                
+                \foreach \j [evaluate=\j] in {1,...,3}
+                {\foreach \i [evaluate=\i] in {1,...,5}
+                  {
+                    \coordinate (v\i\j) at ({\i*\r}, {\j*\r}) {};
+                  }
+                }
+
+                \foreach \j [evaluate=\j] in {1,2}
+                {\foreach \i [evaluate=\i] in {1,...,4}
+                  {
+                    \pgfmathsetmacro{\ii}{int(\i +1)}
+                    \pgfmathsetmacro{\jj}{int(\j +1)}
+                    \draw (v\i\j) -- (v\ii\jj);
+                    \draw (v\i\j) -- (v\ii\j);
+                    \draw (v\i\j) -- (v\i\jj);
+                  }
+                }
+
+                \foreach \j [evaluate=\j] in {1,2}
+                {
+                  \pgfmathsetmacro{\jj}{int(\j +1)}
+                  \draw (v5\j) -- (v5\jj);
+                }
+                \foreach \i [evaluate=\i] in {1,...,4}
+                {
+                  \pgfmathsetmacro{\ii}{int(\i +1)}
+                  \draw (v\i3) -- (v\ii3);
+                }
+
+                
+                \foreach \x [evaluate=\x] in {11,32,23,53}
+                {  
+                  \node[draw=black,circle,fill=bleuLaBRI,inner sep = 6pt] (v\x) at (v\x) {};
+                }
+                \foreach \x [evaluate=\x] in {12,21,33,42,51}
+                {  
+                  \node[draw=black,circle,fill=rougeLaBRI,inner sep = 6pt] (v\x) at (v\x) {};
+                }
+                \foreach \x [evaluate=\x] in {41,13,43}
+                {  
+                  \node[draw=black,circle,fill=orange,inner sep = 6pt] (v\x) at (v\x) {};
+                }
+                \foreach \x [evaluate=\x] in {22,52,31}
+                {  
+                  \node[draw=black,circle,fill=yellow,inner sep = 6pt] (v\x) at (v\x) {};
+                }
+              \end{tikzpicture}
+              
+              Antiferromagnetic potts model
+            \end{block}
+          \end{column}
+          \hfill
+          \begin{column}{.45\textwidth}
+            \begin{block}{Networks}
+              \centering
+              \begin{tikzpicture}
+                \coordinate (a) at (0:4cm);
+                \coordinate (b) at (72:4cm);
+                \coordinate (c) at (144:4cm);
+                \coordinate (d) at (216:4cm);
+                \coordinate (e) at (288:4cm);
+                \coordinate (f) at (162:6cm);
+                \coordinate (g) at (126:6cm);
+
+                \path[shorten >=1.3cm, shorten <= 1cm] (a) edge (b);
+                \path[shorten >=1cm, shorten <= 1cm] (b) edge (c);
+                \path[shorten >=1cm, shorten <= 1cm] (c) edge (d);
+                \path[shorten >=1cm, shorten <= 1cm] (d) edge (e);
+                \path[shorten >=1.3cm, shorten <= 1cm] (e) edge (a);
+                \path[shorten >=1cm, shorten <= 1cm] (g) edge (b);
+                \path[shorten >=1.2cm, shorten <= 1cm] (g) edge (c);
+                \path[shorten >=1cm, shorten <= 1.3cm] (g) edge (f);
+                \path[shorten >=1cm, shorten <= 1cm] (c) edge (f);
+                \path[shorten >=1cm, shorten <= 1.2cm] (f) edge (d);
+
+                \begin{scope}[scale=1.5,shift=(a),every node/.append style={transform shape}]
+                  \node{\BS{rougeLaBRI}};
+                \end{scope}
+                \begin{scope}[scale=1.5,shift=(b),every node/.append style={transform shape}]
+                  \node{\BS{bleuLaBRI}};
+                \end{scope}
+                \begin{scope}[scale=1.5,shift=(c),every node/.append style={transform shape}]
+                  \node{\BS{orange}};
+                \end{scope}
+                \begin{scope}[scale=1.5,shift=(d),every node/.append style={transform shape}]
+                  \node{\BS{rougeLaBRI}};
+                \end{scope}
+                \begin{scope}[scale=1.5,shift=(e),every node/.append style={transform shape}]
+                  \node{\BS{yellow}};
+                \end{scope}
+                \begin{scope}[scale=1.5,shift=(f),every node/.append style={transform shape}]
+                  \node{\BS{orange}};
+                \end{scope}
+                \begin{scope}[scale=1.5,shift=(g),every node/.append style={transform shape}]
+                  \node{\BS{yellow}};
+                \end{scope}
+
+              \end{tikzpicture}
+              \vspace{-.5cm}
+              
+              Telecommunication network with non-interfering frequences
+              \vspace{-.6cm}
+              
+            \end{block}
+          \end{column}
+        \end{columns}
+      \end{block}
+
     \end{minipage}
   \end{beamercolorbox}
-\end{column}
-\end{columns}
+
+  \begin{columns}
+    \begin{column}{.49\textwidth}
+      \begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
+        \begin{minipage}[T]{.95\textwidth}
+          \begin{block}{Color a graph with as few colors as possible}
+            \thm{Heawood, Kempe 1890}
+            Every planar graph is 5-colorable
+            
+            \textit{Proof:} 5-degeneracy: There exist a vertex of degree at most 5 in $G$
+            
+            \centering
+            \begin{tikzpicture}
+              \clip (-5,5) rectangle (5,-5.5);
+              \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (90:4cm) {};
+              \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt]  (b) at (162:4cm) {};
+              \node[draw=black,fill=yellow,circle,inner sep=6pt] (c) at (234:4cm) {};
+              \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (306:4cm) {};
+              \node[draw=black,fill=white,circle,inner sep=6pt] (e) at (18:4cm) {};
+              \node[draw=black,fill=black,circle,inner sep=6pt] (A) at (0,0) {};
+              
+              
+              \draw[semitransparent] (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+              \draw (b) -- (A) -- (a) (c) -- (A) -- (d) (A) --(e);
+            \end{tikzpicture}
+
+            \begin{columns}
+              \begin{column}{.45\textwidth}
+                \centering
+                \begin{tikzpicture}
+                  \clip (-5,5) rectangle (5,-5.5);
+                  \draw[-{Stealth[scale=4]}] (5,5) -- (4,4);
+                  \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (90:4cm) {};
+                  \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt]  (b) at (162:4cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt] (c) at (234:4cm) {};
+                  \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (306:4cm) {};
+                  \node[draw=black,line width=4pt,fill=yellow,circle,inner sep=6pt] (e) at (18:4cm) {};
+                  \node[draw=black,fill=white,circle,inner sep=6pt] (A) at (0,0) {};
+                  
+                  
+                  \draw[semitransparent] (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+                  \draw (b) -- (A) -- (a) (c) -- (A) -- (d) (A) --(e);
+                \end{tikzpicture}
+              \end{column}
+              or
+              \begin{column}{.45\textwidth}
+                \centering
+                \begin{tikzpicture}
+                  \clip (-5,5) rectangle (5,-5.5);
+                  \draw[-{Stealth[scale=4]}] (-5,5) -- (-4,4);
+                  \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (90:4cm) {};
+                  \node[draw=black,line width = 4pt,fill=bleuLaBRI,circle,inner sep=6pt]  (b) at (162:4cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt] (c) at (234:4cm) {};
+                  \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (306:4cm) {};
+                  \node[draw=black,fill=white,circle,inner sep=6pt] (e) at (18:4cm) {};
+                  \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (A) at (0,0) {};
+                  \node (D1) at (286:7cm) {};
+                  \node (D2) at (326:7cm) {};
+                  
+                  \draw[semitransparent] (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+                  \draw (b) -- (A) -- (a) (c) -- (A) -- (d) (A) --(e);
+                  \draw[loosely dashed] (c) .. controls (D1) and (D2) .. (e);
+                \end{tikzpicture}
+              \end{column}
+            \end{columns}
+
+          \end{block}
+
+          \vfill
+
+          \begin{block}{Connectivity of the reconfiguration graph}
+            
+            \thm{Meyniel 1989} For all planar graph $G$, all the 5-colorings of $G$ are Kempe
+            equivalent
+            
+            \vspace{.5cm}
+            False for 4-colorings because of frozen colorings :
+
+            \begin{center}
+            \begin{columns}
+              \begin{column}{.49\textwidth}
+                \centering
+                \begin{tikzpicture}
+                  \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (45:3cm) {};
+                  \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt]  (b) at (135:3cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt] (c) at (225:3cm) {};
+                  \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (d) at (315:3cm) {};
+                  \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (B) at (135:1.5cm) {};
+                  \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (D) at (315:1.5cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt] (A) at (45:5.4cm) {};
+                  \node[draw=black,fill=orange,circle,inner sep=6pt] (C) at (225:5.4cm) {};
+                  \node (D') at (315:6cm) {};
+                  
+                  \draw (a) -- (b) -- (c) -- (d) -- (a) -- (A) -- (b) -- (B) -- (D) -- (d)
+                  -- (A);
+                  \draw (c) -- (B) -- (a) -- (D) -- (c) -- (C)  (b) -- (C) -- (d) ;
+                  \draw (A) .. controls (D') ..  (C);
+                \end{tikzpicture}
+              \end{column}
+              \hfill
+              
+              \begin{column}{.49\textwidth}
+                \centering
+                \begin{tikzpicture}
+                  \node[draw=black,fill=orange,circle,inner sep=6pt]   (a) at (45:3cm) {};
+                  \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt]  (b) at (135:3cm) {};
+                  \node[draw=black,fill=orange,circle,inner sep=6pt] (c) at (225:3cm) {};
+                  \node[draw=black,fill=bleuLaBRI,circle,inner sep=6pt] (d) at (315:3cm) {};
+                  \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (B) at (135:1.5cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt] (D) at (315:1.5cm) {};
+                  \node[draw=black,fill=yellow,circle,inner sep=6pt] (A) at (45:5.4cm) {};
+                  \node[draw=black,fill=rougeLaBRI,circle,inner sep=6pt] (C) at (225:5.4cm) {};
+                  \node (D') at (315:6cm) {};
+                  
+                  \draw (a) -- (b) -- (c) -- (d) -- (a) -- (A) -- (b) -- (B) -- (D) -- (d)
+                  -- (A);
+                  \draw (c) -- (B) -- (a) -- (D) -- (c) -- (C)  (b) -- (C) -- (d) ;
+                  \draw (A) .. controls (D') ..  (C);
+                \end{tikzpicture}
+              \end{column}
+            \end{columns}
+            \end{center}
+            The graphs induced by any two colors are connected, hence, the
+            partition induced by the colors is invariant !
+          \end{block}
+        \end{minipage}
+      \end{beamercolorbox}
+
+    \end{column}
+    \begin{column}{.49\textwidth}
+      \begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
+        \begin{minipage}[T]{.95\textwidth}
+          \begin{block}{Diameter of the reconfiguration graph}
+            \thm{Deschamps, Feghali, Kardoš, L-D., Pierron 22} All the 5-colorings
+            of a planar graph are equivalent up to $O(n^{195})$ Kempe changes
+
+            \vspace{.5cm}
+            \textit{Proof:} If $G$ is 4-degenerate:
+            \begin{columns}
+              \begin{column}{.33\textwidth}
+                \centering
+                \begin{tikzpicture}
+                  \node[draw,line width = 4pt,fill=rougeLaBRI, circle,inner sep=6pt] (A) at (0,0) {};
+                  \node[draw,fill=bleuLaBRI, circle, inner sep=6pt] (a) at (20:4.5cm) {};
+                  \node[draw,line width = 4pt,fill=yellow, circle, inner sep=6pt] (b) at (0:4.5cm) {};
+                  \node[draw,line width = 4pt,fill=yellow, circle, inner sep=6pt] (c) at (320:4.5cm) {};
+                  \node[draw,fill=orange, circle, inner sep=6pt] (d) at (340:4.5cm) {};
+                  
+                  \node (e) at (335:6.6cm) {};
+                  \node (f) at (345:6.6cm) {};
+
+                  \node (h) at (315:6.6cm) {};
+                  \node (g) at (320:6.66cm) {};
+                  \node (i) at (325:6.54cm) {};
+
+                  \node (j) at (0:6.6cm) {};
+
+                  \node (k) at (15:6.54cm) {};
+                  \node (l) at (20:6.6cm) {};
+                  \node (m) at (25:6.54cm) {};
+
+                  \begin{scope}[shift={(350:8.4cm)}]
+                    \draw[domain=135:205] plot ({6*cos(\x)}, {6*sin(\x)});
+                  \end{scope}
+                  
+                  \draw[line width = 4pt] (j) -- (b) -- (A) -- (c);
+                  \draw[line width = 4pt] (h) -- (c) -- (g)  (i) -- (c);
+                  \draw (a) -- (A) -- (d);
+                  \draw (f) -- (d) -- (e);
+                  \draw (m) -- (a) -- (l)  (a) -- (k);
+                \end{tikzpicture}                
+              \end{column}
+              \hfill
+              \begin{column}{.3\textwidth}
+                \centering
+                \begin{tikzpicture}
+                  \draw[-{Stealth[scale=4]}] (-4,-1) -- (-2,-1);                  
+                  \node[draw,fill=white, circle,inner sep=6pt] (A) at (0,0) {};
+                  \node[draw,fill=bleuLaBRI, circle, inner sep=6pt] (a) at (20:4.5cm) {};
+                  \node[draw,fill=yellow, circle, inner sep=6pt] (b) at (0:4.5cm) {};
+                  \node[draw,line width = 4pt,fill=yellow, circle, inner sep=6pt] (c) at (320:4.5cm) {};
+                  \node[draw,fill=orange, circle, inner sep=6pt] (d) at (340:4.5cm) {};
+                  
+                  \node (e) at (335:6.6cm) {};
+                  \node (f) at (345:6.6cm) {};
+
+                  \node (h) at (315:6.6cm) {};
+                  \node (g) at (320:6.66cm) {};
+                  \node (i) at (325:6.54cm) {};
+
+                  \node (j) at (0:6.6cm) {};
+
+                  \node (k) at (15:6.54cm) {};
+                  \node (l) at (20:6.6cm) {};
+                  \node (m) at (25:6.54cm) {};
+
+                  \begin{scope}[shift={(350:8.4cm)}]
+                    \draw[domain=135:205] plot ({6*cos(\x)}, {6*sin(\x)});
+                  \end{scope}
+                  
+                  \draw (j) -- (b) -- (A) -- (c);
+                  \draw[line width = 4pt] (h) -- (c) -- (g)  (i) -- (c);
+                  \draw (a) -- (A) -- (d);
+                  \draw (f) -- (d) -- (e);
+                  \draw (m) -- (a) -- (l)  (a) -- (k);
+                \end{tikzpicture}                
+              \end{column}
+              \hfill
+              \begin{column}{.3\textwidth}
+                \centering
+                \begin{tikzpicture}
+                  \draw[-{Stealth[scale=4]}] (-4,-1) -- (-2,-1);
+                  \node[draw,fill=white, circle,inner sep=6pt] (A) at (0,0) {};
+                  \node[draw,fill=bleuLaBRI, circle, inner sep=6pt] (a) at (20:4.5cm) {};
+                  \node[draw,fill=yellow, circle, inner sep=6pt] (b) at (0:4.5cm) {};
+                  \node[draw,fill=rougeLaBRI, circle, inner sep=6pt] (c) at (320:4.5cm) {};
+                  \node[draw,fill=orange, circle, inner sep=6pt] (d) at (340:4.5cm) {};
+                  
+                  \node (e) at (335:6.6cm) {};
+                  \node (f) at (345:6.6cm) {};
+
+                  \node (h) at (315:6.6cm) {};
+                  \node (g) at (320:6.66cm) {};
+                  \node (i) at (325:6.54cm) {};
+
+                  \node (j) at (0:6.6cm) {};
+
+                  \node (k) at (15:6.54cm) {};
+                  \node (l) at (20:6.6cm) {};
+                  \node (m) at (25:6.54cm) {};
+
+                  \begin{scope}[shift={(350:8.4cm)}]
+                    \draw[domain=135:205] plot ({6*cos(\x)}, {6*sin(\x)});
+                  \end{scope}
+                  
+                  \draw (j) -- (b) -- (A) -- (c);
+                  \draw (h) -- (c) -- (g);
+                  \draw (a) -- (A) -- (d);
+                  \draw (f) -- (d) -- (e);
+                  \draw (i) -- (c);
+                  \draw (m) -- (a) -- (l)  (a) -- (k);
+                \end{tikzpicture}                
+              \end{column}
+            \end{columns}
+            \begin{itemize}
+            \item Emulate a 4-degenerate graph
+            \item Add vertices by bunches of linear size
+            \end{itemize}
+          \end{block}
+
+          \begin{block}{Sampling coloring}
+            Do random Kempe changes until reaching a close to random uniform
+            $k$-coloring $\leadsto$ study of a Markov chain
+
+            \vspace{.7cm}
+            \thm{Vigoda 2000} For single vertex recoloring, polynomial mixing
+            time when $k > \frac{11}{6}\Delta$
+
+            \conj Sampling with random Kempe changes instead of single vertex
+            changes is always more efficient.
+
+            \vspace{.5cm}
+            \thm{Hayes, Vera, Vigoda 2018} For planar graphs and single vertex recoloring,
+            polynomial mixing time when $k = \Omega\left(\frac{\Delta}{\log\Delta}\right)$
+
+            \conj $k$ can be significantly reduced  when working with Kempe changes
+          \end{block}
+
+          \begin{block}{Recoloring version of Grötzsch's theorem}
+            \thm{Grötzsch 1959} All triangle-free planar graphs are 3-colorable
+
+            \conj All the 3-colorings of a triangle-free planar graph are Kempe equivalent
+          \end{block}
+        \end{minipage}
+      \end{beamercolorbox}
+    \end{column}
+  \end{columns}
   \vskip1ex
 \end{frame}
 \end{document}
