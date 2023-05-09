@@ -1,0 +1,331 @@
+\documentclass[10pt,xcolor=dvipsnames,presentation,aspectratio=169]{beamer}
+
+\usepackage{BeamerColor}
+\usepackage{etoolbox}
+
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage[main= english,francais]{babel}%
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+
+\usepackage{graphicx}%
+\usepackage{courier}%
+\usepackage{algorithm2e}
+
+\usepackage{url}%
+\urlstyle{sf}%
+
+\usepackage{subcaption}%
+\usepackage{caption}
+\captionsetup[figure]{labelformat=empty}% redefines the caption setup of the figures environment in the beamer class.
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing}
+\tikzset{%
+  show curve controls/.style={
+    postaction={
+      decoration={
+        show path construction,
+        curveto code={
+          \draw [blue] 
+            (\tikzinputsegmentfirst) -- (\tikzinputsegmentsupporta)
+            (\tikzinputsegmentlast) -- (\tikzinputsegmentsupportb);
+          \fill [red, opacity=0.5] 
+            (\tikzinputsegmentsupporta) circle [radius=.5ex]
+            (\tikzinputsegmentsupportb) circle [radius=.5ex];
+        }
+      },
+      decorate
+}}}
+
+
+\usepackage{listings}%
+
+\usepackage{faktor}%
+\usepackage{cancel}%
+\usepackage{stmaryrd}%
+
+\usepackage[style=verbose,backend=biber]{biblatex}
+\addbibresource{biblio.bib}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+%%%%%%%%% Colors of Beamer Layout %%%%%%%%%%%%%
+\newcommand{\myorange}{Orange}
+\newcommand{\mygreen}{DarkGreen}
+\newcommand{\mycyan}{LightSeaGreen}
+\newcommand{\myred}{Fuchsia}
+\newcommand{\myyellow}{Goldenrod}
+\newcommand{\myblue}{RoyalBlue}
+\newcommand{\mydarkblue}{MidnightBlue}
+
+
+%%%%%%%%% Begin of Beamer Layout %%%%%%%%%%%%%
+\ProcessOptionsBeamer
+\usecolortheme{whale}
+\usecolortheme[named=\myblue]{structure}
+\useinnertheme{rounded}
+\useoutertheme{infolines}
+
+
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{headline}[default]
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+\defbeamertemplate*{headline}{info theme}{}
+\defbeamertemplate*{footline}{info theme}{\leavevmode%
+
+
+  \hbox{%
+\begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+\usebeamerfont{author in head/foot}\insertshortauthor
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.71\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+\usebeamerfont{title in head/foot}\insertsectionhead
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.09\paperwidth,ht=2.25ex,dp=1ex,right]{section in head/foot}%
+\usebeamerfont{section in head/foot}\insertframenumber{}~/~\inserttotalframenumber\hspace*{2ex}
+\end{beamercolorbox}
+}\vskip0pt}
+\setbeamercolor*{block title example}{fg=\myorange}
+\AtBeginEnvironment{exampleblock}{\setbeamercolor{itemize item}{fg=\myorange}}
+\setbeamercolor*{block title alerted}{fg=\myred}
+\AtBeginEnvironment{alertblock}{\setbeamercolor{itemize item}{fg=\myred}}
+\setbeamertemplate{footline}[info theme]
+\defbeamertemplate{description item}{align left}{\insertdescriptionitem\hfill}
+
+%%%%%%%%% End of Beamer Layout %%%%%%%%%%%%%
+
+
+
+
+
+\lstset{%
+	basicstyle=\sffamily,%
+	columns=fullflexible,%
+	language=C++,% % À ajuster dans chaque projet!
+	frame=lb,%
+	frameround=fftf,%
+}%
+
+\sloppy
+
+%\setbeamertemplate{headline}{}%
+
+\setbeamertemplate{navigation symbols}{%
+	\insertslidenavigationsymbol%
+	% \insertframenavigationsymbol%
+	% \insertsubsectionnavigationsymbol%
+	% \insertsectionnavigationsymbol%
+	% \insertdocnavigationsymbol%
+	% \insertbackfindforwardnavigationsymbol%
+}
+
+\newcommand{\backupbegin}{
+   \newcounter{finalframe}
+   \setcounter{finalframe}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \setcounter{framenumber}{\value{finalframe}}
+}
+
+\newcommand{\semitransp}[2][50]{\textcolor{fg!#1}{#2}}
+\newcommand{\hide}[3]{\only<#1>{#3}\only<#2>{\semitransp{#3}}}
+
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\tw}{tw}
+\DeclareMathOperator{\mad}{mad}
+
+\begin{document}
+
+\title{Exploration de l'espace des colorations d'un graphe}
+\author[Clément Legrand]{Clément Legrand-Duchesne}
+\institute{LaBRI, Université de Bordeaux}
+\date{\today}
+
+\begin{frame}
+  \titlepage
+
+  \centering
+\end{frame}
+
+\begin{frame}{Reconfiguration de colorations}
+
+  \begin{columns}
+    \begin{column}{.66\textwidth}
+      \begin{exampleblock}{Chaine de Kempe (1879)}
+        Composante bichromatique connexe maximale dans $G$
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{.33\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \clip (-1,1) rectangle (1,-1);
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+        \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+      \end{tikzpicture}
+      
+      %\includegraphics[width=.8\textwidth]{../figures/pdf/knot_example.pdf}
+    \end{column}
+  \end{columns}
+
+  \begin{columns}
+    \begin{column}{.33\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \clip (-1,1) rectangle (1,-1);
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,very thick,fill=\myblue,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,very thick,fill=\myred,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,very thick,fill=\myblue,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+        \draw (e) -- (a) -- (b) -- (c);
+        \draw[very thick] (c) -- (d) -- (e);
+      \end{tikzpicture}
+    \end{column}
+    \hfill
+    \begin{column}{.33\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \clip (-1,1) rectangle (1,-1);
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+        \node[draw=black,very thick,fill=\myred,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,very thick,fill=\myyellow,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (e) at (18:.8cm) {};
+        
+        \draw[very thick] (b) -- (c);
+        \draw (a) -- (b);
+        \draw (c) -- (d) -- (e) -- (a);
+      \end{tikzpicture}
+    \end{column}
+    \hfill
+    \begin{column}{.33\linewidth}
+      \centering
+      \begin{tikzpicture}
+        
+        \clip (-1,1) rectangle (1,-1);
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,very thick,fill=\myyellow,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (e) at (18:.8cm) {};
+        
+        \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+
+  \uncover<3>{
+  \begin{block}{Questions}
+    \begin{itemize}
+    \item Connexité et Diamètre du graphe de reconfiguration
+    \item Temps de mélange de la chaine de Markov associée
+    \item Dénombrement des colorations
+    \item Énumération efficace des colorations
+    \end{itemize}
+  \end{block}}
+\end{frame}
+
+\begin{frame}{Publications}
+  \begin{block}{Publications}
+    \begin{itemize}
+    \item The structure of quasi-transitive graphs avoiding a minor with
+      applications to the domino problem, Eurocomb23, soumis à
+      JCTb.\\
+      Avec Louis Esperet et Ugo Giocanti.
+    \item \semitransp{Strengthening a theorem of Meyniel, SIDMA.\\ Avec Quentin Deschamps, Carl
+      Feghali, František Kardoš et Théo Pierron.}
+    \item \semitransp{Recoloring version of Hadwiger's conjecture, Eurocomb23, soumis à
+      JCTb.\\ Avec Marthe Bonamy, Marc Heinrich et Jonathan Narboni.}
+    \item \semitransp{Kempe changes in degenerate graphs, European Journal of
+      Combinatorics.\\ Avec Marthe Bonamy et Vincent Delecroix.}
+    \item \semitransp{Kempe changes in bounded treewidth graphs, EuroComb 2021\\ Avec Marthe
+      Bonamy and Vincent Delecroix.}
+    \item \semitransp{Parameterized complexity of untangling knots, ICALP 2022, soumis à
+      SICOMP.\\ Avec Ashutosh Rai et Martin Tancer.}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Collaborations}
+  \begin{block}{Visites}
+    \begin{itemize}
+    \item Juin: 1 semaine a Bristol avec Luke Jeffreys
+    \item Novembre: 1 semaine à Beyrouth avec Amer Mouawad, Clément Dallard, Quentin Deschamps,
+      Amadeus Reinald
+    \end{itemize}
+  \end{block}
+ \vspace{-.2cm}
+  \uncover<2>{
+  \begin{block}{Conférences, Workshops}
+    \begin{itemize}
+    \item Juin: International Hiking Workshop for Young Combinatorialists
+    \item Mars: Journées reconfiguration et bases de données
+    \item Févier: Sage days 117
+    \item Novembre: Journées Graphes et Algorithmique (exposé)
+    \item Novembre: séminaire bordelaisJournées ALEA (exposé)
+    \item Juillet: ICALP 2022 (exposé)
+    \end{itemize}
+  \end{block}}
+\end{frame}
+
+\begin{frame}{Projets en cours}
+  \begin{itemize}
+  \item \hide12{Version recoloration de la conjecture de Reed, avec Marthe
+      Bonamy et Tomas Kaiser}
+  \item \hide12{Reconstruction de Polytope, avec Jane Tan}
+  \item \hide12{Coloration simultanée d'arètes, avec Amedeo Sgueglia}
+  \item \hide12{Kempe mixing chain, avec Dan Cranston}
+  \item \hide12{Reconfiguration processeur quantique, avec Clément Dallard, Quentin
+    Deschamps, Amer Mouawad et Amadeus Reinald}
+  \uncover<2>{
+  \item Reconfiguration de quadrangulations, avec Vincent Delecroix
+  \item Reconfiguration de $(s,t)$-séparateur, projet BANFF
+  \item Soft Meyniel conjecture, avec Paul Bastide, Marthe Bonamy et Jane Tan
+  \item Recoloration de cographes, avec Marthe Bonamy
+  \item Version recoloration du théorème de Grötzsch}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Implication dans la communauté}
+  \begin{block}{Reviews}
+    \begin{itemize}
+    \item Switching 3-Edge colorings of Cubic Graphs (Discrete Mathematics)
+    \item Triangle-free planar graphs with at most $64^{n^{0.731}}$ 3-colorings (JCTb)
+    \item List-Recoloring of Sparse Graphs (European Journal of Combinatorics)
+    \item Kempe Equivalent List Colorings (Combinatorica)
+    \item Optimally Reconfiguring List and Correspondence Colourings (European
+      Symposium on Algorithms)
+    \end{itemize}
+  \end{block}
+
+  \uncover<2->{
+  \begin{block}{Co-organisateur du séminaire bordelais}
+    Avec Marthe Bonamy et Claire Hilaire, depuis septembre
+  \end{block}
+
+  \begin{block}{Co-organisateur du groupe de lecture pour jeunes grapheux
+      francophones}
+    Avec Paul Bastide. Nouveau groupe de lecture, première séance prévu le 22 mai
+  \end{block}}
+
+  \uncover<3>{
+  \begin{block}{Encadrement d'un stagiaire L3}
+  \end{block}}
+  
+\end{frame}
+
+\end{document}
