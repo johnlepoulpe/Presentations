@@ -1,4 +1,4 @@
-\documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
+\documentclass[11pt,xcolor=dvipsnames,presentation,aspectratio=169]{beamer}
 
 \usepackage{BeamerColor}
 \usepackage{etoolbox}
@@ -36,10 +36,21 @@
   \endgroup
 }
 
+%%%%%%%%% Colors of Beamer Layout %%%%%%%%%%%%%
+\newcommand{\myorange}{Orange}
+\newcommand{\mygreen}{DarkGreen}
+\newcommand{\mycyan}{LightSeaGreen}
+\newcommand{\myred}{Sepia}
+\newcommand{\myyellow}{Goldenrod}
+\newcommand{\myblue}{RoyalBlue}
+\newcommand{\mydarkblue}{MidnightBlue}
+
+
+
 %%%%%%%%% Begin of Beamer Layout %%%%%%%%%%%%%
 \ProcessOptionsBeamer
 \usecolortheme{whale}
-\usecolortheme[named=DarkGreen]{structure}
+\usecolortheme[named=\myblue]{structure}
 \useinnertheme{rounded}
 \useoutertheme{infolines}
 \setbeamertemplate{footline}[frame number]
@@ -59,17 +70,13 @@
 \usebeamerfont{section in head/foot}\insertframenumber{}~/~\inserttotalframenumber\hspace*{2ex}
 \end{beamercolorbox}
 }\vskip0pt}
-\setbeamercolor*{block title example}{fg=LightSeaGreen}
-\AtBeginEnvironment{exampleblock}{\setbeamercolor{itemize item}{fg=LightSeaGreen}}
-\setbeamercolor*{block title alerted}{fg=DarkOrange2}
-\AtBeginEnvironment{alertblock}{\setbeamercolor{itemize item}{fg=DarkOrange2}}
+\setbeamercolor*{block title example}{fg=\myorange}
+\AtBeginEnvironment{exampleblock}{\setbeamercolor{itemize item}{fg=\myorange}}
+\setbeamercolor*{block title alerted}{fg=\myred}
+\AtBeginEnvironment{alertblock}{\setbeamercolor{itemize item}{fg=\myred}}
 \setbeamertemplate{footline}[info theme]
 \defbeamertemplate{description item}{align left}{\insertdescriptionitem\hfill}
 %%%%%%%%% End of Beamer Layout %%%%%%%%%%%%%
-\newcommand{\myorange}{DarkOrange2}
-\newcommand{\mygreen}{DarkGreen}
-\newcommand{\mycyan}{LightSeaGreen}
-
 
 \lstset{%
 	basicstyle=\sffamily,%
@@ -109,114 +116,203 @@
 \author[Clément Legrand]{Clément Legrand-Duchesne}
 \institute{LaBRI, Bordeaux}
 %\date{\today}
-\date{\today}
+\date{August 31, 2023}
 
 \begin{frame}
   \titlepage
 
+  \centering
   Joint work with Marthe Bonamy, Marc Heinrich and Jonathan Narboni
 \end{frame}
 
 \section*{Some context}
+% \begin{frame}{Recoloring with Kempe changes}
+%   \uncover<1->{
+%   \begin{columns}
+%     \begin{column}{.66\textwidth}
+%       \begin{exampleblock}{Kempe chain (1879)}
+%         Maximal bichromatic connected component in $G$
+%       \end{exampleblock}
+%     \end{column}
+%     \begin{column}{.33\textwidth}
+%       \centering
+%       \begin{tikzpicture}
+%         \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+%         \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+%         \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
+%         \node[draw=black,fill=blue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+%         \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+%         \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+%       \end{tikzpicture}
+      
+%       %\includegraphics[width=.8\textwidth]{../figures/pdf/knot_example.pdf}
+%     \end{column}
+%   \end{columns}
+%   }
+
+%   \vspace{1.5cm}
+  
+%   \begin{columns}
+%     \uncover<2->{
+%       \begin{column}{.33\textwidth}
+%         \centering
+%         \begin{tikzpicture}
+%           \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+%           \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+%           \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (c) at (234:.8cm) {};
+%           \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt] (d) at (306:.8cm) {};
+%           \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+%           \draw (e) -- (a) -- (b) -- (c);
+%           \draw[very thick] (c) -- (d) -- (e);
+%         \end{tikzpicture}      
+%     \end{column}
+%     }
+%     \uncover<3->{
+%     \begin{column}{.33\textwidth}
+%        \centering
+%       \begin{tikzpicture}
+%         \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+%         \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+%         \node[draw=black,very thick,fill=\mycyan,circle,inner sep=2pt] (c) at (234:.8cm) {};
+%         \node[draw=black,fill=blue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+%         \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+%         \draw[very thick] (b) -- (c);
+%         \draw (a) -- (b);
+%         \draw (c) -- (d) -- (e) -- (a);
+%       \end{tikzpicture}
+%     \end{column}
+%     }
+%     \uncover<4->{
+%     \begin{column}{.33\textwidth}
+%        \centering
+%       \begin{tikzpicture}
+%         \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+%         \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+%         \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
+%         \node[draw=black,very thick,fill=\mycyan,circle,inner sep=2pt] (d) at (306:.8cm) {};
+%         \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+
+%         \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+%       \end{tikzpicture}
+%     \end{column}
+%     }
+%   \end{columns}
+% \end{frame}
+
+\section*{Some context}
 \begin{frame}{Recoloring with Kempe changes}
-  \uncover<1->{
+
   \begin{columns}
-    \begin{column}{.66\textwidth}
+    \begin{column}{.55\linewidth}
       \begin{exampleblock}{Kempe chain (1879)}
         Maximal bichromatic connected component in $G$
       \end{exampleblock}
     \end{column}
-    \begin{column}{.33\textwidth}
+    \begin{column}{.2\linewidth}
       \centering
       \begin{tikzpicture}
+        \clip (-1,1) rectangle (1,-1);
         \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
-        \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (162:.8cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
-        \node[draw=black,fill=blue,circle,inner sep=2pt] (d) at (306:.8cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (c) at (234:.8cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (e) at (18:.8cm) {};
 
         \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
       \end{tikzpicture}
       
       %\includegraphics[width=.8\textwidth]{../figures/pdf/knot_example.pdf}
     \end{column}
-  \end{columns}
-  }
 
-  \vspace{1.5cm}
-  
-  \begin{columns}
-    \uncover<2->{
-      \begin{column}{.33\textwidth}
-        \centering
-        \begin{tikzpicture}
+    \begin{column}{.2\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \only<1>{
+          \clip (-1,1) rectangle (1,-1);
           \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
-          \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (162:.8cm) {};
-          \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (c) at (234:.8cm) {};
-          \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt] (d) at (306:.8cm) {};
-          \node[draw=black,very thick,fill=blue,circle,inner sep=2pt] (e) at (18:.8cm) {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+          \node[draw=black,very thick,fill=\myblue,circle,inner sep=2pt] (c) at (234:.8cm) {};
+          \node[draw=black,very thick,fill=\myred,circle,inner sep=2pt] (d) at (306:.8cm) {};
+          \node[draw=black,very thick,fill=\myblue,circle,inner sep=2pt] (e) at (18:.8cm) {};
 
           \draw (e) -- (a) -- (b) -- (c);
           \draw[very thick] (c) -- (d) -- (e);
-        \end{tikzpicture}      
-    \end{column}
-    }
-    \uncover<3->{
-    \begin{column}{.33\textwidth}
-       \centering
-      \begin{tikzpicture}
-        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
-        \node[draw=black,very thick,fill=magenta,circle,inner sep=2pt]  (b) at (162:.8cm) {};
-        \node[draw=black,very thick,fill=\mycyan,circle,inner sep=2pt] (c) at (234:.8cm) {};
-        \node[draw=black,fill=blue,circle,inner sep=2pt] (d) at (306:.8cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
+        }
 
-        \draw[very thick] (b) -- (c);
-        \draw (a) -- (b);
-        \draw (c) -- (d) -- (e) -- (a);
+        \only<2>{
+          \clip (-1,1) rectangle (1,-1);
+          \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+          \node[draw=black,very thick,fill=\myred,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+          \node[draw=black,very thick,fill=\myyellow,circle,inner sep=2pt] (c) at (234:.8cm) {};
+          \node[draw=black,fill=\myblue,circle,inner sep=2pt] (d) at (306:.8cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt] (e) at (18:.8cm) {};
+          
+          \draw[very thick] (b) -- (c);
+          \draw (a) -- (b);
+          \draw (c) -- (d) -- (e) -- (a);
+        }
+
+        \only<3->{
+          \clip (-1,1) rectangle (1,-1);
+          \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
+          \node[draw=black,fill=\myyellow,circle,inner sep=2pt]  (b) at (162:.8cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt] (c) at (234:.8cm) {};
+          \node[draw=black,very thick,fill=\myyellow,circle,inner sep=2pt] (d) at (306:.8cm) {};
+          \node[draw=black,fill=\myred,circle,inner sep=2pt] (e) at (18:.8cm) {};
+          
+          \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
+        }
       \end{tikzpicture}
     \end{column}
-    }
-    \uncover<4->{
-    \begin{column}{.33\textwidth}
-       \centering
-      \begin{tikzpicture}
-        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (90:.8cm) {};
-        \node[draw=black,fill=\mycyan,circle,inner sep=2pt]  (b) at (162:.8cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (c) at (234:.8cm) {};
-        \node[draw=black,very thick,fill=\mycyan,circle,inner sep=2pt] (d) at (306:.8cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=2pt] (e) at (18:.8cm) {};
-
-        \draw (a) -- (b) -- (c) -- (d) -- (e) -- (a);
-      \end{tikzpicture}
-    \end{column}
-    }
   \end{columns}
+  
+  % \uncover<4->{
+  % \begin{exampleblock}{Reconfiguration graph}
+  %   \begin{itemize}
+  %   \item $V(R^k(G)) =$ $k$-colorings of $G$.
+  %   \item $\alpha$ and $\beta$ adjacent  if $\alpha
+  %     \xleftrightarrow[\text{Kempe}]{} \beta$
+  %   \end{itemize}
+  % \end{exampleblock}}
+  % \vspace{-.3cm}
+  \uncover<4->{
+  \begin{alertblock}{Usual questions}
+    \begin{itemize}
+    \item Are any two $k$-colorings of a graph $G$ equivalent ?\\
+      Are all $k$-colorings equivalent to a $\chi(G)$-coloring ?
+    \item How many Kempe changes separate any two $k$-colorings ?
+    \item Application to sampling : Does the corresponding Markov chain mix well ?
+    \end{itemize}
+  \end{alertblock}}
+
 \end{frame}
 
-\begin{frame}{Natural questions in reconfiguration}
-  \begin{exampleblock}{Reconfiguration graph}
-    \begin{itemize}
-    \item $V(R^k(G)) =$ $k$-colorings of $G$.
-    \item $\alpha$ and $\beta$ adjacent  if $\alpha
-      \xleftrightarrow[\text{Kempe}]{} \beta$
-    \end{itemize}
-  \end{exampleblock}
+% \begin{frame}{Natural questions in reconfiguration}
+%   \begin{exampleblock}{Reconfiguration graph}
+%     \begin{itemize}
+%     \item $V(R^k(G)) =$ $k$-colorings of $G$.
+%     \item $\alpha$ and $\beta$ adjacent  if $\alpha
+%       \xleftrightarrow[\text{Kempe}]{} \beta$
+%     \end{itemize}
+%   \end{exampleblock}
 
-  \setbeamertemplate{description item}[align left] 
-  \begin{description}
-  \item[Reachability] Are $\alpha$ and $\beta$ Kempe-equivalent ? 
-  \item[Connectivity] Is $R^k(G)$ connected ?
-  \item[Diameter] Estimate $\diam(R^k(G))$ ?
-  \end{description}
+%   \setbeamertemplate{description item}[align left] 
+%   \begin{description}
+%   \item[Reachability] Are $\alpha$ and $\beta$ Kempe-equivalent ? 
+%   \item[Connectivity] Is $R^k(G)$ connected ?
+%   \item[Diameter] Estimate $\diam(R^k(G))$ ?
+%   \end{description}
 
-  \begin{block}{Application}
-    \begin{itemize}
-    \item Powerful tool (ex: Vizing theorem)
-    \item Sampling coloring with a Markov chain
-    \end{itemize}
-  \end{block}
-\end{frame}
+%   \begin{block}{Application}
+%     \begin{itemize}
+%     \item Powerful tool (ex: Vizing theorem)
+%     \item Sampling coloring with a Markov chain
+%     \end{itemize}
+%   \end{block}
+% \end{frame}
 
 \begin{frame}{Graph minor}
   \begin{exampleblock}{Graph minor}
@@ -231,17 +327,17 @@
         \node[draw=\myorange,fill=\myorange,circle,inner sep=1.5pt]   (a1) at (75:.8cm) {};
         \node[draw=\myorange,fill=\myorange,circle,inner sep=1.5pt]   (a2) at (105:.8cm) {};
         \node[draw=\myorange,fill=\myorange,circle,inner sep=1.5pt]   (a) at (90:.45cm) {};
-        \node[draw=\mycyan,fill=\mycyan,circle,inner sep=1.5pt]  (b) at (147:.8cm) {};
-        \node[draw=\mycyan,fill=\mycyan,circle,inner sep=1.5] (b2) at   (177:.8cm) {};
-        \node[draw=magenta,fill=magenta,circle,inner sep=1.5pt] (c) at (234:.8cm) {};
-        \node[draw=blue,fill=blue,circle,inner sep=1.5pt] (d) at (291:.8cm) {};
-        \node[draw=blue,fill=blue,circle,inner sep=1.5pt] (d2) at (321:.8cm) {};
-        \node[draw=blue,fill=blue,circle,inner sep=1.5pt] (d3) at (306:.45cm) {};
+        \node[draw=\myblue,fill=\myblue,circle,inner sep=1.5pt]  (b) at (147:.8cm) {};
+        \node[draw=\myblue,fill=\myblue,circle,inner sep=1.5] (b2) at   (177:.8cm) {};
+        \node[draw=\myred,fill=\myred,circle,inner sep=1.5pt] (c) at (234:.8cm) {};
+        \node[draw=\mydarkblue,fill=\mydarkblue,circle,inner sep=1.5pt] (d) at (291:.8cm) {};
+        \node[draw=\mydarkblue,fill=\mydarkblue,circle,inner sep=1.5pt] (d2) at (321:.8cm) {};
+        \node[draw=\mydarkblue,fill=\mydarkblue,circle,inner sep=1.5pt] (d3) at (306:.45cm) {};
         \node[draw=yellow,fill=yellow,circle,inner sep=1.5pt] (e) at (18:.8cm) {};
 
         \draw (a2) -- (b) -- (d3) (e) -- (b2) -- (c) -- (a2) (a1) -- (e) -- (d2)
-        (d3) -- (a) (e) -- (c) -- (d); \draw[very thick,\mycyan] (b) -- (b2);
-        \draw[very thick,blue] (d) -- (d2) -- (d3); \draw[very thick,\myorange]
+        (d3) -- (a) (e) -- (c) -- (d); \draw[very thick,\myblue] (b) -- (b2);
+        \draw[very thick,\mydarkblue] (d) -- (d2) -- (d3); \draw[very thick,\myorange]
         (a) -- (a1) -- (a2);
       \end{tikzpicture}
     \end{column}
@@ -250,9 +346,9 @@
       \centering
       \begin{tikzpicture}
         \node[draw=\myorange,fill=\myorange,circle,inner sep=1.5pt]   (a) at (90:.8cm) {};
-        \node[draw=\mycyan,fill=\mycyan,circle,inner sep=1.5pt]  (b) at (162:.8cm) {};
-        \node[draw=magenta,fill=magenta,circle,inner sep=1.5pt] (c) at (234:.8cm) {};
-        \node[draw=blue,fill=blue,circle,inner sep=1.5pt] (d) at (306:.8cm) {};
+        \node[draw=\myblue,fill=\myblue,circle,inner sep=1.5pt]  (b) at (162:.8cm) {};
+        \node[draw=\myred,fill=\myred,circle,inner sep=1.5pt] (c) at (234:.8cm) {};
+        \node[draw=\mydarkblue,fill=\mydarkblue,circle,inner sep=1.5pt] (d) at (306:.8cm) {};
         \node[draw=yellow,fill=yellow,circle,inner sep=1.5pt] (e) at (18:.8cm) {};
 
         \draw (c) -- (e) -- (b) -- (d) --(a) -- (b) -- (c) -- (a) -- (e) -- (d) --  (c) -- (d) ;
@@ -260,8 +356,8 @@
     \end{column}
   \end{columns}
   
-  $K_k$ is a minor of $G$ if and only if $V_1 \sqcup \dots \sqcup V_k \subseteq
-  V(G)$, with $V_i$ connected and $G[V_1, \dots V_k] = K_k$ 
+  $K_t$ is a minor of $G$ if and only if $V_1 \sqcup \dots \sqcup V_t \subseteq
+  V(G)$, with $V_i$ connected and $G[V_1, \dots V_t] = K_t$ 
 
   \uncover<2>{
   \begin{block}{Wagner, Kuratowski 1930}
@@ -340,80 +436,240 @@
 
 \begin{frame}{Frozen colorings}
   \begin{exampleblock}{Frozen coloring}
-    $\alpha$ is frozen if $\forall i,j \le k,$ the graph induced by colors $i$
+    $\alpha$ is frozen if $\forall i,j$, the graph induced by colors $i$
     and $j$ is connected
   \end{exampleblock}
 
   \begin{columns}
-    \begin{column}{.48\textwidth}
-      \centering      
+    \begin{column}{.45\textwidth}
+    \centering
       \begin{tikzpicture}
-        \node[draw=black,fill=\myorange,circle,inner sep=1.5pt]   (a) at (90:.3cm) {};
-        \node[draw=black,fill=\mycyan,circle,inner sep=1.5pt]  (b) at (210:.3cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=1.5pt] (c) at (330:.3cm) {};
-
-        \node[draw=black,fill=magenta,circle,inner sep=1.5pt]   (A) at (90:1cm) {};
-        \node[draw=black,fill=\myorange,circle,inner sep=1.5pt]  (B) at (210:1cm) {};
-        \node[draw=black,fill=\mycyan,circle,inner sep=1.5pt] (C) at (330:1cm) {};
-
-        \draw (a) -- (A);
-        \draw (b) -- (B);
-        \draw (c) -- (C);
-        \draw (a) -- (b) -- (c) -- (a);
-        \draw (A) -- (B) -- (C) -- (A);
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (45:1cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt]  (b) at (135:1cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt] (c) at (225:1cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (d) at (315:1cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (B) at (135:.5cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt] (D) at (315:.5cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt] (A) at (45:1.8cm) {};
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt] (C) at (225:1.8cm) {};
+        \node (D') at (315:2cm) {};
+        
+        \draw (a) -- (b) -- (c) -- (d) -- (a) -- (A) -- (b) -- (B) -- (D) -- (d)
+        -- (A);
+        \draw (c) -- (B) -- (a) -- (D) -- (c) -- (C)  (b) -- (C) -- (d) ;
+        \draw (A) .. controls (D') ..  (C);
       \end{tikzpicture}
     \end{column}
     \hfill
-    \begin{column}{.48\textwidth}
-      \centering
+    
+    \begin{column}{.45\textwidth}
+    \centering
       \begin{tikzpicture}
-        \node[draw=black,fill=\myorange,circle,inner sep=1.5pt]   (a) at (90:.3cm) {};
-        \node[draw=black,fill=\mycyan,circle,inner sep=1.5pt]  (b) at (210:.3cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=1.5pt] (c) at (330:.3cm) {};
-
-        \node[draw=black,fill=\mycyan,circle,inner sep=1.5pt]   (A) at (90:1cm) {};
-        \node[draw=black,fill=magenta,circle,inner sep=1.5pt]  (B) at (210:1cm) {};
-        \node[draw=black,fill=\myorange,circle,inner sep=1.5pt] (C) at (330:1cm) {};
-
-        \draw (a) -- (A);
-        \draw (b) -- (B);
-        \draw (c) -- (C);
-        \draw (a) -- (b) -- (c) -- (a);
-        \draw (A) -- (B) -- (C) -- (A);
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt]   (a) at (45:1cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt]  (b) at (135:1cm) {};
+        \node[draw=black,fill=\myorange,circle,inner sep=2pt] (c) at (225:1cm) {};
+        \node[draw=black,fill=\myblue,circle,inner sep=2pt] (d) at (315:1cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (B) at (135:.5cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt] (D) at (315:.5cm) {};
+        \node[draw=black,fill=\myyellow,circle,inner sep=2pt] (A) at (45:1.8cm) {};
+        \node[draw=black,fill=\myred,circle,inner sep=2pt] (C) at (225:1.8cm) {};
+        \node (D') at (315:2cm) {};
+        
+        \draw (a) -- (b) -- (c) -- (d) -- (a) -- (A) -- (b) -- (B) -- (D) -- (d)
+        -- (A);
+        \draw (c) -- (B) -- (a) -- (D) -- (c) -- (C)  (b) -- (C) -- (d) ;
+        \draw (A) .. controls (D') ..  (C);
       \end{tikzpicture}
     \end{column}
   \end{columns}
+
+  
   \begin{exampleblock}{Quasi-minor}
-    $K_k$ is quasi-minor of $G$ if there exists $V_1 \sqcup \dots \sqcup V_k$ such
-    that $\forall i \neq j, G[V_i \cup V_j]$ is connected and $G[V_1, \dots V_k]
-    = K_k$
+    $K_t$ is quasi-minor of $G$ if there exists $V_1 \sqcup \dots \sqcup V_t$ such
+    that $\forall i \neq j, G[V_i \cup V_j]$ is connected and $G[V_1, \dots V_t]
+    = K_t$
   \end{exampleblock}
-    Frozen $k$-coloring $\Rightarrow$ quasi $K_k$-minor
+  
+  $K_t$-minor $\Rightarrow$ quasi $K_t$-minor \hspace{3cm}
+  Frozen $t$-coloring $\Rightarrow$ quasi $K_t$-minor 
 \end{frame}
 
 \begin{frame}{Last conjecture}
   \begin{alertblock}{Conjecture 3 [Las Vergnas and Meyniel 1981]}
-    No $K_t$-minor $\Rightarrow$ No frozen $t$-coloring
+    No $K_t$-minor $\Rightarrow$ No quasi $K_t$-minor
   \end{alertblock}
   \begin{block}{Motivation}
     If $G$ has no $K_t$ minor and all its $t$-colorings are Kempe equivalent
-    then
+    then either 
     \begin{itemize}
     \item no frozen $t$-coloring
-    \item only one $t$-coloring up to color permutation
+    \item only one $t$-coloring up to color permutation $\leadsto$ Hadwiger's
+      conjecture is false
     \end{itemize}
   \end{block}
+
+  \begin{block}{Conjecture 3 holds for}
+    \begin{description}
+    \item[{[Jørgensen '94]}] $t= 8$
+    \item[{[Song and Thomas '06]}] $t=9$
+    \item[{[Kriesell '21]}] $t=10$
+    \end{description}
+  \end{block}
+  
+\end{frame}
+
+\begin{frame}{To sum up}
+
+  \begin{block}{No $K_t$-minor implies ...}
+  \begin{center}
+    \begin{tikzpicture}
+      \node[anchor=south west,draw=black,rectangle,minimum height = .6cm] (conj1) at (0,1.5) {1. $t$-recolorable};
+      \node[anchor=south west,draw=black,rectangle,minimum height = .6cm] (conj2) at (0,0) {2. Every
+        $t$-coloring is equivalent to a $(t-1)$-coloring};
+      \node[anchor=south west,draw=black,rectangle,minimum height = .6cm] (conj3) at (3.5,1.5) {3. No quasi-$K_t$-minor};
+      \draw[->,\myorange] (1.5,1.5) -- (1.5,.7);
+      \node[anchor=south west,\myorange] (hyp) at (1.5, .8) {Assuming Hadwiger};;
+
+      \node[anchor=south west] (plus) at (2.9,1.5) {$\wedge$};
+            
+      \draw[->] (7.2,1.8) -- (8,1.8);
+      \node[anchor=south west] (hadwiger) at (8, 1.5) {Hadwiger's conjecture is false};
+      
+    \end{tikzpicture}
+  \end{center}
+  \end{block}
+
   \pause
-  \begin{block}{Bonamy, Heinrich, L., Narboni '21+}
+  \begin{block}{Bonamy, Heinrich, L., Narboni '23}
     \begin{itemize}
     \item Strongly disproved for large $t$: for every $\varepsilon >0$ and large
       enough $t$, there exists a graph $G$ with a quasi-$K_t$-minor but no
-      $K_{\left(\frac{2}{3} + \varepsilon\right)t}$-minor
+      $K_{\left(\frac{2}{3} + \varepsilon\right)t}$-minor. This graph admits
+      another $t$-coloring.
       \pause
     \item All $\frac{t}{2}$-colorings of a $K_t$-minor free graph are
       Kempe-equivalent
     \end{itemize}
   \end{block}
+\end{frame}
+
+\begin{frame}{Sketch of proof}
+  \begin{block}{Random construction of $G_t$}
+    \vspace{-.5cm}
+    \begin{columns}
+      \begin{column}{.6\linewidth}
+        \begin{itemize}
+        \item Start with a clique on $V = \{a_1, b_1, \dots a_t, b_t\}$
+        \item<2-> For all $i$, remove $a_ib_i$
+        \item<3-> For all $i,j$, pick independently at random an edge in $\{a_i,b_i\} \times
+          \{a_j, b_j\}$ and remove it
+        \end{itemize}
+      \end{column}
+      \hfill
+      \begin{column}{.35\linewidth}
+        \begin{center}
+          \begin{tikzpicture}
+            \node[draw=black,fill=\myyellow,circle,inner sep=1.5pt]   (a1) at (45:.8cm) {};
+            \node[draw=black,fill=\myyellow,circle,inner sep=1.5pt]  (b1) at (45:1.5cm) {};            
+            \node[draw=black,fill=\myorange,circle,inner sep=1.5pt]   (a2) at (135:.8cm) {};
+            \node[draw=black,fill=\myorange,circle,inner sep=1.5pt]  (b2) at (135:1.5cm) {};            
+            \node[draw=black,fill=\myblue,circle,inner sep=1.5pt]   (a3) at (225:.8cm) {};
+            \node[draw=black,fill=\myblue,circle,inner sep=1.5pt]  (b3) at (225:1.5cm) {};            
+            \node[draw=black,fill=\myred,circle,inner sep=1.5pt]   (a4) at (315:.8cm) {};
+            \node[draw=black,fill=\myred,circle,inner sep=1.5pt]  (b4) at
+            (315:1.5cm) {};
+
+            % \draw[gray!120] (a1) -- (b2) -- (b1) -- (a2);
+            % \draw[gray!120] (b1) -- (b4) -- (a1) -- (a4);
+            % \draw[gray!120] (b3) -- (b4) -- (a3) -- (a4);
+
+            % \draw[gray!120] (a1) -- (a3);
+            % \draw[gray!120] (a3) edge[bend right] (b1);
+            % \draw[gray!120] (b1) edge[bend right] (b3);
+
+            % \draw[gray!120] (a2) edge[bend left] (b4);
+            % \draw[gray!120] (b4) edge[bend right] (b2);
+            % \draw[gray!120] (b2) edge[bend right] (a4);
+
+            % \draw (b2) -- (b3) -- (a2) -- (a3);
+
+            \only<2->{
+            \draw[dashed] (a1) -- (b1);
+            \draw[dashed] (a2) -- (b2);
+            \draw[dashed] (a3) -- (b3);
+            \draw[dashed] (a4) -- (b4);
+          }
+            \only<3->{
+            \draw[dashed] (b1) -- (b2);
+            \draw[dashed] (a2) -- (b3);
+            \draw[dashed] (a3) -- (b4);
+            \draw[dashed] (b1) -- (b4);
+            \draw[dashed] (b1) edge[bend left] (a3);
+            \draw[dashed] (b2) edge[bend left] (b4);
+            }
+          \end{tikzpicture}
+        \end{center}
+      \end{column}
+    \end{columns}
+  \end{block}
+
+  \uncover<4>{
+  \begin{block}{Properties of $G_t$}
+    \vspace{-.7cm}
+    \begin{columns}
+      \begin{column}{.6\linewidth}
+        \begin{itemize}
+        \item has a frozen $t$-coloring
+        \item with high probability, has another $t$-coloring
+        \item with high probability, admits no $K_{(\frac23 + \varepsilon)t}$-minor
+        \end{itemize}
+      \end{column}
+      \hfill
+      \begin{column}{.35\linewidth}
+        \begin{center}
+          \begin{tikzpicture}
+            \node[draw=black,fill=\myyellow,circle,inner sep=1.5pt]   (a1) at (45:.8cm) {};
+            \node[draw=black,fill=\myorange,circle,inner sep=1.5pt]  (b1) at (45:1.5cm) {};            
+            \node[draw=black,fill=\myblue,circle,inner sep=1.5pt]   (a2) at (135:.8cm) {};
+            \node[draw=black,fill=\myyellow,circle,inner sep=1.5pt]  (b2) at (135:1.5cm) {};            
+            \node[draw=black,fill=\myred,circle,inner sep=1.5pt]   (a3) at (225:.8cm) {};
+            \node[draw=black,fill=\myblue,circle,inner sep=1.5pt]  (b3) at (225:1.5cm) {};            
+            \node[draw=black,fill=\myorange,circle,inner sep=1.5pt]   (a4) at (315:.8cm) {};
+            \node[draw=black,fill=\myred,circle,inner sep=1.5pt]  (b4) at
+            (315:1.5cm) {};
+
+            \draw[dashed] (a1) -- (b1);
+            \draw[dashed] (a2) -- (b2);
+            \draw[dashed] (a3) -- (b3);
+            \draw[dashed] (a4) -- (b4);
+
+            \draw[dashed] (a1) -- (b2);
+            \draw[dashed] (a2) -- (b3);
+            \draw[dashed] (a3) -- (b4);
+            \draw[dashed] (a4) -- (b1);
+          \end{tikzpicture}
+        \end{center}
+      \end{column}
+    \end{columns}
+  \end{block}
+  }
+\end{frame}
+
+\begin{frame}{Open questions}
+  \begin{block}{Open questions}
+    \begin{itemize}
+    \item What it is the infimum $c$ such that for $t$ large enough, there
+      is $G$ with a quasi $K_t$-minor but no $K_{ct}$-minor ?
+      $$\frac12 \le c \le \frac23$$
+    \item<2-> Is there $c'$ such that for every $t$, all the
+      $c't$-colourings of a graph with no $K_t$-minor are equivalent?
+      $$\frac32 \le c' \quad \text{ and all }O(t\sqrt{\log(t)})\text{-colorings are equivalent}$$
+    \end{itemize}
+  \end{block}
+
+  \uncover<3>{
+  \centering
+  Thanks !}
 \end{frame}
 
 \end{document}
