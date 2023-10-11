@@ -1,0 +1,493 @@
+\documentclass[11pt,dvipsnames,presentation,aspectratio=169]{beamer}
+%\documentclass[11pt,xcolor=dvipsnames,presentation,aspectratio=169]{beamer}
+
+\usepackage{BeamerColor}
+\usepackage{etoolbox}
+
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage[main= english,francais]{babel}%
+\usepackage{mathtools}
+
+\usepackage{graphicx}%
+\usepackage{courier}%
+\usepackage{algorithm2e}
+
+\usepackage{url}%
+\urlstyle{sf}%
+
+\usepackage{subcaption}%
+\usepackage{caption}
+\captionsetup[figure]{labelformat=empty}% redefines the caption setup of the
+% figures environment in the beamer class.
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\usepackage{listings}%
+
+\usepackage{faktor}%
+
+\usepackage{stmaryrd}%
+
+\usepackage[style=verbose,backend=biber]{biblatex}
+\addbibresource{biblio.bib}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+%%%%%%%%% Colors of Beamer Layout %%%%%%%%%%%%%
+\newcommand{\myorange}{Orange}
+\newcommand{\mygreen}{DarkGreen}
+\newcommand{\mycyan}{LightSeaGreen}
+\newcommand{\myred}{Sepia}
+\newcommand{\myyellow}{Goldenrod}
+\newcommand{\myblue}{RoyalBlue}
+\newcommand{\mydarkblue}{MidnightBlue}
+
+
+
+%%%%%%%%% Begin of Beamer Layout %%%%%%%%%%%%%
+\ProcessOptionsBeamer
+\usecolortheme{whale}
+\usecolortheme[named=\myblue]{structure}
+\useinnertheme{rounded}
+\useoutertheme{infolines}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{headline}[default]
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+\defbeamertemplate*{headline}{info theme}{}
+\defbeamertemplate*{footline}{info theme}{\leavevmode%
+\hbox{%
+\begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+\usebeamerfont{author in head/foot}\insertshortauthor
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.71\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+\usebeamerfont{title in head/foot}\insertsectionhead
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.09\paperwidth,ht=2.25ex,dp=1ex,right]{section in head/foot}%
+\usebeamerfont{section in head/foot}\insertframenumber{}~/~\inserttotalframenumber\hspace*{2ex}
+\end{beamercolorbox}
+}\vskip0pt}
+\setbeamercolor*{block title example}{fg=\myorange}
+\AtBeginEnvironment{exampleblock}{\setbeamercolor{itemize item}{fg=\myorange}}
+\setbeamercolor*{block title alerted}{fg=\myred}
+\AtBeginEnvironment{alertblock}{\setbeamercolor{itemize item}{fg=\myred}}
+\setbeamertemplate{footline}[info theme]
+\defbeamertemplate{description item}{align left}{\insertdescriptionitem\hfill}
+%%%%%%%%% End of Beamer Layout %%%%%%%%%%%%%
+
+\lstset{%
+	basicstyle=\sffamily,%
+	columns=fullflexible,%
+	language=C++,% % À ajuster dans chaque projet!
+	frame=lb,%
+	frameround=fftf,%
+}%
+
+\sloppy
+
+%\setbeamertemplate{headline}{}%
+
+\setbeamertemplate{navigation symbols}{%
+	\insertslidenavigationsymbol%
+	% \insertframenavigationsymbol%
+	% \insertsubsectionnavigationsymbol%
+	% \insertsectionnavigationsymbol%
+	% \insertdocnavigationsymbol%
+	% \insertbackfindforwardnavigationsymbol%
+}
+
+\newcommand{\backupbegin}{
+   \newcounter{finalframe}
+   \setcounter{finalframe}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \setcounter{framenumber}{\value{finalframe}}
+}
+
+
+\newcommand{\tile}[5]{
+  \fill[fill=#2] (#1) --++ (-.5,.5) --++ (1,0) -- cycle; 
+  \fill[fill=#3] (#1) --++ (.5,-.5) --++ (0,1) -- cycle; 
+  \fill[fill=#4] (#1) --++ (-.5,-.5) --++ (1,0) -- cycle; 
+  \fill[fill=#5] (#1) --++ (-.5,-.5) --++ (0,1) -- cycle;
+  \draw (#1)++(-.5,-.5) --++ (1,0) --++ (0,1) --++ (-1,0) -- cycle;}
+  
+\newcommand{\shadedtile}[6]{
+  \fill[fill=#2,opacity=.5] (#1) --++ (-.5,.5) --++ (1,0) -- cycle; 
+  \fill[fill=#3,opacity=.5] (#1) --++ (.5,-.5) --++ (0,1) -- cycle; 
+  \fill[fill=#4,opacity=.5] (#1) --++ (-.5,-.5) --++ (1,0) -- cycle; 
+  \fill[fill=#5,opacity=.5] (#1) --++ (-.5,-.5) --++ (0,1) --
+  cycle;
+  \draw (#1)++(-.5,-.5) --++ (1,0) --++ (0,1) --++ (-1,0) -- cycle;
+  \node at (#1) {#6};}
+
+\newcommand{\labeledtile}[8]{
+  \only<#1>{\tile{#4}{#5}{#6}{#7}{#8}}
+  \only<#2>{\shadedtile{#4}{#5}{#6}{#7}{#8}{#3}}}
+    
+    
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\tw}{tw}
+
+\begin{document}
+
+\title{The structure of quasi-transitive graphs avoiding a minor with
+  application to the domino problem}
+\author[Clément Legrand]{Clément Legrand-Duchesne}
+\institute{LaBRI, Bordeaux}
+%\date{\today}
+\date{October 13, 2023}
+
+\begin{frame}
+  \titlepage
+
+  \centering
+  Joint work with Louis Esperet and Ugo Giocanti.
+\end{frame}
+
+\section*{The domino problem}
+\begin{frame}{Wang's dominos}
+
+  \begin{block}{Wang's tiling problem}
+  {\bf Entry:} A finite family of tiles $\mathcal{T}$\\
+  {\bf Question:} Does there exist a tiling of $\mathbb{Z}^2$ using tiles of
+  $\mathcal{T}$ ?
+  \end{block}
+  \begin{columns}
+    \begin{column}{.5\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \tile{0,0}{\myorange}{\myyellow}{\myblue}{\mydarkblue}
+        \tile{2,0}{\myblue}{\mydarkblue}{\myorange}{\myred}
+        \tile{1,-1.5}{\myorange}{\myred}{\myorange}{\myyellow}
+      \end{tikzpicture}
+    \end{column}
+    \hfill
+    \begin{column}{.5\linewidth}
+      \centering
+      \uncover<2->{
+      \begin{tikzpicture}
+        \foreach \i [evaluate=\i] in {1, ...,3}{
+          \tile{{Mod(\i,3)},{Mod(-\i,3)}}{\myorange}{\myyellow}{\myblue}{\mydarkblue}
+          \tile{{Mod(\i,3)},{Mod(1-\i,3)}}{\myorange}{\myred}{\myorange}{\myyellow}
+          \tile{{Mod(\i,3)},{Mod(2-\i,3)}}{\myblue}{\mydarkblue}{\myorange}{\myred}
+        }
+      \end{tikzpicture}}
+    \end{column}
+  \end{columns}
+
+  \uncover<3>{
+    \begin{block}{Theorem}
+      \begin{itemize}
+      \item Wang's tiling problem is undecidable.
+      \item There exist aperiodic sets of tiles
+      \end{itemize}
+    \end{block}}
+\end{frame}
+
+\begin{frame}{Generalization of Wang's dominos}
+
+  \begin{alertblock}{What about tiling other spaces ?}
+    Every tiling of $\mathbb{Z}$ is periodic, so the problem is decidable on $\mathbb{Z}$.
+  \end{alertblock}
+
+  \begin{exampleblock}{Alternative definition of the problem}
+    {\bf Entry:} $k$ colors and a finite set of forbidden patterns
+    $\mathcal{F}$\\
+    {\bf Question:} Is there a coloring of $\mathbb{Z}^2$ that avoids
+    $\mathcal{F}$?
+  \end{exampleblock}
+\begin{columns}
+    \begin{column}{.3\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \labeledtile{2}{3}{1}{0,0}{\myorange}{\myyellow}{\myblue}{\mydarkblue}
+        \labeledtile{2}{3}{2}{2,0}{\myblue}{\mydarkblue}{\myorange}{\myred}
+        \labeledtile{2}{3}{3}{1,-1.5}{\myorange}{\myred}{\myorange}{\myyellow}
+      \end{tikzpicture}
+    \end{column}
+    \hfill
+    \begin{column}{.7\linewidth}
+      \centering
+      \uncover<2->{
+        $\mathcal{F} = \left\{\quad 
+          \begin{minipage}{.6\linewidth}
+          \begin{columns}
+            \begin{column}{.3\linewidth}
+              \begin{tikzpicture}
+                \labeledtile{2}{3}{1}{0,0}{\myorange}{\myyellow}{\myblue}{\mydarkblue}
+                \labeledtile{2}{3}{2}{1,0}{\myblue}{\mydarkblue}{\myorange}{\myred}
+              \end{tikzpicture}
+            \end{column}
+            \hfill
+            \begin{column}{.3\linewidth}
+              \centering
+              \begin{tikzpicture}
+                \labeledtile{2}{3}{2}{0,0}{\myblue}{\mydarkblue}{\myorange}{\myred}
+                \labeledtile{2}{3}{3}{1,0}{\myorange}{\myred}{\myorange}{\myyellow}
+              \end{tikzpicture}
+            \end{column}
+            \hfill
+            \begin{column}{.3\linewidth}
+              \centering
+              \begin{tikzpicture}
+                \labeledtile{2}{3}{3}{0,0}{\myorange}{\myred}{\myorange}{\myyellow}
+                \labeledtile{2}{3}{1}{1,0}{\myorange}{\myyellow}{\myblue}{\mydarkblue}
+              \end{tikzpicture}
+            \end{column}
+          \end{columns}
+          \vspace{.5cm}
+          \begin{columns}
+            \begin{column}{.22\linewidth}
+              \centering
+              \begin{tikzpicture}
+                \labeledtile{2}{3}{2}{0,0}{\myblue}{\mydarkblue}{\myorange}{\myred}
+                \labeledtile{2}{3}{3}{0,1}{\myorange}{\myred}{\myorange}{\myyellow}
+              \end{tikzpicture}
+            \end{column}
+            \hfill
+            \begin{column}{.22\linewidth}
+              \centering
+              \begin{tikzpicture}
+                \labeledtile{2}{3}{2}{0,0}{\myblue}{\mydarkblue}{\myorange}{\myred}
+                \labeledtile{2}{3}{2}{0,1}{\myblue}{\mydarkblue}{\myorange}{\myred}
+              \end{tikzpicture}
+            \end{column}
+            \hfill
+            \begin{column}{.22\linewidth}
+              \centering
+              \begin{tikzpicture}
+                \labeledtile{2}{3}{3}{0,0}{\myorange}{\myred}{\myorange}{\myyellow}
+                \labeledtile{2}{3}{1}{0,1}{\myorange}{\myyellow}{\myblue}{\mydarkblue}
+              \end{tikzpicture}
+            \end{column}
+            \hfill
+            \begin{column}{.22\linewidth}
+              \centering
+              \begin{tikzpicture}
+                \labeledtile{2}{3}{1}{0,0}{\myorange}{\myyellow}{\myblue}{\mydarkblue}
+                \labeledtile{2}{3}{1}{0,1}{\myorange}{\myyellow}{\myblue}{\mydarkblue}
+              \end{tikzpicture}
+            \end{column}
+          \end{columns}
+        \end{minipage}
+      \quad \right\}$}
+    \end{column}
+  \end{columns}
+  \vspace{5cm}
+\end{frame}
+
+\begin{frame}{Natural generalization of $\mathbb{Z}^d$: Cayley graphs}
+
+  \begin{columns}
+    \hfill
+    \begin{column}{.65\textwidth}
+      \begin{exampleblock}{Some examples of Cayley graphs}
+        \begin{itemize}
+        \item $\mathbb{Z}^d$
+        \item The infinite $d$-valent trees and their blow-ups
+        \end{itemize}
+      \end{exampleblock}
+
+      \begin{block}{Strong structural properties of Cayley graphs}
+        \begin{itemize}
+        \item Regular
+        \item Transitive: For all $u$,$v$, $\exists \phi \in Aut(G), \phi(u) = \phi(v)$
+        \item Strong connections with expanders
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{.35\textwidth}
+      \begin{center}
+        
+        \begin{tikzpicture}
+          \foreach \i [evaluate=\i] in {0,.5,1,1.5,2}{
+            \draw (\i, -.3) -- (\i,2.3);
+            \draw (-.3,\i) -- (2.3,\i);}
+          
+          \foreach \i [evaluate=\i] in {0,.5,1,1.5,2}{
+            \foreach \j [evaluate=\i] in {0,.5,1,1.5,2}{
+              \node[draw=black,circle,inner sep = 1pt, fill = \myorange] (v\i\j)
+              at (\i,\j) {};
+            }
+          }
+        \end{tikzpicture}
+        
+        \vspace{.2cm}
+        \begin{tikzpicture}
+          \pgfmathsetmacro{\r}{.5}
+          \pgfmathsetmacro{\tri}{.1}  
+          \pgfmathsetmacro{\long}{3}
+          \pgfmathsetmacro{\haut}{2}
+
+          \pgfmathsetmacro{\hh}{int(\haut+1)}
+          \pgfmathsetmacro{\lll}{int(\long-1)}
+
+          \foreach \j [evaluate=\j] in {1,...,\hh}
+          {\foreach \i [evaluate=\i] in {1,...,\long}
+            {\pgfmathsetmacro{\y}{int(2*\j-1)}
+              \pgfmathsetmacro{\x}{int(3*\i-1)}
+              \pgfmathsetmacro{\xx}{int(3*\i)}
+              \foreach \angle in {0,1,2}
+              {\node[draw=black,circle,inner sep=1pt,fill= \myorange] (v\x_\y_\angle) at ($({\x*\r},
+                {\y*\r*sqrt(3)/2})+(\angle*120:\tri)$) {};
+                \node[draw=black,circle,inner sep=1pt,fill= \myorange] (v\xx_\y_\angle) at ($({\xx*\r},
+                {\y*\r*sqrt(3)/2})+(\angle*120+180:\tri)$) {};
+              }
+              \draw (v\x_\y_0) -- (v\x_\y_1) -- (v\x_\y_2) -- (v\x_\y_0);
+              \draw (v\xx_\y_0) -- (v\xx_\y_1) -- (v\xx_\y_2) -- (v\xx_\y_0);
+            }
+          }
+          \foreach \j [evaluate=\j] in {1,...,\hh}
+          {\foreach \i [evaluate=\i] in {1,...,\long}
+            {\pgfmathsetmacro{\y}{int(2*\j)}
+              \pgfmathsetmacro{\x}{int(3*\i-2)}
+              \pgfmathsetmacro{\xx}{int(3*\i)}
+              \foreach \angle in {0,1,2}
+              {\node[draw=black,circle,inner sep=1pt,fill= \myorange] (v\x_\y_\angle) at ($({(\x+0.5)*\r}, {\y*\r*sqrt(3)/2})+(\angle*120+180:\tri)$) {};
+                \node[draw=black,circle,inner sep=1pt,fill= \myorange] (v\xx_\y_\angle) at ($({(\xx+0.5)*\r}, {\y*\r*sqrt(3)/2})+(\angle*120:\tri)$) {};
+              }
+              \draw (v\x_\y_0) -- (v\x_\y_1) -- (v\x_\y_2) -- (v\x_\y_0);
+              \draw (v\xx_\y_0) -- (v\xx_\y_1) -- (v\xx_\y_2) -- (v\xx_\y_0);
+            }
+          }
+          \foreach \j [evaluate=\j] in {1,...,\hh}
+          {\foreach \i [evaluate=\i] in {1,...,\long}
+            {\pgfmathsetmacro{\y}{int(2*\j-1)}
+              \pgfmathsetmacro{\x}{int(3*\i-1)}
+              \pgfmathsetmacro{\xx}{int(\x+1)}
+              \pgfmathsetmacro{\xxx}{int(\x-1)}
+              \pgfmathsetmacro{\yy}{int(\y+1)}
+              \draw (v\x_\y_0) -- (v\xx_\y_0);
+              \draw (v\x_\y_1) -- (v\xxx_\yy_1);
+            }
+          }
+          \foreach \j [evaluate=\j] in {1,...,\haut}
+          {\foreach \i [evaluate=\i] in {1,...,\long}
+            {\pgfmathsetmacro{\y}{int(2*\j+1)}
+              \pgfmathsetmacro{\x}{int(3*\i-1)}
+              \pgfmathsetmacro{\xxx}{int(\x-1)}
+              \pgfmathsetmacro{\yy}{int(\y+1)}
+              \pgfmathsetmacro{\yyy}{int(\y-1)}
+              \draw (v\x_\y_2) -- (v\xxx_\yyy_2);
+            }
+          }
+          \foreach \j [evaluate=\j] in {1,...,\hh}
+          {\foreach \i [evaluate=\i] in {1,...,\lll}
+            {\pgfmathsetmacro{\y}{int(2*\j)}
+              \pgfmathsetmacro{\x}{int(3*\i)}
+              \pgfmathsetmacro{\xx}{int(\x+1)}
+              \draw (v\x_\y_0) -- (v\xx_\y_0);
+            }
+          }
+          \foreach \j [evaluate=\j] in {1,...,\hh}
+          {\foreach \i [evaluate=\i] in {1,...,\long}
+            {\pgfmathsetmacro{\y}{int(2*\j)}
+              \pgfmathsetmacro{\x}{int(3*\i)}
+              \pgfmathsetmacro{\yyy}{int(\y-1)}
+              \draw (v\x_\y_2) -- (v\x_\yyy_2);
+            }
+          }
+          \foreach \j [evaluate=\j] in {1,...,\haut}
+          {\foreach \i [evaluate=\i] in {1,...,\long}
+            {\pgfmathsetmacro{\y}{int(2*\j)}
+              \pgfmathsetmacro{\x}{int(3*\i)}
+              \pgfmathsetmacro{\yy}{int(\y+1)}
+              \draw (v\x_\y_1) -- (v\x_\yy_1);
+            }
+          }
+        \end{tikzpicture}
+      \end{center}
+    \end{column}
+  \end{columns}
+
+  \begin{alertblock}{Conjecture [Ballier and Stein 2018]}
+    The domino problem is decidable in a group $\Gamma$ if and only if $\Gamma$
+    has a Cayley graph $G$ of bounded treewidth.
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}{Crash course on treewidth}
+  \begin{exampleblock}{Tree decomposition}
+    $T$ is a tree decomposition of $G$ is a tree whose nodes are bags $X_i
+    \subset V(G)$ such that
+    \begin{itemize}
+    \item $\bigcup_{i} X_i = V(G)$
+    \item For all $u \in V(G)$ the subgraph of nodes containing $u$ is connected
+    \item For all $uv \in E(G)$, $\exists X_i, \{u,v\} \subset X_i$
+    \end{itemize}
+  \end{exampleblock}
+
+  \begin{exampleblock}{Treewidth}
+    A graph has treewidth at most $k$ if it admits a tree decomposition with
+    bags of size at most $k+1$
+  \end{exampleblock}
+
+  \begin{center}
+    \begin{tikzpicture}
+      \foreach \i [evaluate=\i] in {0,1,2}{
+        \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v00\i) at ({\i*120}:.2cm) {};
+      }
+      \draw (v000) -- (v001) -- (v002) -- (v000);
+
+      \foreach \t [evaluate=\t] in {0,1,2}{
+        \foreach \i [evaluate=\i] in {0,1,2}{
+          \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v1\t\i) at
+          ($({60+\i*120}:.2cm)+({\t*120}:1cm)$) {};
+        }
+        \draw (v1\t0) -- (v1\t1) -- (v1\t2) -- (v1\t0);
+      }
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \begin{tikzpicture}
+    \foreach \i [evaluate=\i] in {0,1,2}{
+      \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v00\i) at ({\i*120}:.2cm) {};
+    }
+    \draw (v000) -- (v001) -- (v002) -- (v000);
+
+
+    \foreach \t [evaluate=\t] in {0,1,2}{
+      \foreach \i [evaluate=\i] in {0,1,2}{
+        \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v1\t\i) at
+        ($({60+\i*120}:.2cm)+({\t*120}:1cm)$) {};
+      }
+      \draw (v1\t0) -- (v1\t1) -- (v1\t2) -- (v1\t0);
+      }
+
+    \foreach \t [evaluate=\t] in {0,1,2,3,4,5}{
+      \foreach \i [evaluate=\i] in {0,1,2}{
+        \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v2\t\i) at
+        ($({\i*120}:.2cm)+({30+\t*60}:1.8cm)$) {};
+      }
+      \draw (v2\t0) -- (v2\t1) -- (v2\t2) -- (v2\t0);
+    }
+
+    \foreach \i [evaluate=\i] in {0,1,2}{
+      \foreach \j [evaluate=\j] in {0,1,2}{
+        \foreach \k [evaluate=\j] in {0,1,2}{
+          \draw[gray!150] (v1\i\j) -- (v00\k);
+          \pgfmathsetmacro{\x}{int(2*\i)}
+          \draw[gray!150] (v1\i\j) -- (v2\x\k);
+          \pgfmathsetmacro{\y}{int(Mod(2*\i-1,6))}
+          \draw[gray!150] (v1\i\j) -- (v2\y\k);
+        }
+      }
+    }
+    
+    
+  \end{tikzpicture}
+\end{frame}
+
+
+\end{document}
