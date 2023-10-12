@@ -79,7 +79,8 @@
 \setbeamercolor*{block title alerted}{fg=\myred}
 \AtBeginEnvironment{alertblock}{\setbeamercolor{itemize item}{fg=\myred}}
 \setbeamertemplate{footline}[info theme]
-\defbeamertemplate{description item}{align left}{\insertdescriptionitem\hfill}
+% \defbeamertemplate{description item}{align left}{\insertdescriptionitem\hfill}
+
 %%%%%%%%% End of Beamer Layout %%%%%%%%%%%%%
 
 \lstset{%
@@ -132,7 +133,9 @@
   \only<#1>{\tile{#4}{#5}{#6}{#7}{#8}}
   \only<#2>{\shadedtile{#4}{#5}{#6}{#7}{#8}{#3}}}
     
-    
+\newcommand{\define}[1]{\textcolor{\myorange}{#1}}
+\newcommand{\thm}[1]{\textcolor{\myblue}{#1}}
+
 \DeclareMathOperator{\diam}{diam}
 \DeclareMathOperator{\tw}{tw}
 
@@ -173,7 +176,7 @@
     \begin{column}{.5\linewidth}
       \centering
       \uncover<2->{
-      \begin{tikzpicture}
+     \begin{tikzpicture}
         \foreach \i [evaluate=\i] in {1, ...,3}{
           \tile{{Mod(\i,3)},{Mod(-\i,3)}}{\myorange}{\myyellow}{\myblue}{\mydarkblue}
           \tile{{Mod(\i,3)},{Mod(1-\i,3)}}{\myorange}{\myred}{\myorange}{\myyellow}
@@ -300,7 +303,7 @@
       \begin{block}{Strong structural properties of Cayley graphs}
         \begin{itemize}
         \item Regular
-        \item Transitive: For all $u$,$v$, $\exists \phi \in Aut(G), \phi(u) = \phi(v)$
+        \item \define{Transitive}: For all $u$,$v$, $\exists \phi \in Aut(G), \phi(u) = \phi(v)$
         \item Strong connections with expanders
         \end{itemize}
       \end{block}
@@ -417,18 +420,16 @@
 \end{frame}
 
 \begin{frame}{Crash course on treewidth}
-  \begin{exampleblock}{Tree decomposition}
-    $T$ is a tree decomposition of $G$ is a tree whose nodes are bags $X_i
+  \begin{exampleblock}{Definition}
+    $T$ is a \define{tree decomposition} of $G$ is a tree whose nodes are bags $X_i
     \subset V(G)$ such that
     \begin{itemize}
     \item $\bigcup_{i} X_i = V(G)$
     \item For all $u \in V(G)$ the subgraph of nodes containing $u$ is connected
     \item For all $uv \in E(G)$, $\exists X_i, \{u,v\} \subset X_i$
     \end{itemize}
-  \end{exampleblock}
 
-  \begin{exampleblock}{Treewidth}
-    A graph has treewidth at most $k$ if it admits a tree decomposition with
+    A graph has \define{treewidth} at most $k$ if it admits a tree decomposition with
     bags of size at most $k+1$
   \end{exampleblock}
 
@@ -600,9 +601,10 @@
   \end{tabular}
 \end{frame}
 
-\begin{frame}{Torsos}
-    \begin{exampleblock}{Torso}
-    Given a tree decomposition $T$ of $G$, the torso of a bag $X_i$ is the graph
+\begin{frame}{Vocabulary on tree decomposition}
+  \begin{exampleblock}{Definitions}
+    Given a tree decomposition $T$ of $G$,\\
+    The \define{torso} of a bag $X_i$ is the graph
     $G\llbracket X_i \rrbracket$ such that
     \begin{itemize}
     \item $V(G\llbracket X_i \rrbracket) = X_i$,
@@ -610,6 +612,9 @@
     \item for all $u,v \in X_i$, if there is a path between $u$ and $v$ in $G$
       that avoids $X_i$, then $uv \in E(G\llbracket X_i \rrbracket)$.
     \end{itemize}
+
+    An \define{adhesion set} is define as $X_i \cap X_j$ for some $i\neq j$. The
+    \define{adhesion} is the supremum size of an adhesion set. 
   \end{exampleblock}
 
 \end{frame}
@@ -618,9 +623,49 @@
 
 \begin{frame}{Crash course on minors}
   \begin{exampleblock}{Definition}
-    A graph $H$ is a minor of $G$ if $H$ can be obtained from $G$ by contracting
+    A graph $H$ is a \define{minor} of $G$ if $H$ can be obtained from $G$ by contracting
     edges and by deleting vertices and edges.
   \end{exampleblock}
+
+    \begin{columns}
+    \begin{column}{.48\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=\myorange,fill=\myorange,circle,inner sep=1.5pt]   (a1) at (75:.8cm) {};
+        \node[draw=\myorange,fill=\myorange,circle,inner sep=1.5pt]   (a2) at (105:.8cm) {};
+        \node[draw=\myorange,fill=\myorange,circle,inner sep=1.5pt]   (a) at (90:.45cm) {};
+        \node[draw=\myblue,fill=\myblue,circle,inner sep=1.5pt]  (b) at (147:.8cm) {};
+        \node[draw=\myblue,fill=\myblue,circle,inner sep=1.5] (b2) at   (177:.8cm) {};
+        \node[draw=\myred,fill=\myred,circle,inner sep=1.5pt] (c) at (234:.8cm) {};
+        \node[draw=\mydarkblue,fill=\mydarkblue,circle,inner sep=1.5pt] (d) at (291:.8cm) {};
+        \node[draw=\mydarkblue,fill=\mydarkblue,circle,inner sep=1.5pt] (d2) at (321:.8cm) {};
+        \node[draw=\mydarkblue,fill=\mydarkblue,circle,inner sep=1.5pt] (d3) at (306:.45cm) {};
+        \node[draw=yellow,fill=yellow,circle,inner sep=1.5pt] (e) at (18:.8cm) {};
+
+        \draw (a2) -- (b) -- (d3) (e) -- (b2) -- (c) -- (a2) (a1) -- (e) -- (d2)
+        (d3) -- (a) (e) -- (c) -- (d); \draw[very thick,\myblue] (b) -- (b2);
+        \draw[very thick,\mydarkblue] (d) -- (d2) -- (d3); \draw[very thick,\myorange]
+        (a) -- (a1) -- (a2);
+      \end{tikzpicture}
+    \end{column}
+    \hfill
+    \begin{column}{.48\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \node[draw=\myorange,fill=\myorange,circle,inner sep=1.5pt]   (a) at (90:.8cm) {};
+        \node[draw=\myblue,fill=\myblue,circle,inner sep=1.5pt]  (b) at (162:.8cm) {};
+        \node[draw=\myred,fill=\myred,circle,inner sep=1.5pt] (c) at (234:.8cm) {};
+        \node[draw=\mydarkblue,fill=\mydarkblue,circle,inner sep=1.5pt] (d) at (306:.8cm) {};
+        \node[draw=yellow,fill=yellow,circle,inner sep=1.5pt] (e) at (18:.8cm) {};
+
+        \draw (c) -- (e) -- (b) -- (d) --(a) -- (b) -- (c) -- (a) -- (e) -- (d) --  (c) -- (d) ;
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+
+  \begin{block}{Proposition}
+    Having bounded treewidth is a minor closed property
+  \end{block}
 
 \end{frame}
 
@@ -634,24 +679,25 @@
     \end{itemize}
   \end{alertblock}
 
-  \begin{block}{Precise statement}
+  \pause
+  \begin{block}{Robertson and Seymour 2003}
     Let $H$ be a fixed graph. There exist a $k$, such that for all $G$ that does
     not contain $H$ as a minor, $G$ admits a tree-decomposition, such that :
     \begin{itemize}
-    \item The adhesions have size at most $k$,
-    \item Each torso is ``almost'' embeddable in a surface in which $H$ does not
+    \item adhesion is at most $k$,
+    \item torsos are ``almost'' embeddable in a surface in which $H$ does not
       embed (too low genus)
     \end{itemize}
   \end{block}
 
   \begin{block}{Diestel and Thomas 1999}
-    The same holds for infinite graphs $G$ that exclude some finite minor.
+    The same holds for locally-finite graphs $G$ that exclude some finite minor.
   \end{block}
 \end{frame}
 
 \begin{frame}{What about graphs with many symmetries ?}
-  \begin{exampleblock}{Quasi-transitive graphs}
-    A graph $G$ is quasi-transitive if it can be colored with finitely many
+  \begin{exampleblock}{Definition}
+    A graph $G$ is \define{quasi-transitive} if it can be colored with finitely many
     colors, such that for all $u$,$v$ colored identically, there is $\phi \in
     Aut(G)$ such that $\phi(u) = \phi(v)$.
   \end{exampleblock}
@@ -702,8 +748,8 @@
   
 \end{frame}
 \begin{frame}{Preserve the symmetric structure in $T$}
-  \begin{exampleblock}{Canonical tree decompositions}
-    A tree decomposition is said to be canonical if for all $\phi \in Aut(G)$,
+  \begin{exampleblock}{Definition}
+    A tree decomposition is said to be \define{canonical} if for all $\phi \in Aut(G)$,
     $\phi$ maps bags on other bags ($Aut(G)$ induces an action on $T$ such that
     $\forall \phi, \forall i$, $\phi(X_i) = X_{i\cdot\phi}$).
   \end{exampleblock}
@@ -719,7 +765,7 @@
   \begin{block}{Esperet, Giocanti, L. 2023}
     Let $G$ be a quasi-transitive locally finite graph $G$ avoiding the
     countable clique as a minor. Then $G$ admits a {\bf canonical} tree
-    decomposition with adhesions of size at most 3 such that:
+    decomposition with adhesion at most 3 such that:
     \begin{itemize}
     \item each torso is a minor of $G$,
     \item torso are planar or have bounded treewidth
@@ -727,9 +773,10 @@
   \end{block}
 \end{frame}
 
+\section*{Application 1: Hadwiger number}
 \begin{frame}{Application 1: Hadwiger number}
-  \begin{exampleblock}{Hadwiger number}
-    The Hadwiger number of a graph is the supremum of the sizes of its complete minors.
+  \begin{exampleblock}{Definition}
+    The \define{Hadwiger number} of a graph is the supremum of the sizes of its complete minors.
   \end{exampleblock}
 
   \begin{block}{Thomassen 1992}
@@ -742,6 +789,198 @@
 
   \centering
   ``$K_\infty$ minor free $\Rightarrow$ $K_t$ minor free for some $t$''
+\end{frame}
+
+\section*{Application 2: Accessibility in graphs}
+\begin{frame}{Graph ends}
+  \begin{columns}
+    \begin{column}{.7\textwidth}
+      \begin{exampleblock}{Definitions}
+        \begin{itemize}
+        \item A \define{ray} is an infinite one-way path in $G$
+        \item Two rays $r_1$ and $r_2$ are \define{equivalent} if for any finite subgraph $C$
+          of $G$, there is a connected component of $G \setminus C$ intersecting
+          $r_1$ an infinite number of time, and $r_2$ too
+        \item An \define{end} of $G$ is an equivalence class of rays
+          \uncover<2->{
+        \item The \define{thickness} of an end is supremum in
+          $\mathbb{N}\cup\{\infty\}$ of the number of
+          pairwise disjoint rays living in it}
+        \end{itemize}
+      \end{exampleblock}
+      \uncover<3>{
+      \begin{block}{Hopf 1944 \& Diestel, Jung, Möller 1993}
+        A quasi-transitive graph has 0,1,2 or an infinite number of ends
+      \end{block}
+      }
+    \end{column}
+    \hfill
+    \begin{column}{.3\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \foreach \i [evaluate=\i] in {0,1,2}{
+          \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v00\i) at ({\i*120}:.2cm) {};
+        }
+        \draw (v000) -- (v001) -- (v002) -- (v000);
+
+
+        \foreach \t [evaluate=\t] in {0,1,2}{
+          \foreach \i [evaluate=\i] in {0,1,2}{
+            \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v1\t\i) at
+            ($({60+\i*120}:.2cm)+({\t*120}:1cm)$) {};
+          }
+          \draw (v1\t0) -- (v1\t1) -- (v1\t2) -- (v1\t0);
+        }
+
+        \foreach \t [evaluate=\t] in {0,1,2,3,4,5}{
+          \foreach \i [evaluate=\i] in {0,1,2}{
+            \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v2\t\i) at
+            ($({\i*120}:.2cm)+({30+\t*60}:1.8cm)$) {};
+          }
+          \draw (v2\t0) -- (v2\t1) -- (v2\t2) -- (v2\t0);
+        }
+
+        \foreach \i [evaluate=\i] in {0,1,2}{
+          \foreach \j [evaluate=\j] in {0,1,2}{
+            \foreach \k [evaluate=\j] in {0,1,2}{
+              \draw[gray!200] (v1\i\j) -- (v00\k);
+              \pgfmathsetmacro{\x}{int(2*\i)}
+              \draw[gray!200] (v1\i\j) -- (v2\x\k);
+              \pgfmathsetmacro{\y}{int(Mod(2*\i-1,6))}
+              \draw[gray!200] (v1\i\j) -- (v2\y\k);
+            }
+          }
+        }
+        
+      \end{tikzpicture}
+      
+      \vspace{.5cm}
+      \centering
+      \begin{tikzpicture}
+        \foreach \i [evaluate=\i] in {0,.5,1,1.5,2}{
+          \draw (\i, -.3) -- (\i,2.3);
+          \draw (-.3,\i) -- (2.3,\i);}
+        
+        \foreach \i [evaluate=\i] in {0,.5,1,1.5,2}{
+          \foreach \j [evaluate=\i] in {0,.5,1,1.5,2}{
+            \node[draw=black,circle,inner sep = 1pt, fill = \myorange] (v\i\j)
+            at (\i,\j) {};
+          }
+        }
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Separating the ends}
+  \begin{columns}
+    \begin{column}{.7\textwidth}
+      \begin{exampleblock}{Definitions}
+        \begin{itemize}
+        \item A finite set $C$ \define{separates} two ends if they have an infinite number of
+          vertices in distinct components of $G\setminus C$
+        \item A graph $G$ is \define{vertex-accessible} if there is a $k$ such that any two
+          ends can be separated by a set of size $k$.
+        \end{itemize}  
+      \end{exampleblock}
+      \uncover<2->{
+        \begin{block}{Dunwoody 2007}
+          Planar quasi-transitive graphs are vertex-accessible.
+        \end{block}}
+      \uncover<3>{
+      \begin{block}{Esperet, Giocanti, L. 2023}
+        Quasi-transitive graphs $K_\infty$-minor free graphs are vertex-accessible.
+      \end{block}}
+    \end{column}
+    \hfill
+    \begin{column}{.3\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \foreach \i [evaluate=\i] in {0,1,2}{
+          \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v00\i) at ({\i*120}:.2cm) {};
+        }
+        \draw (v000) -- (v001) -- (v002) -- (v000);
+
+
+        \foreach \t [evaluate=\t] in {0,1,2}{
+          \foreach \i [evaluate=\i] in {0,1,2}{
+            \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v1\t\i) at
+            ($({60+\i*120}:.2cm)+({\t*120}:1cm)$) {};
+          }
+          \draw (v1\t0) -- (v1\t1) -- (v1\t2) -- (v1\t0);
+        }
+
+        \foreach \t [evaluate=\t] in {0,1,2,3,4,5}{
+          \foreach \i [evaluate=\i] in {0,1,2}{
+            \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v2\t\i) at
+            ($({\i*120}:.2cm)+({30+\t*60}:1.8cm)$) {};
+          }
+          \draw (v2\t0) -- (v2\t1) -- (v2\t2) -- (v2\t0);
+        }
+
+        \foreach \i [evaluate=\i] in {0,1,2}{
+          \foreach \j [evaluate=\j] in {0,1,2}{
+            \foreach \k [evaluate=\j] in {0,1,2}{
+              \draw[gray!200] (v1\i\j) -- (v00\k);
+              \pgfmathsetmacro{\x}{int(2*\i)}
+              \draw[gray!200] (v1\i\j) -- (v2\x\k);
+              \pgfmathsetmacro{\y}{int(Mod(2*\i-1,6))}
+              \draw[gray!200] (v1\i\j) -- (v2\y\k);
+            }
+          }
+        }
+        
+      \end{tikzpicture}
+      
+      \vspace{.5cm}
+      \centering
+      \begin{tikzpicture}
+        \foreach \i [evaluate=\i] in {0,.5,1,1.5,2}{
+          \draw (\i, -.3) -- (\i,2.3);
+          \draw (-.3,\i) -- (2.3,\i);}
+        
+        \foreach \i [evaluate=\i] in {0,.5,1,1.5,2}{
+          \foreach \j [evaluate=\i] in {0,.5,1,1.5,2}{
+            \node[draw=black,circle,inner sep = 1pt, fill = \myorange] (v\i\j)
+            at (\i,\j) {};
+          }
+        }
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section*{Accessibility in groups}
+\begin{frame}{Decomposing and presenting groups}
+  \begin{block}{Stallings 1972}
+    If a finitely generated group has a Cayley graph with more than one end, it
+    can be \emph{decomposed} as a product of two groups.
+  \end{block}
+
+  \begin{exampleblock}{Definition}
+    A group is \define{accessible} if we can obtain only finite groups or groups with one
+    end by appying iteratively Stallings theorem
+  \end{exampleblock}
+  \pause
+  \thm{Thomassen Woess 1993} A group is accessible if and only if one of its
+  Cayley graphs is vertex-accessible\\
+  \pause
+  \thm{Droms 2006} Finitely generated planar groups are finitely presented\\ 
+  \thm{Dunwoody 1985} Finitely presented groups are accessible\\
+  \pause
+  \thm{Esperet, Giocanti, L. 2023} Finitely generated $K_\infty$ minor free
+  groups are accessible and finitely presented
+\end{frame}
+
+\section*{Back to the dominos}
+\begin{frame}{Domino conjecture on groups avoiding a minor}
+  
+\end{frame}
+
+\section*{Conclusion}
+\begin{frame}{Key ideas to take away}
+  \centering
+  Thanks!
 \end{frame}
 
 \end{document}
