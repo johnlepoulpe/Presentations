@@ -139,7 +139,7 @@
 \begin{document}
 
 \title{The structure of quasi-transitive graphs avoiding a minor with
-  application to the domino problem}
+  applications to the domino problem}
 \author[Clément Legrand]{Clément Legrand-Duchesne}
 \institute{LaBRI, Bordeaux}
 %\date{\today}
@@ -152,7 +152,7 @@
   Joint work with Louis Esperet and Ugo Giocanti.
 \end{frame}
 
-\section*{The domino problem}
+\section*{Motivation: The domino problem}
 \begin{frame}{Wang's dominos}
 
   \begin{block}{Wang's tiling problem}
@@ -195,7 +195,8 @@
 \begin{frame}{Generalization of Wang's dominos}
 
   \begin{alertblock}{What about tiling other spaces ?}
-    Every tiling of $\mathbb{Z}$ is periodic, so the problem is decidable on $\mathbb{Z}$.
+    On $\mathbb{Z}$, there exists a tiling if and only if there exists a
+    periodic tiling, so the problem is decidable.
   \end{alertblock}
 
   \begin{exampleblock}{Alternative definition of the problem}
@@ -431,63 +432,316 @@
     bags of size at most $k+1$
   \end{exampleblock}
 
+\end{frame}
+
+\begin{frame}{A few examples}
+  \begin{columns}
+    \begin{column}{.3\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \clip (-2.3,-2.3) rectangle (2.3,2.3);
+        \foreach \i [evaluate=\i] in {0,1,2}{
+          \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v00\i) at ({\i*120}:.2cm) {};
+        }
+        \draw (v000) -- (v001) -- (v002) -- (v000);
+
+
+        \foreach \t [evaluate=\t] in {0,1,2}{
+          \foreach \i [evaluate=\i] in {0,1,2}{
+            \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v1\t\i) at
+            ($({60+\i*120}:.2cm)+({\t*120}:1cm)$) {};
+          }
+          \draw (v1\t0) -- (v1\t1) -- (v1\t2) -- (v1\t0);
+        }
+
+        \foreach \t [evaluate=\t] in {0,1,2,3,4,5}{
+          \foreach \i [evaluate=\i] in {0,1,2}{
+            \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v2\t\i) at
+            ($({\i*120}:.2cm)+({30+\t*60}:1.8cm)$) {};
+          }
+          \draw (v2\t0) -- (v2\t1) -- (v2\t2) -- (v2\t0);
+        }
+
+        \foreach \i [evaluate=\i] in {0,1,2}{
+          \foreach \j [evaluate=\j] in {0,1,2}{
+            \foreach \k [evaluate=\j] in {0,1,2}{
+              \draw[gray!200] (v1\i\j) -- (v00\k);
+              \pgfmathsetmacro{\x}{int(2*\i)}
+              \draw[gray!200] (v1\i\j) -- (v2\x\k);
+              \pgfmathsetmacro{\y}{int(Mod(2*\i-1,6))}
+              \draw[gray!200] (v1\i\j) -- (v2\y\k);
+            }
+          }
+        }
+        
+      \end{tikzpicture}
+      
+      Treewidth 3
+    \end{column}
+    \hfill
+    \begin{column}{.3\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \clip (-1.2,-1.3) rectangle (3.2,3.3);
+        \foreach \i [evaluate=\i] in {0,.5,1,1.5,2}{
+          \draw (\i, -.3) -- (\i,2.3);
+          \draw (-.3,\i) -- (2.3,\i);}
+        
+        \foreach \i [evaluate=\i] in {0,.5,1,1.5,2}{
+          \foreach \j [evaluate=\i] in {0,.5,1,1.5,2}{
+            \node[draw=black,circle,inner sep = 1pt, fill = \myorange] (v\i\j)
+            at (\i,\j) {};
+          }
+        }
+      \end{tikzpicture}
+      
+      Unbounded treewidth
+    \end{column}
+    \hfill
+    \begin{column}{.3\linewidth}
+      \vspace{.2cm}
+      \centering
+      \begin{tikzpicture}
+        \clip (1.25,0.6) rectangle (5,5);
+        \pgfmathsetmacro{\r}{.5}
+        \pgfmathsetmacro{\tri}{.1}  
+        \pgfmathsetmacro{\long}{4}
+        \pgfmathsetmacro{\haut}{5}
+
+        \pgfmathsetmacro{\hh}{int(\haut+1)}
+        \pgfmathsetmacro{\lll}{int(\long-1)}
+
+        \foreach \j [evaluate=\j] in {1,...,\hh}
+        {\foreach \i [evaluate=\i] in {1,...,\long}
+          {\pgfmathsetmacro{\y}{int(2*\j-1)}
+            \pgfmathsetmacro{\x}{int(3*\i-1)}
+            \pgfmathsetmacro{\xx}{int(3*\i)}
+            \foreach \angle in {0,1,2}
+            {\node[draw=black,circle,inner sep=1pt,fill= \myorange] (v\x_\y_\angle) at ($({\x*\r},
+              {\y*\r*sqrt(3)/2})+(\angle*120:\tri)$) {};
+              \node[draw=black,circle,inner sep=1pt,fill= \myorange] (v\xx_\y_\angle) at ($({\xx*\r},
+              {\y*\r*sqrt(3)/2})+(\angle*120+180:\tri)$) {};
+            }
+            \draw (v\x_\y_0) -- (v\x_\y_1) -- (v\x_\y_2) -- (v\x_\y_0);
+            \draw (v\xx_\y_0) -- (v\xx_\y_1) -- (v\xx_\y_2) -- (v\xx_\y_0);
+          }
+        }
+        \foreach \j [evaluate=\j] in {1,...,\hh}
+        {\foreach \i [evaluate=\i] in {1,...,\long}
+          {\pgfmathsetmacro{\y}{int(2*\j)}
+            \pgfmathsetmacro{\x}{int(3*\i-2)}
+            \pgfmathsetmacro{\xx}{int(3*\i)}
+            \foreach \angle in {0,1,2}
+            {\node[draw=black,circle,inner sep=1pt,fill= \myorange] (v\x_\y_\angle) at ($({(\x+0.5)*\r}, {\y*\r*sqrt(3)/2})+(\angle*120+180:\tri)$) {};
+              \node[draw=black,circle,inner sep=1pt,fill= \myorange] (v\xx_\y_\angle) at ($({(\xx+0.5)*\r}, {\y*\r*sqrt(3)/2})+(\angle*120:\tri)$) {};
+            }
+            \draw (v\x_\y_0) -- (v\x_\y_1) -- (v\x_\y_2) -- (v\x_\y_0);
+            \draw (v\xx_\y_0) -- (v\xx_\y_1) -- (v\xx_\y_2) -- (v\xx_\y_0);
+          }
+        }
+        \foreach \j [evaluate=\j] in {1,...,\hh}
+        {\foreach \i [evaluate=\i] in {1,...,\long}
+          {\pgfmathsetmacro{\y}{int(2*\j-1)}
+            \pgfmathsetmacro{\x}{int(3*\i-1)}
+            \pgfmathsetmacro{\xx}{int(\x+1)}
+            \pgfmathsetmacro{\xxx}{int(\x-1)}
+            \pgfmathsetmacro{\yy}{int(\y+1)}
+            \draw (v\x_\y_0) -- (v\xx_\y_0);
+            \draw (v\x_\y_1) -- (v\xxx_\yy_1);
+          }
+        }
+        \foreach \j [evaluate=\j] in {1,...,\haut}
+        {\foreach \i [evaluate=\i] in {1,...,\long}
+          {\pgfmathsetmacro{\y}{int(2*\j+1)}
+            \pgfmathsetmacro{\x}{int(3*\i-1)}
+            \pgfmathsetmacro{\xxx}{int(\x-1)}
+            \pgfmathsetmacro{\yy}{int(\y+1)}
+            \pgfmathsetmacro{\yyy}{int(\y-1)}
+            \draw (v\x_\y_2) -- (v\xxx_\yyy_2);
+          }
+        }
+        \foreach \j [evaluate=\j] in {1,...,\hh}
+        {\foreach \i [evaluate=\i] in {1,...,\lll}
+          {\pgfmathsetmacro{\y}{int(2*\j)}
+            \pgfmathsetmacro{\x}{int(3*\i)}
+            \pgfmathsetmacro{\xx}{int(\x+1)}
+            \draw (v\x_\y_0) -- (v\xx_\y_0);
+          }
+        }
+        \foreach \j [evaluate=\j] in {1,...,\hh}
+        {\foreach \i [evaluate=\i] in {1,...,\long}
+          {\pgfmathsetmacro{\y}{int(2*\j)}
+            \pgfmathsetmacro{\x}{int(3*\i)}
+            \pgfmathsetmacro{\yyy}{int(\y-1)}
+            \draw (v\x_\y_2) -- (v\x_\yyy_2);
+          }
+        }
+        \foreach \j [evaluate=\j] in {1,...,\haut}
+        {\foreach \i [evaluate=\i] in {1,...,\long}
+          {\pgfmathsetmacro{\y}{int(2*\j)}
+            \pgfmathsetmacro{\x}{int(3*\i)}
+            \pgfmathsetmacro{\yy}{int(\y+1)}
+            \draw (v\x_\y_1) -- (v\x_\yy_1);
+          }
+        }
+      \end{tikzpicture}
+      
+      Unbounded treewidth
+    \end{column}
+  \end{columns}
+  \pause
+  \vspace{.5cm}
+  \begin{tabular}{lc}
+  Intuition behind the conjecture: &\\
+  Bounded treewidth means tree like structure with periodic
+    colorings&$\checkmark$\\
+    \pause
+  Unbounded treewidth means infinite ``grid-like'' workspace & ?
+  \end{tabular}
+\end{frame}
+
+\begin{frame}{Torsos}
+    \begin{exampleblock}{Torso}
+    Given a tree decomposition $T$ of $G$, the torso of a bag $X_i$ is the graph
+    $G\llbracket X_i \rrbracket$ such that
+    \begin{itemize}
+    \item $V(G\llbracket X_i \rrbracket) = X_i$,
+    \item for all $u,v \in X_i$, if $uv \in E(G)$, then $uv\in E(G\llbracket X_i \rrbracket)$,
+    \item for all $u,v \in X_i$, if there is a path between $u$ and $v$ in $G$
+      that avoids $X_i$, then $uv \in E(G\llbracket X_i \rrbracket)$.
+    \end{itemize}
+  \end{exampleblock}
+
+\end{frame}
+
+\section*{A structure theorem on quasi-transitive graphs avoiding a minor}
+
+\begin{frame}{Crash course on minors}
+  \begin{exampleblock}{Definition}
+    A graph $H$ is a minor of $G$ if $H$ can be obtained from $G$ by contracting
+    edges and by deleting vertices and edges.
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}{Robertson and Seymour Graph minor structure theorem}
+  \begin{alertblock}{Why are $H$-minor free graphs $H$-minor free ?}
+    Let $G$ be a $H$-minor-free graph. Then 
+    \begin{itemize}
+    \item $G$ is to thin to contain $H$
+    \item $G$ is piecewise almost embeddable on surfaces too simple to contain
+      $H$ as a minor.
+    \end{itemize}
+  \end{alertblock}
+
+  \begin{block}{Precise statement}
+    Let $H$ be a fixed graph. There exist a $k$, such that for all $G$ that does
+    not contain $H$ as a minor, $G$ admits a tree-decomposition, such that :
+    \begin{itemize}
+    \item The adhesions have size at most $k$,
+    \item Each torso is ``almost'' embeddable in a surface in which $H$ does not
+      embed (too low genus)
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Diestel and Thomas 1999}
+    The same holds for infinite graphs $G$ that exclude some finite minor.
+  \end{block}
+\end{frame}
+
+\begin{frame}{What about graphs with many symmetries ?}
+  \begin{exampleblock}{Quasi-transitive graphs}
+    A graph $G$ is quasi-transitive if it can be colored with finitely many
+    colors, such that for all $u$,$v$ colored identically, there is $\phi \in
+    Aut(G)$ such that $\phi(u) = \phi(v)$.
+  \end{exampleblock}
+
   \begin{center}
     \begin{tikzpicture}
-      \foreach \i [evaluate=\i] in {0,1,2}{
-        \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v00\i) at ({\i*120}:.2cm) {};
-      }
-      \draw (v000) -- (v001) -- (v002) -- (v000);
-
-      \foreach \t [evaluate=\t] in {0,1,2}{
-        \foreach \i [evaluate=\i] in {0,1,2}{
-          \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v1\t\i) at
-          ($({60+\i*120}:.2cm)+({\t*120}:1cm)$) {};
+      \foreach \i [evaluate=\i] in {0,.5,1,1.5,2}{
+        \draw (\i, -.3) -- (\i,2.3);
+        \draw (-.3,\i) -- (2.3,\i);
+        \only<2->{
+        \draw (-.3,\i-.3) -- (2.3-\i, 2.3);
+        \draw (\i+.2,-.3) -- (2.3, 1.8-\i);
+        \draw (\i-.3, 2.3)--(2.3,\i-.3);
+        \draw (-.3,\i-.2) -- (\i-.2, -.3);
         }
-        \draw (v1\t0) -- (v1\t1) -- (v1\t2) -- (v1\t0);
       }
+
+      \only<2->{
+      \draw (-.3,2.2)--(-.2,2.3);
+      \draw (2.2,2.3)--(2.3,2.2);}
+      
+      \foreach \i [evaluate=\i] in {0,.5,1,1.5,2}{
+        \foreach \j [evaluate=\i] in {0,.5,1,1.5,2}{
+          \node[draw=black,circle,inner sep = 1pt, fill = \myorange] (v\i\j)
+          at (\i,\j) {};
+        }
+      }
+
+      \only<2->{
+      \foreach \i [evaluate=\i] in {0,.5,1,1.5,2,2.5}{
+        \foreach \j [evaluate=\i] in {0,.5,1,1.5,2,2.5}{
+          \node[draw=black,circle,inner sep = 1pt, fill = \myblue] (v\i\j)
+          at (\i-.25,\j-.25) {};
+        }
+      }}
+    
+    \only<3>{
+      \foreach \i [evaluate=\i] in {0,.5,1,1.5,2,2.5}{
+        \foreach \j [evaluate=\i] in {0,.5,1,1.5,2}{
+          \node[draw=black,circle,inner sep = 1pt, fill = \myred] (v\i\j)
+          at (\i-.25,\j) {};
+        }
+      }}
+    
+
     \end{tikzpicture}
   \end{center}
+  
+\end{frame}
+\begin{frame}{Preserve the symmetric structure in $T$}
+  \begin{exampleblock}{Canonical tree decompositions}
+    A tree decomposition is said to be canonical if for all $\phi \in Aut(G)$,
+    $\phi$ maps bags on other bags ($Aut(G)$ induces an action on $T$ such that
+    $\forall \phi, \forall i$, $\phi(X_i) = X_{i\cdot\phi}$).
+  \end{exampleblock}
+  
+  \pause
+  \begin{block}{Esperet, Giocanti, L. 2023}
+    Let $G$ be a quasi-transitive locally finite graph $G$ avoiding the
+    countable clique as a minor. Then $G$ admits a {\bf canonical} tree
+    decomposition whose torsos are finite or planar.
+  \end{block}
+
+  \pause
+  \begin{block}{Esperet, Giocanti, L. 2023}
+    Let $G$ be a quasi-transitive locally finite graph $G$ avoiding the
+    countable clique as a minor. Then $G$ admits a {\bf canonical} tree
+    decomposition with adhesions of size at most 3 such that:
+    \begin{itemize}
+    \item each torso is a minor of $G$,
+    \item torso are planar or have bounded treewidth
+    \end{itemize}
+  \end{block}
 \end{frame}
 
-\begin{frame}
-  \begin{tikzpicture}
-    \foreach \i [evaluate=\i] in {0,1,2}{
-      \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v00\i) at ({\i*120}:.2cm) {};
-    }
-    \draw (v000) -- (v001) -- (v002) -- (v000);
+\begin{frame}{Application 1: Hadwiger number}
+  \begin{exampleblock}{Hadwiger number}
+    The Hadwiger number of a graph is the supremum of the sizes of its complete minors.
+  \end{exampleblock}
 
+  \begin{block}{Thomassen 1992}
+    Every locally finite quasi-transitive 4-connected graph attains its Hadwiger number.
+  \end{block}
 
-    \foreach \t [evaluate=\t] in {0,1,2}{
-      \foreach \i [evaluate=\i] in {0,1,2}{
-        \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v1\t\i) at
-        ($({60+\i*120}:.2cm)+({\t*120}:1cm)$) {};
-      }
-      \draw (v1\t0) -- (v1\t1) -- (v1\t2) -- (v1\t0);
-      }
+  \begin{block}{Esperet, Giocanti, L. 2023}
+    Every locally finite quasi-transitive graph attains its Hadwiger number.
+  \end{block}
 
-    \foreach \t [evaluate=\t] in {0,1,2,3,4,5}{
-      \foreach \i [evaluate=\i] in {0,1,2}{
-        \node[draw=black,fill=\myorange,inner sep = 1pt,circle] (v2\t\i) at
-        ($({\i*120}:.2cm)+({30+\t*60}:1.8cm)$) {};
-      }
-      \draw (v2\t0) -- (v2\t1) -- (v2\t2) -- (v2\t0);
-    }
-
-    \foreach \i [evaluate=\i] in {0,1,2}{
-      \foreach \j [evaluate=\j] in {0,1,2}{
-        \foreach \k [evaluate=\j] in {0,1,2}{
-          \draw[gray!150] (v1\i\j) -- (v00\k);
-          \pgfmathsetmacro{\x}{int(2*\i)}
-          \draw[gray!150] (v1\i\j) -- (v2\x\k);
-          \pgfmathsetmacro{\y}{int(Mod(2*\i-1,6))}
-          \draw[gray!150] (v1\i\j) -- (v2\y\k);
-        }
-      }
-    }
-    
-    
-  \end{tikzpicture}
+  \centering
+  ``$K_\infty$ minor free $\Rightarrow$ $K_t$ minor free for some $t$''
 \end{frame}
-
 
 \end{document}
